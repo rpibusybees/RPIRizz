@@ -1,2 +1,2 @@
 ### RPIRizz
-Natalie C
+Natalie C, Xenia K
