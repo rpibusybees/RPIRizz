@@ -81,14 +81,14 @@ class MyApp extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: const Text(
-                    'Oeschinen Lake Campground',
+                    'Silly Bhairav',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 Text(
-                  'Kandersteg, Switzerland',
+                  'The best dog in the world',
                   style: TextStyle(
                     color: Colors.grey[500],
                   ),
@@ -120,26 +120,23 @@ class MyApp extends StatelessWidget {
     Widget textSection = const Padding(
       padding: EdgeInsets.all(32),
       child: Text(
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-        'Alps. Situated 1,578 meters above sea level, it is one of the '
-        'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-        'half-hour walk through pastures and pine forest, leads you to the '
-        'lake, which warms to 20 degrees Celsius in the summer. Activities '
-        'enjoyed here include rowing, and riding the summer toboggan run.',
+        'Bhairav is 4 years old his birthday is Feburary 12th. We don\'t know'
+        'what breed he is but people say, German Shepard - Border Collie mix.'
+        ' He is very silly and fat. He is goof dog. :)',
         softWrap: true,
       ),
     );
 
     return MaterialApp(
-      title: 'Flutter layout demo',
+      title: 'Bhavya Test Flutter Demo',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Flutter layout demo'),
+          title: const Text('Bhavya Test Flutter Demo'),
         ),
         body: ListView(
           children: [
             Image.asset(
-              'images/lake.jpg',
+              'images/bhairav.jpg',
               width: 600,
               height: 240,
               fit: BoxFit.cover,
