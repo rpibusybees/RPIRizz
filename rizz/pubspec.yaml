@@ -3,12 +3,17 @@ description: A new Flutter project.
 publish_to: 'none'
 version: 0.1.0
 
+assets:
+  - .env
+
 environment:
   sdk: '>=3.0.5 <4.0.0'
 
 dependencies:
+  firebase_core: ^2.14.0
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
