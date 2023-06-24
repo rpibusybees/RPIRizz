@@ -5,11 +5,13 @@ version: 0.1.0
 
 assets:
   - .env
+  - assets/RizzLogoFlask.png
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
 
 dependencies:
+  firebase_auth: ^4.6.3
   firebase_core: ^2.14.0
   flutter:
     sdk: flutter
