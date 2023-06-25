@@ -1,112 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'login_register_helpers.dart';
+
 import 'register.dart';
-
-class EmailField extends StatefulWidget {
-  final TextEditingController? controller;
-  const EmailField({Key? key, required this.controller}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _EmailFieldState();
-}
-
-class _EmailFieldState extends State<EmailField> {
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      autocorrect: false,
-      autofocus: true,
-      controller: widget.controller,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            borderSide: BorderSide(
-              // add onSecondary as border color
-              color: Theme.of(context).colorScheme.onSecondary,
-              width: 1,
-            )),
-        labelText: 'Email',
-        suffixIcon: IconButton(
-          icon: const Icon(Icons.cancel),
-          onPressed: widget.controller!.clear,
-        ),
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.primary,
-        labelStyle: Theme.of(context).textTheme.labelMedium,
-      ),
-      keyboardType: TextInputType.emailAddress,
-      textCapitalization: TextCapitalization.none,
-      textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your email';
-        } else if (!value.contains('@rpi.edu')) {
-          return 'Please enter a valid rpi email';
-        }
-        return null;
-      },
-    );
-  }
-}
-
-class PassField extends StatefulWidget {
-  final TextEditingController? controller;
-  const PassField({Key? key, required this.controller}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _PassFieldState();
-}
-
-class _PassFieldState extends State<PassField> {
-  bool _obscureText = true;
-
-  void togglePasswordVisibility() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      autocorrect: false,
-      autofocus: true,
-      controller: widget.controller,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            borderSide: BorderSide(
-              // add onSecondary as border color
-              color: Theme.of(context).colorScheme.onSecondary,
-              width: 1,
-            )),
-        labelText: 'Password',
-        suffixIcon: IconButton(
-          icon: Icon(
-            _obscureText ? Icons.visibility : Icons.visibility_off,
-            color: Theme.of(context).colorScheme.error,
-          ),
-          onPressed: togglePasswordVisibility,
-        ),
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.primary,
-        labelStyle: Theme.of(context).textTheme.labelMedium,
-      ),
-      obscureText: _obscureText,
-      textCapitalization: TextCapitalization.none,
-      textInputAction: TextInputAction.done,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your password';
-        } else if (value.length < 8) {
-          return 'Password must be at least 8 characters';
-        }
-        return null;
-      },
-    );
-  }
-}
+import 'verification.dart';
 
 class SubmitButton extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -130,7 +28,6 @@ class _SubmitButtonState extends State<SubmitButton> {
           email: widget.emailController!.text,
           password: widget.passwordController!.text);
       if (!mounted) return;
-      Navigator.pushNamed(context, '/home');
     } catch (e) {
       await showDialog(
         context: context,
@@ -174,20 +71,20 @@ class _SubmitButtonState extends State<SubmitButton> {
   }
 }
 
-class EPForm extends StatefulWidget {
+class LoginForm extends StatefulWidget {
   final TextEditingController? emailController;
   final TextEditingController? passwordController;
-  const EPForm(
+  const LoginForm(
       {Key? key,
       required this.emailController,
       required this.passwordController})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _FormState();
+  State<StatefulWidget> createState() => _LoginFormState();
 }
 
-class _FormState extends State<EPForm> {
+class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -197,7 +94,8 @@ class _FormState extends State<EPForm> {
         children: [
           EmailField(controller: widget.emailController),
           const SizedBox(height: 20),
-          PassField(controller: widget.passwordController),
+          PassField(
+              controller: widget.passwordController, labelPassword: 'Password'),
           SizedBox(height: MediaQuery.of(context).size.height / 8),
           SubmitButton(
               formKey: _formKey,
@@ -216,12 +114,14 @@ class RegisterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        // MaterialPageRoute(builder: (context) => const RegisterPage());
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const RegisterPage()),
+        );
       },
       child: Text(
         'Create an account now!',
         style: Theme.of(context).textTheme.labelMedium,
-        
       ),
     );
   }
@@ -248,17 +148,24 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    super.initState();
+    initUser();
     _emailController = TextEditingController(text: '');
     _passwordController = TextEditingController(text: '');
-    checkUser();
+    super.initState();
   }
 
-  void checkUser() async {
-    user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      Navigator.pushNamed(context, '/home');
-    }
+  void initUser() async {
+    FirebaseAuth.instance.authStateChanges().listen((User? u) {
+      setState(() {
+        user = u;
+      });
+      if (user != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const VerificationPage()),
+        );
+      }
+    });
   }
 
   @override
@@ -281,8 +188,11 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Image(image: AssetImage('assets/RizzLogoFlask.png'), width: 150,height: 150),
-          EPForm(
+          const Image(
+              image: AssetImage('assets/RizzLogoFlask.png'),
+              width: 150,
+              height: 150),
+          LoginForm(
             emailController: _emailController,
             passwordController: _passwordController,
           ),
