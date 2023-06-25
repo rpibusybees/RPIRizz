@@ -198,7 +198,7 @@ class _FormState extends State<EPForm> {
           EmailField(controller: widget.emailController),
           const SizedBox(height: 20),
           PassField(controller: widget.passwordController),
-          SizedBox(height: MediaQuery.of(context).size.height / 4),
+          SizedBox(height: MediaQuery.of(context).size.height / 8),
           SubmitButton(
               formKey: _formKey,
               emailController: widget.emailController,
@@ -281,7 +281,7 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Image(image: AssetImage('assets/RizzLogoFlask.png'), ),
+          const Image(image: AssetImage('assets/RizzLogoFlask.png'), width: 150,height: 150),
           EPForm(
             emailController: _emailController,
             passwordController: _passwordController,
