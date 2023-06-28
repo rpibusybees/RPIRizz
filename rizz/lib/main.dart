@@ -24,10 +24,44 @@ class RizzColors {
 
 class RizzText {
   static const TextTheme rizzText = TextTheme(
-    labelMedium: TextStyle(
+    displayLarge: TextStyle(
+      color: Color.fromRGBO(49, 49, 49, 1),
+      fontSize: 32,
+      fontWeight: FontWeight.w700,
+    ),
+    displayMedium: TextStyle(
+      color: Color.fromRGBO(49, 49, 49, 1),
+      fontSize: 24,
+      fontWeight: FontWeight.w500,
+    ),
+    titleLarge: TextStyle(
+      color: Color.fromRGBO(49, 49, 49, 1),
+      fontSize: 32,
+    ),
+    titleMedium: TextStyle(
+      color: Color.fromRGBO(49, 49, 49, 1),
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
+    ),
+    labelLarge: TextStyle(
       color: Color.fromRGBO(49, 49, 49, 1),
       fontSize: 20,
       fontWeight: FontWeight.w500,
+    ),
+    labelMedium: TextStyle(
+      color: Color.fromRGBO(49, 49, 49, 1),
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+    ),
+    labelSmall: TextStyle(
+      color: Color.fromRGBO(49, 49, 49, 1),
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+    ),
+    bodyMedium: TextStyle(
+      color: Color.fromRGBO(49, 49, 49, 1),
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
     ),
   );
 }
@@ -53,6 +87,7 @@ class MainApp extends StatelessWidget {
         textTheme: RizzText.rizzText,
       ),
       home: const LoginPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

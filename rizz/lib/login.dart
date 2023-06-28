@@ -64,8 +64,13 @@ class _SubmitButtonState extends State<SubmitButton> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
           ),
+          elevation: 10,
         ),
-        child: const Text('Login'),
+        child: Text(
+          'Login',
+          style: Theme.of(context).textTheme.titleMedium?.merge(
+              TextStyle(color: Theme.of(context).colorScheme.background)),
+        ),
       ),
     );
   }
@@ -96,7 +101,7 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 20),
           PassField(
               controller: widget.passwordController, labelPassword: 'Password'),
-          SizedBox(height: MediaQuery.of(context).size.height / 8),
+          SizedBox(height: MediaQuery.of(context).size.height / 7),
           SubmitButton(
               formKey: _formKey,
               emailController: widget.emailController,
@@ -121,7 +126,7 @@ class RegisterButton extends StatelessWidget {
       },
       child: Text(
         'Create an account now!',
-        style: Theme.of(context).textTheme.labelMedium,
+        style: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }

@@ -68,8 +68,13 @@ class _RegisterButtonState extends State<RegisterButton> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
           ),
+          elevation: 10,
         ),
-        child: const Text('Sign Up'),
+        child: Text(
+          'Sign Up',
+          style: Theme.of(context).textTheme.titleMedium?.merge(
+              TextStyle(color: Theme.of(context).colorScheme.background)),
+        ),
       ),
     );
   }
@@ -126,16 +131,25 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return ElevatedButton(
       onPressed: () {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const LoginPage()),
         );
       },
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(51),
+          side: BorderSide(
+              color: Theme.of(context).colorScheme.tertiary, width: 2),
+        ),
+        elevation: 10,
+        backgroundColor: Theme.of(context).colorScheme.background,
+      ),
       child: Text(
-        'Login',
-        style: Theme.of(context).textTheme.labelMedium,
+        'Login in here!',
+        style: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }

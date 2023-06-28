@@ -13,7 +13,7 @@ class _EmailFieldState extends State<EmailField> {
   Widget build(BuildContext context) {
     return TextFormField(
       autocorrect: false,
-      autofocus: true,
+      autofocus: false,
       controller: widget.controller,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -71,7 +71,7 @@ class _PassFieldState extends State<PassField> {
   Widget build(BuildContext context) {
     return TextFormField(
       autocorrect: false,
-      autofocus: true,
+      autofocus: false,
       controller: widget.controller,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -136,7 +136,7 @@ class _ConfirmPassFieldState extends State<ConfirmPassField> {
   Widget build(BuildContext context) {
     return TextFormField(
       autocorrect: false,
-      autofocus: true,
+      autofocus: false,
       controller: widget.repassController,
       decoration: InputDecoration(
         border: OutlineInputBorder(
