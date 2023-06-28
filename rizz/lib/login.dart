@@ -101,7 +101,7 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 20),
           PassField(
               controller: widget.passwordController, labelPassword: 'Password'),
-          SizedBox(height: MediaQuery.of(context).size.height / 7),
+          SizedBox(height: 20),
           SubmitButton(
               formKey: _formKey,
               emailController: widget.emailController,
