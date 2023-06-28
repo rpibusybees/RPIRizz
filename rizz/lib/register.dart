@@ -102,25 +102,28 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Column(
-        children: [
-          EmailField(controller: widget.emailController),
-          const SizedBox(height: 20),
-          PassField(
-            controller: widget.passwordController,
-            labelPassword: 'Password',
-          ),
-          const SizedBox(height: 20),
-          ConfirmPassField(
-              passcontroller: widget.passwordController,
-              repassController: widget.confirmPasswordController,
-              labelPassword: 'Confirm Password'),
-          SizedBox(height: MediaQuery.of(context).size.height / 8),
-          RegisterButton(
-              formKey: _formKey,
-              emailController: widget.emailController,
-              passwordController: widget.passwordController),
-        ],
+      child: Expanded (
+        child: Column(
+          children: [
+            EmailField(controller: widget.emailController),
+            PassField(
+              controller: widget.passwordController,
+              labelPassword: 'Password',
+            ),
+            ConfirmPassField(
+                passcontroller: widget.passwordController,
+                repassController: widget.confirmPasswordController,
+                labelPassword: 'Confirm Password'),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: RegisterButton(
+                  formKey: _formKey,
+                  emailController: widget.emailController,
+                  passwordController: widget.passwordController),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -159,7 +162,7 @@ class RegisterConsts {
   RegisterConsts._();
 
   static const EdgeInsets padding =
-      EdgeInsets.symmetric(horizontal: 30, vertical: 100);
+      EdgeInsets.symmetric(horizontal: 30, vertical: 50);
 }
 
 class RegisterPage extends StatefulWidget {
@@ -203,10 +206,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Image(
-                        image: AssetImage('assets/RizzLogoFlask.png'),
-                        width: 150,
-                        height: 150),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Image(
+                          image: AssetImage('assets/RizzLogoFlask.png'),
+                          width: 150,
+                          height: 150),
+                    ),
                     RegisterForm(
                         emailController: _emailController,
                         passwordController: _passwordController,

@@ -95,18 +95,23 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Column(
-        children: [
-          EmailField(controller: widget.emailController),
-          const SizedBox(height: 20),
-          PassField(
-              controller: widget.passwordController, labelPassword: 'Password'),
-          SizedBox(height: MediaQuery.of(context).size.height / 7),
-          SubmitButton(
-              formKey: _formKey,
-              emailController: widget.emailController,
-              passwordController: widget.passwordController),
-        ],
+      child: Expanded(
+        child: Column(
+          children: [
+            EmailField(controller: widget.emailController),
+            PassField(
+                controller: widget.passwordController, 
+                labelPassword: 'Password'),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: SubmitButton(
+                  formKey: _formKey,
+                  emailController: widget.emailController,
+                  passwordController: widget.passwordController),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -190,13 +195,17 @@ class _LoginPageState extends State<LoginPage> {
       padding: LoginConsts.padding,
       color: Theme.of(context).colorScheme.background,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Image(
-              image: AssetImage('assets/RizzLogoFlask.png'),
-              width: 150,
-              height: 150),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Image(
+                image: AssetImage('assets/RizzLogoFlask.png'),
+                width: 150,
+                height: 150),
+          ),
           LoginForm(
             emailController: _emailController,
             passwordController: _passwordController,
