@@ -100,7 +100,7 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             EmailField(controller: widget.emailController),
             PassField(
-                controller: widget.passwordController, 
+                controller: widget.passwordController,
                 labelPassword: 'Password'),
             const Spacer(),
             Padding(
