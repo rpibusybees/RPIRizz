@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 
-class EmailField extends StatefulWidget {
+class FieldFactory extends StatefulWidget {
   final TextEditingController? controller;
-  const EmailField({Key? key, required this.controller}) : super(key: key);
+  final TextEditingController? controller2;
+  final String? labelPassword;
+
+  const FieldFactory({
+    Key? key,
+    required this.controller,
+    this.controller2,
+    this.labelPassword,
+  }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _EmailFieldState();
+  State<StatefulWidget> createState() =>
+      labelPassword == null ? _EmailFieldState() : _PassFieldState();
 }
 
-class _EmailFieldState extends State<EmailField> {
+class _EmailFieldState extends State<FieldFactory> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -58,18 +67,7 @@ class _EmailFieldState extends State<EmailField> {
   }
 }
 
-class PassField extends StatefulWidget {
-  final TextEditingController? controller;
-  final String? labelPassword;
-  const PassField(
-      {Key? key, required this.controller, required this.labelPassword})
-      : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _PassFieldState();
-}
-
-class _PassFieldState extends State<PassField> {
+class _PassFieldState extends State<FieldFactory> {
   bool _obscureText = true;
 
   void togglePasswordVisibility() {
@@ -85,7 +83,7 @@ class _PassFieldState extends State<PassField> {
       child: TextFormField(
         autocorrect: false,
         autofocus: false,
-        controller: widget.controller,
+        controller: widget.controller2 ?? widget.controller,
         decoration: InputDecoration(
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -122,83 +120,8 @@ class _PassFieldState extends State<PassField> {
             return 'Please enter your password';
           } else if (value.length < 8) {
             return 'Password must be at least 8 characters';
-          }
-          return null;
-        },
-      ),
-    );
-  }
-}
-
-class ConfirmPassField extends StatefulWidget {
-  final TextEditingController? passcontroller;
-  final TextEditingController? repassController;
-  final String? labelPassword;
-  const ConfirmPassField(
-      {Key? key,
-      required this.passcontroller,
-      required this.labelPassword,
-      this.repassController})
-      : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _ConfirmPassFieldState();
-}
-
-class _ConfirmPassFieldState extends State<ConfirmPassField> {
-  bool _obscureText = true;
-
-  void togglePasswordVisibility() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: TextFormField(
-        autocorrect: false,
-        autofocus: false,
-        controller: widget.repassController,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            borderSide: BorderSide(
-                // add onSecondary as border color
-                color: Theme.of(context).colorScheme.onSecondary,
-                width: 2),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.error, width: 2),
-          ),
-          labelText: widget.labelPassword,
-          suffixIcon: IconButton(
-            icon: Icon(
-              _obscureText ? Icons.visibility : Icons.visibility_off,
-              color: Theme.of(context).colorScheme.error,
-            ),
-            onPressed: togglePasswordVisibility,
-          ),
-          filled: true,
-          fillColor: Theme.of(context).colorScheme.primary,
-          labelStyle: Theme.of(context).textTheme.labelMedium,
-        ),
-        obscureText: _obscureText,
-        textCapitalization: TextCapitalization.none,
-        textInputAction: TextInputAction.done,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Please retype your password';
-          } else if (value.length < 8) {
-            return 'Password must be at least 8 characters';
-          } else if (value != widget.passcontroller!.text) {
+          } else if (widget.controller2 != null &&
+              value != widget.controller!.text) {
             return 'Passwords do not match';
           }
           return null;

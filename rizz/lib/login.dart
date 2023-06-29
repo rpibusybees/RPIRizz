@@ -98,9 +98,12 @@ class _LoginFormState extends State<LoginForm> {
       child: Expanded(
         child: Column(
           children: [
-            EmailField(controller: widget.emailController),
-            PassField(
+            FieldFactory(
+              controller: widget.emailController,
+            ),
+            FieldFactory(
                 controller: widget.passwordController,
+                controller2: null,
                 labelPassword: 'Password'),
             const Spacer(),
             Padding(

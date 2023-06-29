@@ -102,19 +102,21 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Expanded (
+      child: Expanded(
         child: Column(
           children: [
-            EmailField(controller: widget.emailController),
-            PassField(
-              controller: widget.passwordController,
-              labelPassword: 'Password',
+            FieldFactory(
+              controller: widget.emailController,
             ),
-            ConfirmPassField(
-                passcontroller: widget.passwordController,
-                repassController: widget.confirmPasswordController,
+            FieldFactory(
+                controller: widget.passwordController,
+                controller2: null,
+                labelPassword: 'Password'),
+            FieldFactory(
+                controller: widget.passwordController,
+                controller2: widget.confirmPasswordController,
                 labelPassword: 'Confirm Password'),
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: RegisterButton(
