@@ -1,0 +1,180 @@
+classDiagram
+class DefaultFirebaseOptions
+DefaultFirebaseOptions : +android$ FirebaseOptions
+DefaultFirebaseOptions o-- FirebaseOptions
+DefaultFirebaseOptions : +ios$ FirebaseOptions
+DefaultFirebaseOptions o-- FirebaseOptions
+DefaultFirebaseOptions : +currentPlatform$ FirebaseOptions
+DefaultFirebaseOptions o-- FirebaseOptions
+
+class SubmitButton
+SubmitButton : +formKey GlobalKey~FormState~
+SubmitButton o-- GlobalKey~FormState~
+SubmitButton : +emailController TextEditingController?
+SubmitButton o-- TextEditingController
+SubmitButton : +passwordController TextEditingController?
+SubmitButton o-- TextEditingController
+SubmitButton : +createState() State<StatefulWidget>
+StatefulWidget <|-- SubmitButton
+
+class _SubmitButtonState
+_SubmitButtonState : -_login() void
+_SubmitButtonState : +build() Widget
+State <|-- _SubmitButtonState
+
+class LoginForm
+LoginForm : +emailController TextEditingController?
+LoginForm o-- TextEditingController
+LoginForm : +passwordController TextEditingController?
+LoginForm o-- TextEditingController
+LoginForm : +createState() State<StatefulWidget>
+StatefulWidget <|-- LoginForm
+
+class _LoginFormState
+_LoginFormState : -_formKey GlobalKey~FormState~
+_LoginFormState o-- GlobalKey~FormState~
+_LoginFormState : +build() Widget
+State <|-- _LoginFormState
+
+class RegisterButton
+RegisterButton : +build() Widget
+StatelessWidget <|-- RegisterButton
+
+class LoginConsts
+LoginConsts : +padding$ EdgeInsets
+LoginConsts o-- EdgeInsets
+
+class LoginPage
+LoginPage : +createState() State<StatefulWidget>
+StatefulWidget <|-- LoginPage
+
+class _LoginPageState
+_LoginPageState : -_emailController TextEditingController?
+_LoginPageState o-- TextEditingController
+_LoginPageState : -_passwordController TextEditingController?
+_LoginPageState o-- TextEditingController
+_LoginPageState : +user User?
+_LoginPageState o-- User
+_LoginPageState : +initState() void
+_LoginPageState : +initUser() void
+_LoginPageState : +dispose() void
+_LoginPageState : +build() Widget
+State <|-- _LoginPageState
+
+class FieldFactory
+FieldFactory : +controller TextEditingController?
+FieldFactory o-- TextEditingController
+FieldFactory : +controller2 TextEditingController?
+FieldFactory o-- TextEditingController
+FieldFactory : +labelPassword String?
+FieldFactory : +createState() State<StatefulWidget>
+StatefulWidget <|-- FieldFactory
+
+class _EmailFieldState
+_EmailFieldState : +build() Widget
+State <|-- _EmailFieldState
+
+class _PassFieldState
+_PassFieldState : -_obscureText bool
+_PassFieldState : +togglePasswordVisibility() void
+_PassFieldState : +build() Widget
+State <|-- _PassFieldState
+
+class MainApp
+MainApp : +build() Widget
+StatelessWidget <|-- MainApp
+
+class RegisterButton
+RegisterButton : +formKey GlobalKey~FormState~
+RegisterButton o-- GlobalKey~FormState~
+RegisterButton : +emailController TextEditingController?
+RegisterButton o-- TextEditingController
+RegisterButton : +passwordController TextEditingController?
+RegisterButton o-- TextEditingController
+RegisterButton : +createState() State<StatefulWidget>
+StatefulWidget <|-- RegisterButton
+
+class _RegisterButtonState
+_RegisterButtonState : -_register() void
+_RegisterButtonState : +build() Widget
+State <|-- _RegisterButtonState
+
+class RegisterForm
+RegisterForm : +emailController TextEditingController?
+RegisterForm o-- TextEditingController
+RegisterForm : +passwordController TextEditingController?
+RegisterForm o-- TextEditingController
+RegisterForm : +confirmPasswordController TextEditingController?
+RegisterForm o-- TextEditingController
+RegisterForm : +createState() State<StatefulWidget>
+StatefulWidget <|-- RegisterForm
+
+class _RegisterFormState
+_RegisterFormState : -_formKey GlobalKey~FormState~
+_RegisterFormState o-- GlobalKey~FormState~
+_RegisterFormState : +build() Widget
+State <|-- _RegisterFormState
+
+class LoginButton
+LoginButton : +build() Widget
+StatelessWidget <|-- LoginButton
+
+class RegisterConsts
+RegisterConsts : +padding$ EdgeInsets
+RegisterConsts o-- EdgeInsets
+
+class RegisterPage
+RegisterPage : +createState() State<StatefulWidget>
+StatefulWidget <|-- RegisterPage
+
+class _RegisterPageState
+_RegisterPageState : -_emailController TextEditingController?
+_RegisterPageState o-- TextEditingController
+_RegisterPageState : -_passwordController TextEditingController?
+_RegisterPageState o-- TextEditingController
+_RegisterPageState : -_confirmPasswordController TextEditingController?
+_RegisterPageState o-- TextEditingController
+_RegisterPageState : +initState() void
+_RegisterPageState : +dispose() void
+_RegisterPageState : +build() Widget
+State <|-- _RegisterPageState
+
+class RizzTheme
+RizzTheme : +rizzColors$ ColorScheme
+RizzTheme o-- ColorScheme
+RizzTheme : +rizzText$ TextTheme
+RizzTheme o-- TextTheme
+
+class TestPage
+TestPage : +createState() State<StatefulWidget>
+StatefulWidget <|-- TestPage
+
+class _TestPageState
+_TestPageState : +user User?
+_TestPageState o-- User
+_TestPageState : +initState() void
+_TestPageState : +getAccount() void
+_TestPageState : +build() Widget
+State <|-- _TestPageState
+
+class ResendVerifyButton
+ResendVerifyButton : +user User?
+ResendVerifyButton o-- User
+ResendVerifyButton : +createState() State<StatefulWidget>
+StatefulWidget <|-- ResendVerifyButton
+
+class ResendVerifyButtonState
+ResendVerifyButtonState : +build() Widget
+State <|-- ResendVerifyButtonState
+
+class VerificationPage
+VerificationPage : +createState() State<StatefulWidget>
+StatefulWidget <|-- VerificationPage
+
+class _VerificationPageState
+_VerificationPageState : +user User?
+_VerificationPageState o-- User
+_VerificationPageState : +initState() void
+_VerificationPageState : +getAccount() void
+_VerificationPageState : +build() Widget
+State <|-- _VerificationPageState
