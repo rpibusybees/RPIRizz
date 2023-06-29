@@ -18,21 +18,20 @@ class _EmailFieldState extends State<EmailField> {
         autofocus: false,
         controller: widget.controller,
         decoration: InputDecoration(
-          border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(
-              // add onSecondary as border color
-              color: Theme.of(context).colorScheme.onSecondary, 
-              width: 2),
+                // add onSecondary as border color
+                color: Theme.of(context).colorScheme.onSecondary,
+                width: 2),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.error, 
-              width: 2),
+                color: Theme.of(context).colorScheme.error, width: 2),
           ),
           labelText: 'Email',
           suffixIcon: IconButton(
@@ -88,21 +87,20 @@ class _PassFieldState extends State<PassField> {
         autofocus: false,
         controller: widget.controller,
         decoration: InputDecoration(
-          border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(
-              // add onSecondary as border color
-              color: Theme.of(context).colorScheme.onSecondary, 
-              width: 2),
+                // add onSecondary as border color
+                color: Theme.of(context).colorScheme.onSecondary,
+                width: 2),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.error, 
-              width: 2),
+                color: Theme.of(context).colorScheme.error, width: 2),
           ),
           labelText: widget.labelPassword,
           suffixIcon: IconButton(
@@ -165,21 +163,20 @@ class _ConfirmPassFieldState extends State<ConfirmPassField> {
         autofocus: false,
         controller: widget.repassController,
         decoration: InputDecoration(
-          border: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(
-              // add onSecondary as border color
-              color: Theme.of(context).colorScheme.onSecondary, 
-              width: 2),
+                // add onSecondary as border color
+                color: Theme.of(context).colorScheme.onSecondary,
+                width: 2),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.error, 
-              width: 2),
+                color: Theme.of(context).colorScheme.error, width: 2),
           ),
           labelText: widget.labelPassword,
           suffixIcon: IconButton(
