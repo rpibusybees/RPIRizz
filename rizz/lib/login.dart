@@ -1,3 +1,6 @@
+/// The first page the user sees (and used for logging in).
+library login;
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -6,6 +9,7 @@ import 'login_register_helpers.dart';
 import 'register.dart';
 import 'verification.dart';
 
+/// Used for making a stateful [SubmitButtonState] widget.
 class SubmitButton extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController? emailController;
@@ -18,10 +22,14 @@ class SubmitButton extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SubmitButtonState();
+  State<StatefulWidget> createState() => SubmitButtonState();
 }
 
-class _SubmitButtonState extends State<SubmitButton> {
+/// Handles a login attempt. Actual logic for logging in
+/// is handled in [EmailFieldState.build]
+class SubmitButtonState extends State<SubmitButton> {
+  /// Attempts to log in the user. If there's an error, displays
+  /// [e.toString()] and ERROR to the user.
   void _login() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -76,6 +84,7 @@ class _SubmitButtonState extends State<SubmitButton> {
   }
 }
 
+/// Used for making a stateful [LoginFormState] widget.
 class LoginForm extends StatefulWidget {
   final TextEditingController? emailController;
   final TextEditingController? passwordController;
@@ -86,10 +95,12 @@ class LoginForm extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _LoginFormState();
+  State<StatefulWidget> createState() => LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+/// Builds the login form (UI related). See [SubmitButtonState] and
+/// [EmailFieldState] for how the logic is handled.
+class LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -120,6 +131,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 }
 
+// If clicked, sends user to the [RegisterPage].
 class RegisterButton extends StatelessWidget {
   const RegisterButton({Key? key}) : super(key: key);
 

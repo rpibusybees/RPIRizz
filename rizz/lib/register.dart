@@ -1,3 +1,6 @@
+/// This is where the user "signs up".
+library register;
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -5,6 +8,7 @@ import 'login_register_helpers.dart';
 import 'login.dart';
 import 'verification.dart';
 
+/// Used for making a stateful [RegisterButtonState] widget.
 class RegisterButton extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController? emailController;
@@ -17,11 +21,15 @@ class RegisterButton extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _RegisterButtonState();
+  State<StatefulWidget> createState() => RegisterButtonState();
 }
 
-class _RegisterButtonState extends State<RegisterButton> {
-  void _register() async {
+/// Handles, along with [EmailFieldState], the logic for the register button.
+class RegisterButtonState extends State<RegisterButton> {
+  /// This function is called when the user presses the register button.
+  /// It attempts to create a new user with the given [emailController!.text]
+  /// and [passwordController!.text].
+  void register() async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: widget.emailController!.text,
@@ -60,7 +68,7 @@ class _RegisterButtonState extends State<RegisterButton> {
       child: ElevatedButton(
         onPressed: () {
           if (widget.formKey.currentState!.validate()) {
-            _register();
+            register();
           }
         },
         style: ElevatedButton.styleFrom(
@@ -80,6 +88,7 @@ class _RegisterButtonState extends State<RegisterButton> {
   }
 }
 
+/// Used for making a stateful [RegisterFormState] widget.
 class RegisterForm extends StatefulWidget {
   final TextEditingController? emailController;
   final TextEditingController? passwordController;
@@ -92,10 +101,11 @@ class RegisterForm extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _RegisterFormState();
+  State<StatefulWidget> createState() => RegisterFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+/// Container for the three fields needed to register a new user.
+class RegisterFormState extends State<RegisterForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -131,6 +141,7 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 }
 
+/// If clicked, pushes user to the [LoginPage] page.
 class LoginButton extends StatelessWidget {
   const LoginButton({Key? key}) : super(key: key);
 
@@ -160,6 +171,7 @@ class LoginButton extends StatelessWidget {
   }
 }
 
+//TODO: move to style.dart
 class RegisterConsts {
   RegisterConsts._();
 
@@ -167,18 +179,21 @@ class RegisterConsts {
       EdgeInsets.symmetric(horizontal: 30, vertical: 50);
 }
 
+/// Used for making a stateful [RegisterPageState] widget.
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _RegisterPageState();
+  State<StatefulWidget> createState() => RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+/// Creates the register page, including layout and the controllers.
+class RegisterPageState extends State<RegisterPage> {
   TextEditingController? _emailController;
   TextEditingController? _passwordController;
   TextEditingController? _confirmPasswordController;
 
+  /// Initializes the three controllers for user input.
   @override
   void initState() {
     super.initState();
@@ -187,6 +202,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _confirmPasswordController = TextEditingController(text: '');
   }
 
+  /// Disposes of the three controllers for user input.
   @override
   void dispose() {
     _emailController!.dispose();

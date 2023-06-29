@@ -14,10 +14,10 @@ class FieldFactory extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() =>
-      labelPassword == null ? _EmailFieldState() : _PassFieldState();
+      labelPassword == null ? EmailFieldState() : _PassFieldState();
 }
 
-class _EmailFieldState extends State<FieldFactory> {
+class EmailFieldState extends State<FieldFactory> {
   @override
   Widget build(BuildContext context) {
     return Padding(
