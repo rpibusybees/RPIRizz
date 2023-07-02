@@ -1,3 +1,1 @@
-# rizz
-
-A new Flutter project.
+# Rizz

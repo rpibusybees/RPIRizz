@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "249502659120",
+    "project_id": "rizz-3e361",
+    "storage_bucket": "rizz-3e361.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249502659120:android:991c40a6b2279837d8b3f5",
+        "android_client_info": {
+          "package_name": "com.example.rizz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "249502659120-olrk7f2clh49p3d5qh5q0epepv5nlksj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxr5yGOv-zcUL-t4B9tzBZKaLpl3czZ9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "249502659120-olrk7f2clh49p3d5qh5q0epepv5nlksj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
