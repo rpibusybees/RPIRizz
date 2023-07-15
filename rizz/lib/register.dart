@@ -3,6 +3,7 @@ library register;
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rizz/consts.dart';
 
 import 'login_register_helpers.dart';
 import 'login.dart';
@@ -171,14 +172,6 @@ class LoginButton extends StatelessWidget {
   }
 }
 
-//TODO: move to style.dart
-class RegisterConsts {
-  RegisterConsts._();
-
-  static const EdgeInsets padding =
-      EdgeInsets.symmetric(horizontal: 30, vertical: 50);
-}
-
 /// Used for making a stateful [RegisterPageState] widget.
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -218,7 +211,7 @@ class RegisterPageState extends State<RegisterPage> {
             child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height,
-                padding: RegisterConsts.padding,
+                padding: Consts.registerPadding,
                 color: Theme.of(context).colorScheme.background,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

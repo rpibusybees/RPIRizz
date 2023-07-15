@@ -4,6 +4,7 @@ library login;
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'consts.dart';
 import 'login_register_helpers.dart';
 
 import 'register.dart';
@@ -152,13 +153,6 @@ class RegisterButton extends StatelessWidget {
   }
 }
 
-class LoginConsts {
-  LoginConsts._();
-
-  static const EdgeInsets padding =
-      EdgeInsets.symmetric(horizontal: 30, vertical: 100);
-}
-
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -207,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height,
-      padding: LoginConsts.padding,
+      padding: Consts.loginPadding,
       color: Theme.of(context).colorScheme.background,
       child: Column(
         //mainAxisAlignment: MainAxisAlignment.spaceAround,
