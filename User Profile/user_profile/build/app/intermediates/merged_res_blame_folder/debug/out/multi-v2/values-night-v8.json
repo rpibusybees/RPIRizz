@@ -4,7 +4,7 @@
             "outputFile": "com.example.user_profile.app-mergeDebugResources-9:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\willi\\StudioProjects\\user_profile\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\willi\\Documents\\YACS\\RPIRizz\\User Profile\\user_profile\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

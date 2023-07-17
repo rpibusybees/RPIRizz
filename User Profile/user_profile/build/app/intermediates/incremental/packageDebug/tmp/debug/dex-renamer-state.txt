@@ -1,4 +1,4 @@
-#Mon Jul 17 15:08:01 EDT 2023
-base.0=C\:\\Users\\willi\\StudioProjects\\user_profile\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+#Mon Jul 17 15:49:58 EDT 2023
+base.0=C\:\\Users\\willi\\Documents\\YACS\\RPIRizz\\User Profile\\user_profile\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
