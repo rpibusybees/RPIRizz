@@ -22,7 +22,8 @@ class UserProfilePage extends StatefulWidget {
 class _UserProfilePageState extends State<UserProfilePage> {
   String userName = "John Doe";
   String userEmail = "john.doe@example.com";
-  String userProfilePictureUrl = "https://randomuser.me/api/portraits/men/1.jpg";
+  String userProfilePictureUrl =
+      "https://randomuser.me/api/portraits/men/1.jpg";
   String aboutMe = "Hi, I'm John! I love coding with Flutter!";
 
   void updateAboutMe(String value) {
