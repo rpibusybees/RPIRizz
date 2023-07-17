@@ -32,6 +32,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
     });
   }
 
+  void editPictures() {
+    // Implement the logic for the "Edit Pictures" button here.
+    // For simplicity, we'll just print a message for demonstration purposes.
+    print('Edit Pictures button pressed.');
+  }
+
+  void editInterests() {
+    // Implement the logic for the "Edit Interests" button here.
+    // For simplicity, we'll just print a message for demonstration purposes.
+    print('Edit Interests button pressed.');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +83,19 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   updateAboutMe(value);
                 },
               ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                editPictures();
+              },
+              child: Text('Edit Pictures'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                editInterests();
+              },
+              child: Text('Edit Interests'),
             ),
           ],
         ),
