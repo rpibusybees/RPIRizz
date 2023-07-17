@@ -4,27 +4,16 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-<<<<<<< Updated upstream
-    <list default="true" id="44b7a66b-9631-445e-835c-e504f78ee356" name="Changes" comment="" />
-=======
-    <list default="true" id="48714099-b9e5-49a3-98a3-6b124b1e510e" name="Changes" comment="" />
->>>>>>> Stashed changes
+    <list default="true" id="82ed3757-9036-4548-a1eb-005d6a393b5f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-<<<<<<< Updated upstream
-  <component name="ProjectId" id="2SiFso0ZvxtcZUf0eWkEFNHMHzm" />
-=======
-  <component name="ProjectId" id="2SiHuMLTp4AOCkkPGJTx5zfstZe" />
->>>>>>> Stashed changes
+  <component name="ProjectId" id="2SiDxpihS9fW3xUCDsFjvCY5hDO" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -36,42 +25,25 @@
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
-<<<<<<< Updated upstream
-    "last_opened_file_path": "C:/Users/willi/StudioProjects/user_profile",
-    "settings.editor.selected.configurable": "flutter.settings",
-=======
->>>>>>> Stashed changes
+    "io.flutter.reload.alreadyRun": "true",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-<<<<<<< Updated upstream
-      <changelist id="44b7a66b-9631-445e-835c-e504f78ee356" name="Changes" comment="" />
-      <created>1689621703939</created>
+      <changelist id="82ed3757-9036-4548-a1eb-005d6a393b5f" name="Changes" comment="" />
+      <created>1689620761601</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1689621703939</updated>
-=======
-      <changelist id="48714099-b9e5-49a3-98a3-6b124b1e510e" name="Changes" comment="" />
-      <created>1689622702736</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1689622702736</updated>
->>>>>>> Stashed changes
+      <updated>1689620761601</updated>
     </task>
     <servers />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
 </project>

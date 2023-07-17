@@ -6,6 +6,12 @@
       <excludeFolder url="file://$MODULE_DIR$/rizz/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/rizz/build" />
       <excludeFolder url="file://$MODULE_DIR$/rizz/.pub" />
+<<<<<<< Updated upstream
+=======
+      <excludeFolder url="file://$MODULE_DIR$/User Profile/user_profile/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/User Profile/user_profile/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/User Profile/user_profile/build" />
+>>>>>>> Stashed changes
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
