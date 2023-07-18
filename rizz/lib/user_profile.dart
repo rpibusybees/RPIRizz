@@ -62,7 +62,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             SizedBox(height: 20),
             Text(
               userName,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             SizedBox(height: 10),
             Text(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rizz/user_profile.dart';
 import 'browsing.dart';
-
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -23,19 +23,19 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainAppBar(pageController: pageController, currentPageIndex: currentPageIndex,),
+      appBar: MainAppBar(
+        pageController: pageController,
+        currentPageIndex: currentPageIndex,
+      ),
       body: PageView(
         controller: pageController,
         onPageChanged: (int index) {
-            setState(() {
+          setState(() {
             currentPageIndex = index;
           });
         },
         children: [
-          // REPLACE WITH ACCOUNT PROFILE PAGE
-          Container(
-            child: Center(child: Text('Profile Page')),
-          ),
+          UserProfilePage(),
           // Page 1: Browsing
           BrowsingPage(),
           // REPLACE WITH MESSAGES WHEN IT EXISTS
@@ -52,11 +52,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final PageController pageController;
   final int currentPageIndex;
 
-  const MainAppBar({
-    Key? key, 
-    required this.pageController, 
-    required this.currentPageIndex
-  }) : super(key: key);
+  const MainAppBar(
+      {Key? key, required this.pageController, required this.currentPageIndex})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +66,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
             const Spacer(flex: 1),
             IconButton(
               icon: const Icon(Icons.person),
-              color: currentPageIndex == 0 ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.onPrimaryContainer,
+              color: currentPageIndex == 0
+                  ? Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.onPrimaryContainer,
               iconSize: MediaQuery.of(context).size.height / 20,
               tooltip: 'Profile',
               onPressed: () {
@@ -78,7 +78,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
             const Spacer(flex: 2),
             IconButton(
               icon: const Icon(Icons.manage_search),
-              color: currentPageIndex == 1 ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.onPrimaryContainer,
+              color: currentPageIndex == 1
+                  ? Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.onPrimaryContainer,
               iconSize: MediaQuery.of(context).size.height / 20,
               tooltip: 'Browse',
               onPressed: () {
@@ -88,7 +90,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
             const Spacer(flex: 2),
             IconButton(
               icon: const Icon(Icons.mark_chat_unread),
-              color: currentPageIndex == 2 ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.onPrimaryContainer,
+              color: currentPageIndex == 2
+                  ? Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.onPrimaryContainer,
               iconSize: MediaQuery.of(context).size.height / 20,
               tooltip: 'Messages',
               onPressed: () {
