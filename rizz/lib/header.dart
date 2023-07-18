@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'browsing.dart';
+import 'messages.dart';
 
 
 class MainPage extends StatefulWidget {
@@ -37,11 +38,8 @@ class _MainPageState extends State<MainPage> {
             child: Center(child: Text('Profile Page')),
           ),
           // Page 1: Browsing
-          BrowsingPage(),
-          // REPLACE WITH MESSAGES WHEN IT EXISTS
-          Container(
-            child: Center(child: Text('Messages Page')),
-          ),
+          const BrowsingPage(),
+          const MessagesPage(),
         ],
       ),
     );

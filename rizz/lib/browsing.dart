@@ -238,7 +238,7 @@ class InfoCol extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: Consts.browsePadding,
+      padding: Consts.lowPadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

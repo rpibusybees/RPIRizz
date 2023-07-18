@@ -27,6 +27,8 @@ flutter:
   assets:
     - assets/RizzLogoFlask.png
     - assets/FakePhotos/
+    - assets/barry_profile.jpg
+    - assets/barry_profile2.jpg
   fonts:
     - family: Poppins
       fonts:
