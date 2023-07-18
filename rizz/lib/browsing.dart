@@ -47,9 +47,6 @@ class _BrowsingPageState extends State<BrowsingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Browsing'),
-      ),
       body: const Center(
         child: Column(
           children: [
