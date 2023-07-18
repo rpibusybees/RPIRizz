@@ -10,6 +10,7 @@ environment:
   sdk: '>=3.0.5 <4.0.0'
 
 dependencies:
+  carousel_slider: ^4.2.1
   firebase_auth: ^4.6.3
   firebase_core: ^2.14.0
   flutter:
@@ -25,6 +26,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/RizzLogoFlask.png
+    - assets/FakePhotos/
   fonts:
     - family: Poppins
       fonts:

@@ -4,6 +4,7 @@ library main;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
+import 'header.dart';
 import 'login.dart';
 import 'style.dart';
 
@@ -34,7 +35,7 @@ class MainApp extends StatelessWidget {
         fontFamily: 'Poppins',
         textTheme: RizzTheme.rizzText,
       ),
-      home: const LoginPage(),
+      home: const MainPage(),
       debugShowCheckedModeBanner: false,
     );
   }
