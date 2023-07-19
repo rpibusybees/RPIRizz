@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'user.dart';
 
 void main() {
   runApp(UserProfileApp());
@@ -20,17 +21,13 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
-  String userName = "John Doe";
-  String userEmail = "john.doe@example.com";
-  String userProfilePictureUrl =
-      "https://randomuser.me/api/portraits/men/1.jpg";
-  String aboutMe = "Hi, I'm John! I love coding with Flutter!";
 
-  void updateAboutMe(String value) {
-    setState(() {
-      aboutMe = value;
-    });
-  }
+  String userName = FakeData.user3.name;
+  String userProfilePictureUrl =
+      FakeData.user3.profilephoto;
+  String aboutMe = FakeData.user3.aboutMe;
+  String pronoun = FakeData.user3.pronouns;
+
 
   void editPictures() {
     // Implement the logic for the "Edit Pictures" button here.
@@ -46,62 +43,51 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('User Profile',
-            style: Theme.of(context).textTheme.displayLarge),
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 70,
-              backgroundImage: NetworkImage(userProfilePictureUrl),
-            ),
-            SizedBox(height: 20),
-            Text(
-              userName,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            SizedBox(height: 10),
-            Text(
-              userEmail,
-              style: TextStyle(fontSize: 18, color: Colors.grey),
-            ),
-            SizedBox(height: 20),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: TextFormField(
-                initialValue: aboutMe,
-                maxLines: 3,
-                decoration: InputDecoration(
-                  labelText: 'About Me',
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (value) {
-                  updateAboutMe(value);
-                },
+    return Container(
+      padding: EdgeInsets.only(top: 20),
+      child: Scaffold(
+        
+        appBar: AppBar(
+          title: Text('User Profile',
+              style: Theme.of(context).textTheme.displayLarge),
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          centerTitle: true,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 70,
+                backgroundImage: NetworkImage(userProfilePictureUrl),
               ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                editPictures();
-              },
-              child: Text('Edit Pictures'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                editInterests();
-              },
-              child: Text('Edit Interests'),
-            ),
-          ],
+              SizedBox(height: 20),
+              Text(
+                userName,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              SizedBox(height: 5),
+              Text(
+                pronoun,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  editPictures();
+                },
+                child: Text('Edit Pictures'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  editInterests();
+                },
+                child: Text('Edit Interests'),
+              ),
+            ],
+          ),
         ),
       ),
     );
