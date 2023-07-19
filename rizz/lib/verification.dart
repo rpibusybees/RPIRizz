@@ -1,16 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rizz/test.dart';
 import 'login.dart';
 
+/// Used for making a stateful [ResendVerifyButton] widget.
 class ResendVerifyButton extends StatefulWidget {
   final User? user;
+
   const ResendVerifyButton({Key? key, required this.user}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => ResendVerifyButtonState();
 }
 
+/// Handles a resend verification email attempt. Actual logic for resending
+/// verification email is handled in [ResendVerifyButtonState.build]
 class ResendVerifyButtonState extends State<ResendVerifyButton> {
   @override
   Widget build(BuildContext context) {
@@ -35,6 +40,8 @@ class ResendVerifyButtonState extends State<ResendVerifyButton> {
   }
 }
 
+/// The verification page. This page is shown when the user is not verified.
+/// The user is redirected to this page when they login.
 class VerificationPage extends StatefulWidget {
   const VerificationPage({Key? key}) : super(key: key);
 
@@ -42,8 +49,12 @@ class VerificationPage extends StatefulWidget {
   State<StatefulWidget> createState() => _VerificationPageState();
 }
 
+/// Handles the verification page. Checks if the user is verified, and if not,
+/// shows a loading indicator. If the user is verified, check if the user data
+/// exists. If not, set initial data. Then navigate to the test page.
 class _VerificationPageState extends State<VerificationPage> {
   User? user;
+  final db = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -52,26 +63,45 @@ class _VerificationPageState extends State<VerificationPage> {
   }
 
   void getAccount() async {
-    // is user verified?
-    FirebaseAuth.instance.userChanges().listen((User? u) async {
-      setState(() {
-        user = u;
-      });
-      if (user == null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-        );
-      } else if (user != null && user!.emailVerified) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const TestPage()));
-      }
-    });
+    // Check if the user is verified.
+    FirebaseAuth.instance.userChanges().listen(
+      (User? u) async {
+        setState(() {
+          user = u;
+        });
+        if (user == null) {
+          // If the user is not logged in, navigate to the login page.
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          );
+        } else if (user != null && user!.emailVerified) {
+          // If the user is logged in and email is verified, check user data and navigate to the test page.
+          final userRef = db.collection('users').doc(user!.uid);
+          userRef.get().then(
+            (DocumentSnapshot doc) {
+              final userData = doc.data();
+              if (userData == null) {
+                // If user data does not exist, set initial data.
+                final initialData = {
+                  'email': user!.email!,
+                  'questionareDone': false,
+                };
+                userRef.set(initialData);
+              }
+            },
+          );
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const TestPage()));
+        }
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     if (user == null) {
+      // While checking the user's verification status, show a loading indicator.
       return Scaffold(
         body: Container(
           color: Theme.of(context).colorScheme.background,
@@ -83,41 +113,43 @@ class _VerificationPageState extends State<VerificationPage> {
     }
     return Scaffold(
       body: Container(
-          color: Theme.of(context).colorScheme.background,
-          child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Please check your email for a verification code.',
-                    style: Theme.of(context).textTheme.displayLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 50),
-                  Text(
-                    'When your email has been verified you may continue with the login process.',
-                    style: Theme.of(context).textTheme.displayMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 30),
-                  Text(
-                    'If you have not received a code after a few minutes click this button to resend the email.',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  ResendVerifyButton(user: user),
-                  // logout button
-                  ElevatedButton(
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                    },
-                    child: const Text('Logout'),
-                  ),
-                ],
-              ))),
+        color: Theme.of(context).colorScheme.background,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Please check your email for a verification code.',
+                style: Theme.of(context).textTheme.displayLarge,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 50),
+              Text(
+                'When your email has been verified, logout then login again to proceed.',
+                style: Theme.of(context).textTheme.displayMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 30),
+              Text(
+                'If you have not received a code after a few minutes, click this button to resend the email.',
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              ResendVerifyButton(user: user),
+              // Logout button
+              ElevatedButton(
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                },
+                child: const Text('Logout'),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
