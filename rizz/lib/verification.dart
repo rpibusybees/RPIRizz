@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rizz/test.dart';
 import 'login.dart';
+import 'name.dart';
 
 class ResendVerifyButton extends StatefulWidget {
   final User? user;
@@ -64,7 +64,7 @@ class _VerificationPageState extends State<VerificationPage> {
         );
       } else if (user != null && user!.emailVerified) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const TestPage()));
+            context, MaterialPageRoute(builder: (context) => const NamePage()));
       }
     });
   }
