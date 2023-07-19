@@ -85,7 +85,7 @@ class _VerificationPageState extends State<VerificationPage> {
                 // If user data does not exist, set initial data.
                 final initialData = {
                   'email': user!.email!,
-                  'questionareDone': false,
+                  'isSetUp': false,
                 };
                 userRef.set(initialData);
               }
