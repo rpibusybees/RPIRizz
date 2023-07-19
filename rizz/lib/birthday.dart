@@ -3,8 +3,8 @@
 
 library birthday;
 import 'package:flutter/material.dart';
+import 'package:rizz/nextbutton.dart';
 import 'consts.dart';
-import 'name.dart';
 import 'gender.dart';
 
 class BirthdayPage extends StatefulWidget{
@@ -125,33 +125,19 @@ class BirthdayPageState extends State<BirthdayPage>{
                 ]
               )
             ),
-
             Container(
-              margin: const EdgeInsets.only(top: 250, bottom: 100),
-              child: ElevatedButton(
-                onPressed: () {
-                  // add the user's name to the database
-                  // move to the next page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const GenderPage()),
-                  );
-                  String year = yearController.text;
-                  String month = monthController.text;
-                  String day = dayController.text;
-                  addBirthdayToDatabase(day, month, year);
-                },
-                // ripped from login page
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  elevation: 10,
-                ),
-                child: const Text('Confirm'),
-              ),
+              margin:  const EdgeInsets.only(top: 250, bottom: 100),
+              child: NextButton(onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const GenderPage()),
+                );
+                String year = yearController.text;
+                String month = monthController.text;
+                String day = dayController.text;
+                addBirthdayToDatabase(day, month, year);
+              })
             ),
           ]
         ),

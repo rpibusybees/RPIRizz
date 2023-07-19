@@ -4,7 +4,9 @@
 /// into the database.
 library gender;
 import 'package:flutter/material.dart';
+import 'package:rizz/nextbutton.dart';
 import 'consts.dart';
+import 'login.dart';
 
 /// Used for making the Gender Page.
 class GenderPage extends StatefulWidget{
@@ -50,26 +52,14 @@ class GenderPageState extends State<GenderPage>{
               
             )
           ),
-          ElevatedButton(
-                onPressed: () {
-                  // add the user's name to the database
-                  // move to the next page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const GenderPage()),
-                  );
-                },
-                // ripped from login page
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  elevation: 10,
-                ),
-                child: const Text('Confirm'),
-              ),
+          NextButton(
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+            }
+          ),
         ],
       ),
     );

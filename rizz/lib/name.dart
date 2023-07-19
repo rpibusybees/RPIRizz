@@ -5,6 +5,8 @@ library name;
 import 'package:flutter/material.dart';
 import 'birthday.dart';
 import 'consts.dart';
+import 'nextbutton.dart';
+
 /// Needed for the [NamePageState] class.
 class NamePage extends StatefulWidget {
   const NamePage({Key? key}) : super(key: key);
@@ -85,27 +87,15 @@ class NamePageState extends State<NamePage> {
           
             Container(
               margin: const EdgeInsets.only(top: 250, bottom: 100),
-              child: ElevatedButton(
-                onPressed: () {
-                  // add the user's name to the database
-                  // move to the next page
+              child: NextButton(
+                onPressed: (){
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const BirthdayPage()),
+                    MaterialPageRoute(builder: (context) => const BirthdayPage()),
                   );
                   String name = controller.text;
                   addNameToDatabase(name);
-                },
-                // ripped from login page
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  elevation: 10,
-                ),
-                child: const Text('Confirm'),
+                }
               ),
             ),
           ]
