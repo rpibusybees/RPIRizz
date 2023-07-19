@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'consts.dart';
 
+/// Fake data class GET RID OF LATER JUST FOR TESTING
 class UserData {
   final String name;
   final num age;
@@ -23,6 +24,7 @@ class UserData {
   );
 }
 
+/// Fake data class GET RID OF LATER JUST FOR TESTING
 class FakeData {
   FakeData._();
   static UserData user1 =
@@ -43,6 +45,10 @@ class FakeData {
   static List<UserData> users = [user1, user2];
 }
 
+/// Handles the name and extra button at the bottom of the screen
+/// for the [PhotoSwipe] widget.
+/// These are the name and info button. The info button expands
+/// the [InfoCol] widget onclick.
 class NameExtraButton extends StatelessWidget {
   final CarouselController? carController;
   final UserData? user;
@@ -96,19 +102,20 @@ class NameExtraButton extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                    onPressed: () {
-                      expandInfo!();
-                    },
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        const CircleBorder(),
-                      ),
+                  onPressed: () {
+                    expandInfo!();
+                  },
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      const CircleBorder(),
                     ),
-                    child: const Icon(
-                      Icons.info_outline_rounded,
-                      size: 60,
-                      color: Color.fromRGBO(49, 49, 49, 1),
-                    )),
+                  ),
+                  child: const Icon(
+                    Icons.info_outline_rounded,
+                    size: 60,
+                    color: Color.fromRGBO(49, 49, 49, 1),
+                  ),
+                ),
               ],
             ),
           ),
@@ -118,6 +125,8 @@ class NameExtraButton extends StatelessWidget {
   }
 }
 
+/// Used for making a stateful [PhotoSwipe] widget.
+/// This widget is used for the main browsing page.
 class PhotoSwipe extends StatefulWidget {
   final UserData? user;
   final Function()? expandInfo;
@@ -128,6 +137,8 @@ class PhotoSwipe extends StatefulWidget {
   State<StatefulWidget> createState() => _PhotoSwipeState();
 }
 
+/// Builds the photo swipe (UI related). The carousel is used to swipe
+/// through the photos.
 class _PhotoSwipeState extends State<PhotoSwipe> {
   CarouselController? _controller;
   @override
@@ -168,6 +179,11 @@ class _PhotoSwipeState extends State<PhotoSwipe> {
   }
 }
 
+/// Builds the like and dislike buttons (UI related).
+/// These are the buttons at the bottom of the screen.
+/// They determine if the user likes or dislikes the current user.
+/// The [onLike] and [onDislike] functions are passed in from the
+/// [BrowsingPage] widget.
 class LikeDislikeButtons extends StatelessWidget {
   final int? currUser;
   final Function()? onLike;
@@ -231,6 +247,10 @@ class LikeDislikeButtons extends StatelessWidget {
   }
 }
 
+/// Builds the info column (UI related).
+/// This is the column that expands when the info button is pressed.
+/// It contains the user's pronouns, about me, and lifestyle and interests.
+/// The [user] is passed in from the [BrowsingPage] widget.
 class InfoCol extends StatelessWidget {
   final UserData? user;
   const InfoCol({Key? key, required this.user}) : super(key: key);
@@ -290,6 +310,8 @@ class InfoCol extends StatelessWidget {
   }
 }
 
+/// Used for making a stateful [BrowsingPage] widget.
+/// This widget is used for the main browsing page.
 class BrowsingPage extends StatefulWidget {
   const BrowsingPage({Key? key}) : super(key: key);
 
@@ -297,6 +319,11 @@ class BrowsingPage extends StatefulWidget {
   State<StatefulWidget> createState() => _BrowsingPageState();
 }
 
+/// Builds the browsing page (UI related). The [users] are used to
+/// display the users. The [currentUser] is used to keep track of
+/// the current user. The [moreInfo] is used to keep track of if
+/// the info column is expanded or not. The [_scrollController] is
+/// used to scroll the info column up and down.
 class _BrowsingPageState extends State<BrowsingPage> {
   List<UserData>? users;
   int? currentUser;
