@@ -26,10 +26,11 @@ class FakeData {
   FakeData._();
  
   static UserData user3 =
-      UserData('John Doe', 19, 'Male', 'he/him', 'Hello world', 
+      UserData('John Doe', 19, 'Male', 'he/him', 'Hello world this is my about me section!', 
     "https://randomuser.me/api/portraits/men/1.jpg",[]);
 
 }
+
 
 
 
