@@ -6,8 +6,9 @@ library gender;
 import 'package:flutter/material.dart';
 import 'package:rizz/nextbutton.dart';
 import 'consts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import 'login.dart';
+import 'name.dart';
 
 /// Used for making the Gender Page.
 class GenderPage extends StatefulWidget{
@@ -81,7 +82,7 @@ class GenderPageState extends State<GenderPage>{
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                    MaterialPageRoute(builder: (context) => const NamePage()),
                   );
 
                 }

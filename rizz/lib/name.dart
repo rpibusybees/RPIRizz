@@ -36,11 +36,10 @@ class NamePageState extends State<NamePage> {
   }
 
   // adds name to database
-  void addNameToDatabase(String name) {
-    User? user;
+  void addNameToDatabase(String name) async {
+    User? user = FirebaseAuth.instance.currentUser;
     final db = FirebaseFirestore.instance;
-    final data = {"name": name};
-    db.collection('users').doc(user!.uid).set(data, SetOptions(merge: true));
+    await db.collection('users').doc(user!.uid).update({"name": name});
   }
 
   /*
