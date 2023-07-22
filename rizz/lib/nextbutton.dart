@@ -5,6 +5,10 @@ library nextbutton.dart;
 
 import 'package:flutter/material.dart';
 
+/// Contains the button. Make sure to define
+/// the onPressed function. 
+/// Use Consts.bottomButtonPadding
+/// if you want the same margin space
 class NextButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String buttonText;

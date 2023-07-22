@@ -36,7 +36,7 @@ class MainApp extends StatelessWidget {
         fontFamily: 'Poppins',
         textTheme: RizzTheme.rizzText,
       ),
-      home: const NamePage(),
+      home: const LoginPage(),
       debugShowCheckedModeBanner: false,
     );
   }

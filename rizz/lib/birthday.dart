@@ -126,7 +126,7 @@ class BirthdayPageState extends State<BirthdayPage>{
               )
             ),
             Container(
-              margin:  const EdgeInsets.only(top: 250, bottom: 100),
+              margin: Consts.bottomButtonPadding,
               child: NextButton(onPressed: (){
                 Navigator.push(
                   context,

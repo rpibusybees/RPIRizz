@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'birthday.dart';
 import 'consts.dart';
 import 'nextbutton.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 /// Needed for the [NamePageState] class.
 class NamePage extends StatefulWidget {
@@ -33,9 +36,11 @@ class NamePageState extends State<NamePage> {
   }
 
   // adds name to database
-  // TODO: make this add userid, name to db
   void addNameToDatabase(String name) {
-    print(name);
+    User? user;
+    final db = FirebaseFirestore.instance;
+    final data = {"name": name};
+    db.collection('users').doc(user!.uid).set(data, SetOptions(merge: true));
   }
 
   /*
@@ -86,7 +91,7 @@ class NamePageState extends State<NamePage> {
             ),
           
             Container(
-              margin: const EdgeInsets.only(top: 250, bottom: 100),
+              margin: Consts.bottomButtonPadding,
               child: NextButton(
                 onPressed: (){
                   Navigator.push(

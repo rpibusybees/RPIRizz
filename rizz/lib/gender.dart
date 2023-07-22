@@ -6,6 +6,8 @@ library gender;
 import 'package:flutter/material.dart';
 import 'package:rizz/nextbutton.dart';
 import 'consts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'login.dart';
 
 /// Used for making the Gender Page.
@@ -25,42 +27,74 @@ class GenderPageState extends State<GenderPage>{
     super.initState();
   }
 
-  // a list of all of the checkboxes
-  final checkboxList = [
-    genderCheckbox(gender: "Man"),
-    genderCheckbox(gender: "Woman"),
-    genderCheckbox(gender: "Nonbinary"),
 
+  // a list of all of the checkboxes
+  final List<GenderCheckbox> checkboxList = [
+    GenderCheckbox(gender: "Man"),
+    GenderCheckbox(gender: "Woman"),
+    GenderCheckbox(gender: "Nonbinary"),
   ];
+
+  // function to upload data to database
+  void uploadGenderToDatabase(checkboxList){
+
+  }
+
 
   @override
   Widget build(BuildContext context){
-    return Container(
-      color: Theme.of(context).colorScheme.background,
-      child: Column(
-        children: [
-          Container(
-            padding: Consts.titleQuestionPadding,
-            child: Text(
-              'What do you identify as?',
-              style: Theme.of(context).textTheme.displayLarge,
-              textAlign: TextAlign.center,
+    return Scaffold(
+      body: Container(
+        color: Theme.of(context).colorScheme.background,
+        child: Column(
+          children: [
+            Container(
+              padding: Consts.titleQuestionPadding,
+              child: Text(
+                'What do you identify as?',
+                style: Theme.of(context).textTheme.displayLarge,
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-          SingleChildScrollView(
-            child: Column(
-              
-            )
-          ),
-          NextButton(
-            onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginPage()),
-              );
-            }
-          ),
-        ],
+            Expanded(
+              child: ListView.builder(
+                itemCount: checkboxList.length,
+                itemBuilder: (BuildContext context, int index){
+                  final checkbox = checkboxList[index];
+                  return CheckboxListTile(
+                    value: checkbox.value,
+                    title: Text(checkbox.gender), 
+                    onChanged: (value){
+                      setState(() {
+                        checkbox.value = value ?? false;
+                      });
+                      print("changing value to $value");
+                    }
+                  );
+                },
+              ),
+            ),
+            
+            Container(
+              margin: Consts.bottomButtonPadding,
+              child: NextButton(
+                onPressed: (){
+                  //TODO: remove this
+                  Future<void> _signOut() async {
+                    await FirebaseAuth.instance.signOut();
+                  }
+                  _signOut();
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                  );
+
+                }
+              ),
+            ),
+          ],
+        ),
       ),
     );
 
@@ -68,10 +102,17 @@ class GenderPageState extends State<GenderPage>{
   }
 }
 
-
-class genderCheckbox {
-  String gender;
+/// Contains the data structure for a gender checkbox. 
+/// Used in [GenderPageState].
+class GenderCheckbox {
+  final String gender;
   bool value;
 
-  genderCheckbox({required this.gender, this.value = false});
+  GenderCheckbox({
+    required this.gender, 
+    this.value = false
+  });
+
+
+  
 }
