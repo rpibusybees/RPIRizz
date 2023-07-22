@@ -3,11 +3,9 @@ library main;
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:rizz/verification.dart';
 import 'firebase_options.dart';
 import 'login.dart';
 import 'style.dart';
-import 'name.dart';
 
 /// [main] intializes Firebase, then calls
 /// ```dart

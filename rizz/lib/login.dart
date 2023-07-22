@@ -1,11 +1,15 @@
 /// The first page the user sees (and used for logging in).
 library login;
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'consts.dart';
 import 'login_register_helpers.dart';
+
 import 'register.dart';
 import 'verification.dart';
+
 /// Used for making a stateful [SubmitButtonState] widget.
 class SubmitButton extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -17,9 +21,11 @@ class SubmitButton extends StatefulWidget {
       required this.emailController,
       required this.passwordController})
       : super(key: key);
+
   @override
   State<StatefulWidget> createState() => SubmitButtonState();
 }
+
 /// Handles a login attempt. Actual logic for logging in
 /// is handled in [EmailFieldState.build]
 class SubmitButtonState extends State<SubmitButton> {
@@ -51,6 +57,7 @@ class SubmitButtonState extends State<SubmitButton> {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -77,6 +84,7 @@ class SubmitButtonState extends State<SubmitButton> {
     );
   }
 }
+
 /// Used for making a stateful [LoginFormState] widget.
 class LoginForm extends StatefulWidget {
   final TextEditingController? emailController;
@@ -86,9 +94,11 @@ class LoginForm extends StatefulWidget {
       required this.emailController,
       required this.passwordController})
       : super(key: key);
+
   @override
   State<StatefulWidget> createState() => LoginFormState();
 }
+
 /// Builds the login form (UI related). See [SubmitButtonState] and
 /// [EmailFieldState] for how the logic is handled.
 class LoginFormState extends State<LoginForm> {
@@ -121,9 +131,11 @@ class LoginFormState extends State<LoginForm> {
     );
   }
 }
+
 // If clicked, sends user to the [RegisterPage].
 class RegisterButton extends StatelessWidget {
   const RegisterButton({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return TextButton(
@@ -140,15 +152,19 @@ class RegisterButton extends StatelessWidget {
     );
   }
 }
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _LoginPageState();
 }
+
 class _LoginPageState extends State<LoginPage> {
   TextEditingController? _emailController;
   TextEditingController? _passwordController;
   User? user;
+
   @override
   void initState() {
     initUser();
@@ -156,6 +172,7 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController = TextEditingController(text: '');
     super.initState();
   }
+
   void initUser() async {
     FirebaseAuth.instance.authStateChanges().listen((User? u) {
       setState(() {
@@ -169,16 +186,18 @@ class _LoginPageState extends State<LoginPage> {
       }
     });
   }
+
   @override
   void dispose() {
     _emailController!.dispose();
     _passwordController!.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
@@ -203,8 +222,8 @@ class _LoginPageState extends State<LoginPage> {
               const RegisterButton(),
             ],
           ),
-          ),
+        ),
       ),
-      );
+    );
   }
 }

@@ -6,7 +6,6 @@ library gender;
 import 'package:flutter/material.dart';
 import 'package:rizz/nextbutton.dart';
 import 'consts.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'login.dart';
 
@@ -79,11 +78,6 @@ class GenderPageState extends State<GenderPage>{
               margin: Consts.bottomButtonPadding,
               child: NextButton(
                 onPressed: (){
-                  //TODO: remove this
-                  Future<void> _signOut() async {
-                    await FirebaseAuth.instance.signOut();
-                  }
-                  _signOut();
 
                   Navigator.push(
                     context,

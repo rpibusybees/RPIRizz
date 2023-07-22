@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rizz/test.dart';
 import 'login.dart';
-import 'name.dart';
 
 /// Used for making a stateful [ResendVerifyButton] widget.
 class ResendVerifyButton extends StatefulWidget {
@@ -63,21 +63,39 @@ class _VerificationPageState extends State<VerificationPage> {
   }
 
   void getAccount() async {
-    // is user verified?
-    FirebaseAuth.instance.userChanges().listen((User? u) async {
-      setState(() {
-        user = u;
-      });
-      if (user == null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-        );
-      } else if (user != null && user!.emailVerified) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const NamePage()));
-      }
-    });
+    // Check if the user is verified.
+    FirebaseAuth.instance.userChanges().listen(
+      (User? u) async {
+        setState(() {
+          user = u;
+        });
+        if (user == null) {
+          // If the user is not logged in, navigate to the login page.
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          );
+        } else if (user != null && user!.emailVerified) {
+          // If the user is logged in and email is verified, check user data and navigate to the test page.
+          final userRef = db.collection('users').doc(user!.uid);
+          userRef.get().then(
+            (DocumentSnapshot doc) {
+              final userData = doc.data();
+              if (userData == null) {
+                // If user data does not exist, set initial data.
+                final initialData = {
+                  'email': user!.email!,
+                  'isSetUp': false,
+                };
+                userRef.set(initialData);
+              }
+            },
+          );
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const TestPage()));
+        }
+      },
+    );
   }
 
   @override
