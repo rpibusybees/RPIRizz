@@ -1,3 +1,6 @@
+/// This page is used to browse through other users.
+library browsing;
+
 import 'dart:core';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
