@@ -3,12 +3,13 @@
 /// This value(s) will be uploaded 
 /// into the database.
 library gender;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rizz/nextbutton.dart';
 import 'consts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'name.dart';
+import 'genderlifestyleinfo.dart';
+import 'lifestyle.dart';
 
 /// Used for making the Gender Page.
 class GenderPage extends StatefulWidget{
@@ -27,17 +28,22 @@ class GenderPageState extends State<GenderPage>{
     super.initState();
   }
 
-
-  // a list of all of the checkboxes
-  final List<GenderCheckbox> checkboxList = [
-    GenderCheckbox(gender: "Man"),
-    GenderCheckbox(gender: "Woman"),
-    GenderCheckbox(gender: "Nonbinary"),
-  ];
+  List<GenderCheckbox> checkboxList = Gender.getGenders();
+  List<String> getGender(){
+    List<String> genders = [];
+    for(int i = 0; i < checkboxList.length; i++){
+      if(checkboxList[i].value){
+         genders.add(checkboxList[i].gender);
+      }
+    }
+    return genders;
+  }
 
   // function to upload data to database
-  void uploadGenderToDatabase(checkboxList){
-
+  void uploadGenderToDatabase() async{
+    User? user = FirebaseAuth.instance.currentUser;
+    final db = FirebaseFirestore.instance;
+    await db.collection('users').doc(user!.uid).update({"gender": getGender()});
   }
 
 
@@ -57,6 +63,7 @@ class GenderPageState extends State<GenderPage>{
               ),
             ),
             Expanded(
+              flex: 1,
               child: ListView.builder(
                 itemCount: checkboxList.length,
                 itemBuilder: (BuildContext context, int index){
@@ -79,10 +86,10 @@ class GenderPageState extends State<GenderPage>{
               margin: Consts.bottomButtonPadding,
               child: NextButton(
                 onPressed: (){
-
+                  uploadGenderToDatabase();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const NamePage()),
+                    MaterialPageRoute(builder: (context) => const LifestylePage()),
                   );
 
                 }
@@ -91,23 +98,6 @@ class GenderPageState extends State<GenderPage>{
           ],
         ),
       ),
-    );
-
-    
+    );    
   }
-}
-
-/// Contains the data structure for a gender checkbox. 
-/// Used in [GenderPageState].
-class GenderCheckbox {
-  final String gender;
-  bool value;
-
-  GenderCheckbox({
-    required this.gender, 
-    this.value = false
-  });
-
-
-  
 }

@@ -4,8 +4,12 @@
 library birthday;
 import 'package:flutter/material.dart';
 import 'package:rizz/nextbutton.dart';
+import 'package:rizz/spacingbox.dart';
 import 'consts.dart';
 import 'gender.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class BirthdayPage extends StatefulWidget{
   const BirthdayPage({Key? key}) : super(key: key);
@@ -32,11 +36,12 @@ class BirthdayPageState extends State<BirthdayPage>{
     super.dispose();
   }
 
-  // adds name to database
-  // TODO: make this add userid, name to db
-  void addBirthdayToDatabase(String birthDay, String birthMonth, String birthYear) {
+  // adds birthday to database
+  void addBirthdayToDatabase(DateTime birthday) async {
     //parse through birthday to get day month year
-    print(birthDay + " " + birthMonth + " " + birthYear);
+    User? user = FirebaseAuth.instance.currentUser;
+    final db = FirebaseFirestore.instance;
+    await db.collection('users').doc(user!.uid).update({"birthday": birthday});
   }
 
   @override
@@ -50,9 +55,7 @@ class BirthdayPageState extends State<BirthdayPage>{
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Expanded( 
-              child: SizedBox()
-            ),
+            const SpacingBox(),
             
             Container(
               padding: Consts.questionPadding,
@@ -125,18 +128,23 @@ class BirthdayPageState extends State<BirthdayPage>{
                 ]
               )
             ),
+            const SpacingBox(),
             Container(
               margin: Consts.bottomButtonPadding,
               child: NextButton(onPressed: (){
+                // TODO: See if birthday is valid
+                String year = yearController.text;
+                String month = monthController.text;
+                String day = dayController.text;
+                String yearmonthday = year + month + day;
+                DateTime birthday = DateTime.parse(yearmonthday);
+                addBirthdayToDatabase(birthday);
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const GenderPage()),
                 );
-                String year = yearController.text;
-                String month = monthController.text;
-                String day = dayController.text;
-                addBirthdayToDatabase(day, month, year);
               })
             ),
           ]

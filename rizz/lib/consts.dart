@@ -18,10 +18,11 @@ class Consts {
   // padding used to space the bottom button out from
   // the other components
   static const EdgeInsets bottomButtonPadding =
-    EdgeInsets.only(top: 250, bottom: 100);
+    EdgeInsets.only(top: 50, bottom: 100);
 
   // padding used to space the questions in the 
   // gender and lifestyle pages
   static const EdgeInsets titleQuestionPadding =
     EdgeInsets.only(top: 50);
+
 }

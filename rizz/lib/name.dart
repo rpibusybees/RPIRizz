@@ -8,6 +8,7 @@ import 'consts.dart';
 import 'nextbutton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'spacingbox.dart';
 
 
 /// Needed for the [NamePageState] class.
@@ -60,10 +61,7 @@ class NamePageState extends State<NamePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Expanded( 
-              child: SizedBox()
-            ),
-            
+            const SpacingBox(),
             Container(
               padding: Consts.questionPadding,
               child: Text(
@@ -88,17 +86,19 @@ class NamePageState extends State<NamePage> {
                 ),
               ),
             ),
-          
+            const SpacingBox(),
             Container(
               margin: Consts.bottomButtonPadding,
               child: NextButton(
                 onPressed: (){
+                  // TODO: see if name is valid
+                  String name = controller.text;
+                  addNameToDatabase(name);
+                  
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const BirthdayPage()),
                   );
-                  String name = controller.text;
-                  addNameToDatabase(name);
                 }
               ),
             ),
