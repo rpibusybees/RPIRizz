@@ -133,8 +133,8 @@ class LoginFormState extends State<LoginForm> {
 }
 
 // If clicked, sends user to the [RegisterPage].
-class RegisterButton extends StatelessWidget {
-  const RegisterButton({Key? key}) : super(key: key);
+class RegisterButtonLink extends StatelessWidget {
+  const RegisterButtonLink({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                 emailController: _emailController,
                 passwordController: _passwordController,
               ),
-              const RegisterButton(),
+              const RegisterButtonLink(),
             ],
           ),
         ),
