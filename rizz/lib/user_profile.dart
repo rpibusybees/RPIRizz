@@ -30,18 +30,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
   String pronoun = FakeData.user3.pronouns;
 
 
-  void editPictures() {
-    // Implement the logic for the "Edit Pictures" button here.
-    // For simplicity, we'll just print a message for demonstration purposes.
-    print('Edit Pictures button pressed.');
-  }
-
-  void editInterests() {
-    // Implement the logic for the "Edit Interests" button here.
-    // For simplicity, we'll just print a message for demonstration purposes.
-    print('Edit Interests button pressed.');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -63,6 +51,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               CircleAvatar(
                 radius: 70,
                 backgroundImage: NetworkImage(userProfilePictureUrl),
+                
               ),
               SizedBox(height: 20),
               Text(
@@ -79,16 +68,24 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 aboutMe,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 100,
-                  height: 100,
+                  width: 170,
+                  height: 50,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color:Color.fromRGBO(188, 83, 100, 1), // Customize the button color here
+                    shape: BoxShape.rectangle,
+                    color: Color.fromRGBO(245, 220, 215, 1), // Customize the button color here
+                    boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 4,
+                      blurRadius: 10,
+                      offset: Offset(0, 3),
+                    )
+                  ]
                   ),
                   child: ElevatedButton(
                     onPressed: () {
@@ -99,84 +96,54 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           Colors.transparent, // Make the button transparent
                       shadowColor: Colors.transparent, // Hide the button shadow
                     ),
-                    child: Text('Edit About Me',
+                    child: Text('Edit Information',
                         style: Theme.of(context).textTheme.titleSmall,
               ), // Change the button text to 'About Me'
                   ),
+                  
                 ),
-                SizedBox(width: 20), // Add spacing between buttons
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromRGBO(227, 183, 160, 1), // Customize the button color here
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      editPictures();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary:
-                          Colors.transparent, // Make the button transparent
-                      shadowColor: Colors.transparent, // Hide the button shadow
-                    ),
-                    child: Text('Edit Pictures',
-                        style: Theme.of(context).textTheme.titleSmall,
-              ), // Change the button text
-                  ),
-                ),
-            
+      
               ],
             ),
-            Row(
+           SizedBox(height: 80),
+           Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-            SizedBox(height: 50),
-            Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color:  Color.fromRGBO(227, 183, 160, 1), // Customize the button color here
-              ),
-              child: ElevatedButton(
-                onPressed: () {
-                  editInterests();
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.transparent, // Make the button transparent
-                  shadowColor: Colors.transparent, // Hide the button shadow
-                ),
-                child: Text('Edit Interests',
-                    style: Theme.of(context).textTheme.titleSmall,
-              ), // Change the button text
-              ),
-            ),
-             SizedBox(width: 20), // Add spacing between buttons
                 Container(
-                  width: 100,
-                  height: 100,
+                  width: 200,
+                  height: 50,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color:Color.fromRGBO(188, 83, 100, 1), // Customize the button color here
+                    shape: BoxShape.rectangle,
+                    color: Color.fromRGBO(188, 83, 100, 1), // Customize the button color here
+                    boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 4,
+                      blurRadius: 10,
+                      offset: Offset(0, 3),
+                    )
+                  ]
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      editPictures();
+                      // You can leave this empty since you don't want any function.
                     },
                     style: ElevatedButton.styleFrom(
                       primary:
                           Colors.transparent, // Make the button transparent
+                     
                       shadowColor: Colors.transparent, // Hide the button shadow
                     ),
-                    child: Text('Edit Pronouns',
-                        style: Theme.of(context).textTheme.titleSmall,
-              ), // Change the button text
+                    child: Text('Log Out',
+                        style: Theme.of(context).textTheme.labelMedium
+              ), // Change the button text to 'About Me'
                   ),
+                  
                 ),
+      
               ],
             ),
+
             ],
           ),
         ),
