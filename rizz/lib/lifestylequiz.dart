@@ -1,7 +1,7 @@
 /// This page handles the lifestyles that
-/// the user has. We create a lifestyle button which
+/// the user wants in others. We create a lifestyle button which
 /// has a lifestyle info object in it
-library lifestyle.dart;
+library lifestylequiz.dart;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rizz/seeking.dart';
@@ -9,17 +9,18 @@ import 'consts.dart';
 import 'genderlifestyleinfo.dart';
 import 'nextbutton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'aboutme.dart';
 
 /// Used to create a 
-/// [LifestylePageState]
-class LifestylePage extends StatefulWidget{
-  const LifestylePage({Key? key}) : super(key: key);
+/// [LifestylequizPageState]
+class LifestyleQuizPage extends StatefulWidget{
+  const LifestyleQuizPage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => LifestylePageState();
+  State<StatefulWidget> createState() => LifestyleQuizPageState();
 }
 
-class LifestylePageState extends State<LifestylePage>{
+class LifestyleQuizPageState extends State<LifestyleQuizPage>{
 
   @override
   void initState() {
@@ -51,10 +52,10 @@ class LifestylePageState extends State<LifestylePage>{
   }
 
   // Upload lifestlyes the user feels about THEMSELF
-  void uploadLifestyleToDatabase() async {
+  void uploadLifestyleQuizToDatabase() async {
     User? user = FirebaseAuth.instance.currentUser;
     final db = FirebaseFirestore.instance;
-    await db.collection('users').doc(user!.uid).update({"myLikes": getLikes(), "myDislikes": getDislikes()});
+    await db.collection('users').doc(user!.uid).update({"theirLikes": getLikes(), "theirDislikes": getDislikes()});
   }
 
   @override
@@ -67,7 +68,7 @@ class LifestylePageState extends State<LifestylePage>{
             Container(
               padding: Consts.titleQuestionPadding,
               child: Text(
-                'Lifestyles and Interests',
+                'Lifestyle Quiz',
                 style: Theme.of(context).textTheme.displayLarge,
                 textAlign: TextAlign.center,
               ),
@@ -87,10 +88,10 @@ class LifestylePageState extends State<LifestylePage>{
               margin: Consts.bottomButtonPadding,
               child: NextButton(
                 onPressed: (){
-                  uploadLifestyleToDatabase();
+                  uploadLifestyleQuizToDatabase();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SeekingPage()),
+                    MaterialPageRoute(builder: (context) => const AboutMePage()),
                   );
 
                 }
