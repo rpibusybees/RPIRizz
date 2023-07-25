@@ -35,7 +35,7 @@ class MainApp extends StatelessWidget {
         fontFamily: 'Poppins',
         textTheme: RizzTheme.rizzText,
       ),
-      home: const MainPage(),
+      home: const HeaderPage(),
       debugShowCheckedModeBanner: false,
     );
   }

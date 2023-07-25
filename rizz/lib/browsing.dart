@@ -61,8 +61,8 @@ class NameExtraButton extends StatelessWidget {
       {Key? key,
       required this.carController,
       required this.user,
-      required this.expandInfo})
-      : super(key: key);
+      required this.expandInfo
+  })  : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -133,8 +133,11 @@ class NameExtraButton extends StatelessWidget {
 class PhotoSwipe extends StatefulWidget {
   final UserData? user;
   final Function()? expandInfo;
-  const PhotoSwipe({Key? key, required this.user, required this.expandInfo})
-      : super(key: key);
+  const PhotoSwipe(
+    {Key? key, 
+    required this.user, 
+    required this.expandInfo
+  })  : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PhotoSwipeState();
@@ -256,7 +259,11 @@ class LikeDislikeButtons extends StatelessWidget {
 /// The [user] is passed in from the [BrowsingPage] widget.
 class InfoCol extends StatelessWidget {
   final UserData? user;
-  const InfoCol({Key? key, required this.user}) : super(key: key);
+  
+  const InfoCol(
+    {Key? key, 
+    required this.user
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

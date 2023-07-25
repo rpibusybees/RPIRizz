@@ -111,6 +111,7 @@ class Match {
   });
 }
 
+//HARDCODED FOR TESTING 
 final List<Match> matches = [
   Match(
     profilePicture: 'assets/barry_profile.jpg',

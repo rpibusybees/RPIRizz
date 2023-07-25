@@ -3,15 +3,15 @@ import 'browsing.dart';
 import 'messages.dart';
 
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class HeaderPage extends StatefulWidget {
+  const HeaderPage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _MainPageState createState() => _MainPageState();
+  _HeaderPageState createState() => _HeaderPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _HeaderPageState extends State<HeaderPage> {
   final PageController pageController = PageController(initialPage: 1);
   int currentPageIndex = 1;
 
