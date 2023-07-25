@@ -52,12 +52,12 @@ class FakeData {
 /// for the [PhotoSwipe] widget.
 /// These are the name and info button. The info button expands
 /// the [InfoCol] widget onclick.
-class NameExtraButton extends StatelessWidget {
+class InfoOverlay extends StatelessWidget {
   final CarouselController? carController;
   final UserData? user;
   final Function()? expandInfo;
 
-  const NameExtraButton(
+  const InfoOverlay(
       {Key? key,
       required this.carController,
       required this.user,
@@ -175,7 +175,7 @@ class _PhotoSwipeState extends State<PhotoSwipe> {
             initialPage: 0,
           ),
         ),
-        NameExtraButton(
+        InfoOverlay(
           carController: _controller,
           user: widget.user,
           expandInfo: widget.expandInfo,

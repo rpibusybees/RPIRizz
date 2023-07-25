@@ -25,7 +25,7 @@ class MessagesPage extends StatelessWidget {
             itemCount: matches.length,
             itemBuilder: (BuildContext context, int index) {
               final match = matches[index];
-              return CustomListTile(
+              return MatchListTile(
                 profilePicture: match.profilePicture,
                 name: match.name,
                 newestMsg: match.newestMsg,
@@ -38,12 +38,12 @@ class MessagesPage extends StatelessWidget {
   }
 }
 
-class CustomListTile extends StatelessWidget {
+class MatchListTile extends StatelessWidget {
   final String profilePicture;
   final String name;
   final String newestMsg;
 
-  const CustomListTile({
+  const MatchListTile({
     Key? key,
     required this.profilePicture,
     required this.name,
