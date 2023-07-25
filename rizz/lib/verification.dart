@@ -4,24 +4,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rizz/test.dart';
 import 'login.dart';
 
-/// Used for making a stateful [ResendVerifyButton] widget.
-class ResendVerifyButton extends StatefulWidget {
+/// Handles a resend verification email attempt. Actual logic for resending
+/// verification email is handled in [ResendVerifyButton.build]
+class ResendVerifyButton extends StatelessWidget {
   final User? user;
 
   const ResendVerifyButton({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => ResendVerifyButtonState();
-}
-
-/// Handles a resend verification email attempt. Actual logic for resending
-/// verification email is handled in [ResendVerifyButtonState.build]
-class ResendVerifyButtonState extends State<ResendVerifyButton> {
-  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
-        await widget.user!.sendEmailVerification();
+        await user!.sendEmailVerification();
       },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
