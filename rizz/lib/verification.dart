@@ -80,6 +80,7 @@ class _VerificationPageState extends State<VerificationPage> {
                 final initialData = {
                   'email': user!.email!,
                   'isSetUp': false,
+                  'uid': user!.uid,
                 };
                 userRef.set(initialData);
               }

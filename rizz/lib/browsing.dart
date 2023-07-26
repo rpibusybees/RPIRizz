@@ -3,50 +3,11 @@ library browsing;
 
 import 'dart:core';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'consts.dart';
-
-/// Fake data class GET RID OF LATER JUST FOR TESTING
-class UserData {
-  final String name;
-  final num age;
-  final String gender;
-  final String pronouns;
-  final String aboutMe;
-  final List<String> photos;
-  final List<String> lifesytleInterests;
-
-  UserData(
-    this.name,
-    this.age,
-    this.gender,
-    this.pronouns,
-    this.aboutMe,
-    this.photos,
-    this.lifesytleInterests,
-  );
-}
-
-/// Fake data class GET RID OF LATER JUST FOR TESTING
-class FakeData {
-  FakeData._();
-  static UserData user1 =
-      UserData('Ryan', 20, 'Male', 'he/him', 'I am better than alex', [
-    'assets/FakePhotos/70960294417--14E3E923-AC0B-439D-8F7F-B2CC414FED27.JPG',
-    'assets/FakePhotos/IMG-5031.JPG',
-    'assets/FakePhotos/IMG-5204.JPG',
-    'assets/FakePhotos/IMG-7894.jpg',
-    'assets/FakePhotos/IMG-7916.jpg'
-  ], []);
-  static UserData user2 =
-      UserData('Alex', 19, 'Male?', 'he/him', 'Hello world', [
-    'assets/FakePhotos/IMG-4995.PNG',
-    'assets/FakePhotos/IMG-5103.JPG',
-    'assets/FakePhotos/IMG-5432.JPG',
-  ], []);
-
-  static List<UserData> users = [user1, user2];
-}
+import 'userObjects.dart';
 
 /// Handles the name and extra button at the bottom of the screen
 /// for the [PhotoSwipe] widget.
@@ -54,7 +15,7 @@ class FakeData {
 /// the [InfoCol] widget onclick.
 class InfoOverlay extends StatelessWidget {
   final CarouselController? carController;
-  final UserData? user;
+  final UserData user;
   final Function()? expandInfo;
 
   const InfoOverlay(
@@ -96,7 +57,7 @@ class InfoOverlay extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    '${user?.name}, ${user?.age}',
+                    '${user.name}, ${getAge(user.birthday)}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 30,
@@ -158,9 +119,9 @@ class _PhotoSwipeState extends State<PhotoSwipe> {
     return Stack(
       children: [
         CarouselSlider(
-          items: widget.user?.photos
-              .map((item) => Image(
-                    image: AssetImage(item),
+          items: widget.user?.imageUrl!
+              .map((item) => Image.network(
+                    item,
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ))
@@ -177,7 +138,7 @@ class _PhotoSwipeState extends State<PhotoSwipe> {
         ),
         InfoOverlay(
           carController: _controller,
-          user: widget.user,
+          user: widget.user!,
           expandInfo: widget.expandInfo,
         ),
       ],
@@ -258,7 +219,7 @@ class LikeDislikeButtons extends StatelessWidget {
 /// It contains the user's pronouns, about me, and lifestyle and interests.
 /// The [user] is passed in from the [BrowsingPage] widget.
 class InfoCol extends StatelessWidget {
-  final UserData? user;
+  final user;
   
   const InfoCol(
     {Key? key, 
@@ -279,7 +240,7 @@ class InfoCol extends StatelessWidget {
                 padding: Consts.lowPadding,
                 child: Icon(Icons.face),
               ),
-              Text(user!.pronouns),
+              Text('Add Pronouns'),
             ],
           ),
           Divider(
@@ -296,7 +257,7 @@ class InfoCol extends StatelessWidget {
           ),
           Container(
             padding: Consts.sidePadding,
-            child: Text(user!.aboutMe),
+            child: Text('I hate Alex'),
           ),
           Divider(
             thickness: 1,
@@ -312,7 +273,7 @@ class InfoCol extends StatelessWidget {
           ),
           Container(
             padding: Consts.sidePadding,
-            child: Text(user!.lifesytleInterests.join(', ')),
+            child: Text(user!.myLikes.join(', ')),
           ),
         ],
       ),
@@ -335,24 +296,55 @@ class BrowsingPage extends StatefulWidget {
 /// the info column is expanded or not. The [_scrollController] is
 /// used to scroll the info column up and down.
 class _BrowsingPageState extends State<BrowsingPage> {
-  List<UserData>? users;
+  final db = FirebaseFirestore.instance;
+  List<UserData>? userList;
+  User? user;
+  UserData? userData;
   int? currentUser;
   double? moreInfo;
   ScrollController? _scrollController;
+  bool? loading;
 
   @override
   void initState() {
     super.initState();
-    users = FakeData.users;
+    loading = true;
+    user = FirebaseAuth.instance.currentUser;
+    userList = [];
+    getUserData();
     currentUser = 0;
     moreInfo = 0.0;
     _scrollController = ScrollController();
   }
 
+  void getUserData() async {
+    final docRef = db.collection('users').doc(user!.uid).withConverter(
+      fromFirestore: UserData.fromFirestore, 
+      toFirestore: (UserData user, SetOptions? options) => user.toFirestore(),
+    );
+    final userSnap = await docRef.get();
+    userData = userSnap.data();
+    await db.collection('users').withConverter(
+      fromFirestore: UserData.fromFirestore, 
+      toFirestore: (UserData user, SetOptions? options) => user.toFirestore(),
+    ).where('gender', whereIn: [['Woman']]).get().then(
+      (QuerySnapshot querySnapshot) {
+        for (var doc in querySnapshot.docs) {
+          // takes doc and converts it to a UserData object
+          UserData tempData = doc.data() as UserData;
+          userList!.add(tempData);
+        }
+      }
+    );
+    setState(() {
+      loading = false;
+    });
+  }
+
   onLike() {
     setState(
       () {
-        currentUser != null && currentUser! < users!.length - 1
+        currentUser != null && currentUser! < userList!.length - 1
             ? currentUser = currentUser! + 1
             : currentUser = 0;
         moreInfo = 0.0;
@@ -361,6 +353,9 @@ class _BrowsingPageState extends State<BrowsingPage> {
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeInOut,
         );
+        if(userList![currentUser!].uid == userData!.uid) {
+          onLike();
+        }
       },
     );
   }
@@ -368,7 +363,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
   onDislike() {
     setState(
       () {
-        currentUser != null && currentUser! < users!.length - 1
+        currentUser != null && currentUser! < userList!.length - 1
             ? currentUser = currentUser! + 1
             : currentUser = 0;
         moreInfo = 0.0;
@@ -377,6 +372,9 @@ class _BrowsingPageState extends State<BrowsingPage> {
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeInOut,
         );
+        if(userList![currentUser!].uid == userData!.uid) {
+          onLike();
+        }
       },
     );
   }
@@ -416,7 +414,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (users != null) {
+    if (loading == false) {
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SingleChildScrollView(
@@ -427,7 +425,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
                 height: MediaQuery.of(context).size.height * .025,
               ),
               PhotoSwipe(
-                  user: users![currentUser ?? 0], expandInfo: expandInfo),
+                  user: userList![currentUser ?? 0], expandInfo: expandInfo),
               LikeDislikeButtons(
                 currUser: currentUser,
                 onLike: onLike,
@@ -437,13 +435,19 @@ class _BrowsingPageState extends State<BrowsingPage> {
                 duration: const Duration(seconds: 1),
                 curve: Curves.easeInOut,
                 opacity: moreInfo!,
-                child: InfoCol(user: users![currentUser!]),
+                child: InfoCol(user: userList![currentUser!]),
               ),
             ],
           ),
         ),
       );
+    } else {
+      return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
     }
-    return const Scaffold();
   }
 }
