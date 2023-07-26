@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rizz/test.dart';
+import 'package:rizz/name.dart';
 import 'login.dart';
 
 /// Handles a resend verification email attempt. Actual logic for resending
@@ -86,7 +86,7 @@ class _VerificationPageState extends State<VerificationPage> {
             },
           );
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const TestPage()));
+              MaterialPageRoute(builder: (context) => const NamePage()));
         }
       },
     );
