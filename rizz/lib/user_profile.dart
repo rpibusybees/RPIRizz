@@ -1,20 +1,6 @@
 import 'package:flutter/material.dart';
 import 'user.dart';
 
-void main() {
-  runApp(UserProfileApp());
-}
-
-class UserProfileApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'User Profile',
-      home: UserProfilePage(),
-    );
-  }
-}
-
 class UserProfilePage extends StatefulWidget {
   @override
   _UserProfilePageState createState() => _UserProfilePageState();
@@ -45,7 +31,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CircleAvatar(
-                radius: 70,
+                radius: 100,
                 backgroundImage: NetworkImage(userProfilePictureUrl),
               ),
               SizedBox(height: 20),
@@ -68,10 +54,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 100,
-                    height: 100,
+                    width: 200,
+                    height: 70,
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                        shape: BoxShape.rectangle,
                         color: Color.fromRGBO(245, 220, 215,
                             1), // Customize the button color here
                         boxShadow: [
@@ -87,23 +73,19 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         // You can leave this empty since you don't want any function.
                       },
                       icon: Icon(
-                        Icons.person_pin_circle,
+                        Icons.person_2_rounded,
                         size: 24.0,
+                        color: Colors.black,
                       ),
-                      label: Text('Edit Information'),
+                      label: Text(
+                        'Edit Information',
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
                     ),
-                    //       style: ElevatedButton.styleFrom(
-                    //         primary:
-                    //             Colors.transparent, // Make the button transparent
-                    //         shadowColor: Colors.transparent, // Hide the button shadow
-                    //       ),
-                    //       child: Text('Edit Information',
-                    //           style: Theme.of(context).textTheme.titleSmall,
-                    // ), // Change the button text to 'About Me'
                   ),
                 ],
               ),
-              SizedBox(height: 80),
+              SizedBox(height: 60),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
