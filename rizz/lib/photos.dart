@@ -35,7 +35,7 @@ class PhotosPageState extends State<PhotosPage> {
 
     String fileName = DateTime.now().microsecondsSinceEpoch.toString();
 
-    await cloudStorage.child('name').putFile(File(file!.path));
+    await cloudStorage.child(fileName).putFile(File(file!.path));
     imageUrl = await cloudStorage.child(fileName).getDownloadURL();
     
     await db.collection('users').doc(user!.uid).update({'imageUrl':imageUrl});
