@@ -40,7 +40,7 @@ class AboutMePageState extends State<AboutMePage> {
   void addAboutMeToDatabase(String aboutme) async {
     User? user = FirebaseAuth.instance.currentUser;
     final db = FirebaseFirestore.instance;
-    await db.collection('users').doc(user!.uid).update({"about me": aboutme});
+    await db.collection('users').doc(user!.uid).update({"aboutme": aboutme});
   }
 
   /*
