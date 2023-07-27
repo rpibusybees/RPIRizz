@@ -19,7 +19,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       padding: EdgeInsets.only(top: 20),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('User Profile',
+          title: Text('Your Profile',
               style: Theme.of(context).textTheme.displayLarge),
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
@@ -79,7 +79,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       ),
                       label: Text(
                         'Edit Information',
-                        style: Theme.of(context).textTheme.labelSmall,
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                     ),
                   ),
