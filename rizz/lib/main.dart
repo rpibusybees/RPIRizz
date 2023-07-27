@@ -7,7 +7,6 @@ import 'firebase_options.dart';
 import 'header.dart';
 import 'login.dart';
 import 'style.dart';
-
 /// [main] intializes Firebase, then calls
 /// ```dart
 /// runApp(const MainApp());
@@ -35,7 +34,7 @@ class MainApp extends StatelessWidget {
         fontFamily: 'Poppins',
         textTheme: RizzTheme.rizzText,
       ),
-      home: const MainPage(),
+      home: const HeaderPage(),
       debugShowCheckedModeBanner: false,
     );
   }

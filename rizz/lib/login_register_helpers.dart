@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Used for making a stateful [FieldFactory] widget.
+/// This widget is used for making a text field.
 class FieldFactory extends StatefulWidget {
   final TextEditingController? controller;
   final TextEditingController? controller2;
@@ -17,6 +19,9 @@ class FieldFactory extends StatefulWidget {
       labelPassword == null ? EmailFieldState() : _PassFieldState();
 }
 
+/// Builds the text field (UI related). See [EmailFieldState] and
+/// [_PassFieldState] for how the logic is handled.
+/// This widget is used for making a text field.
 class EmailFieldState extends State<FieldFactory> {
   @override
   Widget build(BuildContext context) {
@@ -67,6 +72,9 @@ class EmailFieldState extends State<FieldFactory> {
   }
 }
 
+/// Builds the text field (UI related). See [EmailFieldState] and
+/// [_PassFieldState] for how the logic is handled.
+/// This widget is used for making a text field.
 class _PassFieldState extends State<FieldFactory> {
   bool _obscureText = true;
 

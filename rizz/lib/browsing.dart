@@ -1,59 +1,29 @@
+/// This page is used to browse through other users.
+library browsing;
+
 import 'dart:core';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'consts.dart';
+import 'userObjects.dart';
 
-class UserData {
-  final String name;
-  final num age;
-  final String gender;
-  final String pronouns;
-  final String aboutMe;
-  final List<String> photos;
-  final List<String> lifesytleInterests;
-
-  UserData(
-    this.name,
-    this.age,
-    this.gender,
-    this.pronouns,
-    this.aboutMe,
-    this.photos,
-    this.lifesytleInterests,
-  );
-}
-
-class FakeData {
-  FakeData._();
-  static UserData user1 =
-      UserData('Ryan', 20, 'Male', 'he/him', 'I am better than alex', [
-    'assets/FakePhotos/70960294417--14E3E923-AC0B-439D-8F7F-B2CC414FED27.JPG',
-    'assets/FakePhotos/IMG-5031.JPG',
-    'assets/FakePhotos/IMG-5204.JPG',
-    'assets/FakePhotos/IMG-7894.jpg',
-    'assets/FakePhotos/IMG-7916.jpg'
-  ], []);
-  static UserData user2 =
-      UserData('Alex', 19, 'Male?', 'he/him', 'Hello world', [
-    'assets/FakePhotos/IMG-4995.PNG',
-    'assets/FakePhotos/IMG-5103.JPG',
-    'assets/FakePhotos/IMG-5432.JPG',
-  ], []);
-
-  static List<UserData> users = [user1, user2];
-}
-
-class NameExtraButton extends StatelessWidget {
+/// Handles the name and extra button at the bottom of the screen
+/// for the [PhotoSwipe] widget.
+/// These are the name and info button. The info button expands
+/// the [InfoCol] widget onclick.
+class InfoOverlay extends StatelessWidget {
   final CarouselController? carController;
-  final UserData? user;
+  final UserData user;
   final Function()? expandInfo;
 
-  const NameExtraButton(
+  const InfoOverlay(
       {Key? key,
       required this.carController,
       required this.user,
-      required this.expandInfo})
-      : super(key: key);
+      required this.expandInfo
+  })  : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +57,7 @@ class NameExtraButton extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    '${user?.name}, ${user?.age}',
+                    '${user.name}, ${user.getAge()}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 30,
@@ -96,19 +66,20 @@ class NameExtraButton extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                    onPressed: () {
-                      expandInfo!();
-                    },
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        const CircleBorder(),
-                      ),
+                  onPressed: () {
+                    expandInfo!();
+                  },
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      const CircleBorder(),
                     ),
-                    child: const Icon(
-                      Icons.info_outline_rounded,
-                      size: 60,
-                      color: Color.fromRGBO(49, 49, 49, 1),
-                    )),
+                  ),
+                  child: const Icon(
+                    Icons.info_outline_rounded,
+                    size: 60,
+                    color: Color.fromRGBO(49, 49, 49, 1),
+                  ),
+                ),
               ],
             ),
           ),
@@ -118,16 +89,23 @@ class NameExtraButton extends StatelessWidget {
   }
 }
 
+/// Used for making a stateful [PhotoSwipe] widget.
+/// This widget is used for the main browsing page.
 class PhotoSwipe extends StatefulWidget {
   final UserData? user;
   final Function()? expandInfo;
-  const PhotoSwipe({Key? key, required this.user, required this.expandInfo})
-      : super(key: key);
+  const PhotoSwipe(
+    {Key? key, 
+    required this.user, 
+    required this.expandInfo
+  })  : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PhotoSwipeState();
 }
 
+/// Builds the photo swipe (UI related). The carousel is used to swipe
+/// through the photos.
 class _PhotoSwipeState extends State<PhotoSwipe> {
   CarouselController? _controller;
   @override
@@ -141,9 +119,9 @@ class _PhotoSwipeState extends State<PhotoSwipe> {
     return Stack(
       children: [
         CarouselSlider(
-          items: widget.user?.photos
-              .map((item) => Image(
-                    image: AssetImage(item),
+          items: widget.user?.imgUrlList!
+              .map((item) => Image.network(
+                    item,
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ))
@@ -158,9 +136,9 @@ class _PhotoSwipeState extends State<PhotoSwipe> {
             initialPage: 0,
           ),
         ),
-        NameExtraButton(
+        InfoOverlay(
           carController: _controller,
-          user: widget.user,
+          user: widget.user!,
           expandInfo: widget.expandInfo,
         ),
       ],
@@ -168,6 +146,11 @@ class _PhotoSwipeState extends State<PhotoSwipe> {
   }
 }
 
+/// Builds the like and dislike buttons (UI related).
+/// These are the buttons at the bottom of the screen.
+/// They determine if the user likes or dislikes the current user.
+/// The [onLike] and [onDislike] functions are passed in from the
+/// [BrowsingPage] widget.
 class LikeDislikeButtons extends StatelessWidget {
   final int? currUser;
   final Function()? onLike;
@@ -231,14 +214,22 @@ class LikeDislikeButtons extends StatelessWidget {
   }
 }
 
+/// Builds the info column (UI related).
+/// This is the column that expands when the info button is pressed.
+/// It contains the user's pronouns, about me, and lifestyle and interests.
+/// The [user] is passed in from the [BrowsingPage] widget.
 class InfoCol extends StatelessWidget {
-  final UserData? user;
-  const InfoCol({Key? key, required this.user}) : super(key: key);
+  final user;
+  
+  const InfoCol(
+    {Key? key, 
+    required this.user
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: Consts.browsePadding,
+      padding: Consts.lowPadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -249,7 +240,7 @@ class InfoCol extends StatelessWidget {
                 padding: Consts.lowPadding,
                 child: Icon(Icons.face),
               ),
-              Text(user!.pronouns),
+              Text('Add Pronouns'),
             ],
           ),
           Divider(
@@ -266,7 +257,7 @@ class InfoCol extends StatelessWidget {
           ),
           Container(
             padding: Consts.sidePadding,
-            child: Text(user!.aboutMe),
+            child: Text('I hate Alex'),
           ),
           Divider(
             thickness: 1,
@@ -282,7 +273,7 @@ class InfoCol extends StatelessWidget {
           ),
           Container(
             padding: Consts.sidePadding,
-            child: Text(user!.lifesytleInterests.join(', ')),
+            child: Text(user!.myLikes.join(', ')),
           ),
         ],
       ),
@@ -290,6 +281,8 @@ class InfoCol extends StatelessWidget {
   }
 }
 
+/// Used for making a stateful [BrowsingPage] widget.
+/// This widget is used for the main browsing page.
 class BrowsingPage extends StatefulWidget {
   const BrowsingPage({Key? key}) : super(key: key);
 
@@ -297,25 +290,62 @@ class BrowsingPage extends StatefulWidget {
   State<StatefulWidget> createState() => _BrowsingPageState();
 }
 
+/// Builds the browsing page (UI related). The [users] are used to
+/// display the users. The [currentUser] is used to keep track of
+/// the current user. The [moreInfo] is used to keep track of if
+/// the info column is expanded or not. The [_scrollController] is
+/// used to scroll the info column up and down.
 class _BrowsingPageState extends State<BrowsingPage> {
-  List<UserData>? users;
+  final db = FirebaseFirestore.instance;
+  List<UserData>? userList;
+  User? user;
+  UserData? userData;
   int? currentUser;
   double? moreInfo;
   ScrollController? _scrollController;
+  bool? loading;
 
   @override
   void initState() {
     super.initState();
-    users = FakeData.users;
+    loading = true;
+    user = FirebaseAuth.instance.currentUser;
+    userList = [];
+    getUserData();
     currentUser = 0;
     moreInfo = 0.0;
     _scrollController = ScrollController();
   }
 
+  void getUserData() async {
+    final docRef = db.collection('users').doc(user!.uid).withConverter(
+      fromFirestore: UserData.fromFirestore, 
+      toFirestore: (UserData user, SetOptions? options) => user.toFirestore(),
+    );
+    final userSnap = await docRef.get();
+    userData = userSnap.data();
+    await db.collection('users').withConverter(
+      fromFirestore: UserData.fromFirestore, 
+      toFirestore: (UserData user, SetOptions? options) => user.toFirestore(),
+    ).where('gender', whereIn: [['Man']]).get().then(
+      (QuerySnapshot querySnapshot) {
+        for (var doc in querySnapshot.docs) {
+          // takes doc and converts it to a UserData object
+          UserData tempData = doc.data() as UserData;
+          userList!.add(tempData);
+        }
+      }
+    );
+    print(userList![0].imgUrlList![0]);
+    setState(() {
+      loading = false;
+    });
+  }
+
   onLike() {
     setState(
       () {
-        currentUser != null && currentUser! < users!.length - 1
+        currentUser != null && currentUser! < userList!.length - 1
             ? currentUser = currentUser! + 1
             : currentUser = 0;
         moreInfo = 0.0;
@@ -331,7 +361,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
   onDislike() {
     setState(
       () {
-        currentUser != null && currentUser! < users!.length - 1
+        currentUser != null && currentUser! < userList!.length - 1
             ? currentUser = currentUser! + 1
             : currentUser = 0;
         moreInfo = 0.0;
@@ -379,7 +409,35 @@ class _BrowsingPageState extends State<BrowsingPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (users != null) {
+    if (loading == false && userList!.isEmpty) {
+      return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'No users found',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Go Back'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    if (loading == false) {
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         body: SingleChildScrollView(
@@ -390,7 +448,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
                 height: MediaQuery.of(context).size.height * .025,
               ),
               PhotoSwipe(
-                  user: users![currentUser ?? 0], expandInfo: expandInfo),
+                  user: userList![currentUser ?? 0], expandInfo: expandInfo),
               LikeDislikeButtons(
                 currUser: currentUser,
                 onLike: onLike,
@@ -400,13 +458,19 @@ class _BrowsingPageState extends State<BrowsingPage> {
                 duration: const Duration(seconds: 1),
                 curve: Curves.easeInOut,
                 opacity: moreInfo!,
-                child: InfoCol(user: users![currentUser!]),
+                child: InfoCol(user: userList![currentUser!]),
               ),
             ],
           ),
         ),
       );
+    } else {
+      return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
     }
-    return const Scaffold();
   }
 }

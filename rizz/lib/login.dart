@@ -133,8 +133,8 @@ class LoginFormState extends State<LoginForm> {
 }
 
 // If clicked, sends user to the [RegisterPage].
-class RegisterButton extends StatelessWidget {
-  const RegisterButton({Key? key}) : super(key: key);
+class RegisterButtonLink extends StatelessWidget {
+  const RegisterButtonLink({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -197,31 +197,33 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-            child: Container(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height,
-      padding: Consts.loginPadding,
-      color: Theme.of(context).colorScheme.background,
-      child: Column(
-        //mainAxisAlignment: MainAxisAlignment.spaceAround,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Image(
-                image: AssetImage('assets/RizzLogoFlask.png'),
-                width: 150,
-                height: 150),
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
+          padding: Consts.loginPadding,
+          color: Theme.of(context).colorScheme.background,
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Image(
+                    image: AssetImage('assets/RizzLogoFlask.png'),
+                    width: 150,
+                    height: 150),
+              ),
+              LoginForm(
+                emailController: _emailController,
+                passwordController: _passwordController,
+              ),
+              const RegisterButtonLink(),
+            ],
           ),
-          LoginForm(
-            emailController: _emailController,
-            passwordController: _passwordController,
-          ),
-          const RegisterButton(),
-        ],
+        ),
       ),
-    )));
+    );
   }
 }

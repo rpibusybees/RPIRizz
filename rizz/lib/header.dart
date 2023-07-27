@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:rizz/user_profile.dart';
 import 'browsing.dart';
+import 'messages.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class HeaderPage extends StatefulWidget {
+  const HeaderPage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _MainPageState createState() => _MainPageState();
+  _HeaderPageState createState() => _HeaderPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _HeaderPageState extends State<HeaderPage> {
   final PageController pageController = PageController(initialPage: 1);
   int currentPageIndex = 1;
 
@@ -37,11 +38,8 @@ class _MainPageState extends State<MainPage> {
         children: [
           UserProfilePage(),
           // Page 1: Browsing
-          BrowsingPage(),
-          // REPLACE WITH MESSAGES WHEN IT EXISTS
-          Container(
-            child: Center(child: Text('Messages Page')),
-          ),
+          const BrowsingPage(),
+          const MessagesPage(),
         ],
       ),
     );

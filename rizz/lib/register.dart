@@ -207,29 +207,32 @@ class RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-            child: Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height,
-                padding: Consts.registerPadding,
-                color: Theme.of(context).colorScheme.background,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Image(
-                          image: AssetImage('assets/RizzLogoFlask.png'),
-                          width: 150,
-                          height: 150),
-                    ),
-                    RegisterForm(
-                        emailController: _emailController,
-                        passwordController: _passwordController,
-                        confirmPasswordController: _confirmPasswordController),
-                    const LoginButton()
-                  ],
-                ))));
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
+          padding: Consts.registerPadding,
+          color: Theme.of(context).colorScheme.background,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Image(
+                    image: AssetImage('assets/RizzLogoFlask.png'),
+                    width: 150,
+                    height: 150),
+              ),
+              RegisterForm(
+                  emailController: _emailController,
+                  passwordController: _passwordController,
+                  confirmPasswordController: _confirmPasswordController),
+              const LoginButton()
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
