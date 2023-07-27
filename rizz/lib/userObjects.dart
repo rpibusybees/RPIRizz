@@ -5,7 +5,7 @@ class UserData {
   final Timestamp? birthday;
   final String? email;
   final List<dynamic>? gender;
-  final List<dynamic>? imageUrl;
+  final List<dynamic>? imgUrlList;
   final bool? isSetUp;
   final List<dynamic>? myDislikes;
   final List<dynamic>? myLikes;
@@ -20,7 +20,7 @@ class UserData {
     this.birthday,
     this.email,
     this.gender,
-    this.imageUrl,
+    this.imgUrlList,
     this.isSetUp,
     this.myDislikes,
     this.myLikes,
@@ -41,7 +41,7 @@ class UserData {
       birthday: data?['birthday'],
       email: data?['email'],
       gender: data?['gender'],
-      imageUrl: data?['imageUrl'],
+      imgUrlList: data?['imgUrlList'],
       isSetUp: data?['isSetUp'],
       myDislikes: data?['myDislikes'],
       myLikes: data?['myLikes'],
@@ -59,7 +59,7 @@ class UserData {
       if(birthday != null) 'birthday': birthday,
       if(email != null) 'email': email,
       if(gender != null) 'gender': gender,
-      if(imageUrl != null) 'imageUrl': imageUrl,
+      if(imgUrlList != null) 'imgUrlList': imgUrlList,
       if(isSetUp != null) 'isSetUp': isSetUp,
       if(myDislikes != null) 'myDislikes': myDislikes,
       if(myLikes != null) 'myLikes': myLikes,
@@ -70,11 +70,9 @@ class UserData {
       if(uid != null) 'uid': uid,
     };
   }
-}
-
-int getAge(Timestamp? birthDate) {
+  int getAge() {
   // Convert the birthDate Timestamp to a DateTime object
-  DateTime birthDateTime = birthDate?.toDate() ?? DateTime.now();
+  DateTime birthDateTime = birthday?.toDate() ?? DateTime.now();
   
   // Get the current date as a DateTime object
   DateTime currentDate = DateTime.now();
@@ -90,3 +88,5 @@ int getAge(Timestamp? birthDate) {
   
   return ageInYears;
 }
+}
+

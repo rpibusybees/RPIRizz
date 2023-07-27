@@ -57,7 +57,7 @@ class InfoOverlay extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    '${user.name}, ${getAge(user.birthday)}',
+                    '${user.name}, ${user.getAge()}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 30,
@@ -119,7 +119,7 @@ class _PhotoSwipeState extends State<PhotoSwipe> {
     return Stack(
       children: [
         CarouselSlider(
-          items: widget.user?.imageUrl!
+          items: widget.user?.imgUrlList!
               .map((item) => Image.network(
                     item,
                     fit: BoxFit.cover,
@@ -327,7 +327,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
     await db.collection('users').withConverter(
       fromFirestore: UserData.fromFirestore, 
       toFirestore: (UserData user, SetOptions? options) => user.toFirestore(),
-    ).where('gender', whereIn: [['Woman']]).get().then(
+    ).where('gender', whereIn: [['Man']]).get().then(
       (QuerySnapshot querySnapshot) {
         for (var doc in querySnapshot.docs) {
           // takes doc and converts it to a UserData object
@@ -336,6 +336,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
         }
       }
     );
+    print(userList![0].imgUrlList![0]);
     setState(() {
       loading = false;
     });
@@ -353,9 +354,6 @@ class _BrowsingPageState extends State<BrowsingPage> {
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeInOut,
         );
-        if(userList![currentUser!].uid == userData!.uid) {
-          onLike();
-        }
       },
     );
   }
@@ -372,9 +370,6 @@ class _BrowsingPageState extends State<BrowsingPage> {
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeInOut,
         );
-        if(userList![currentUser!].uid == userData!.uid) {
-          onLike();
-        }
       },
     );
   }
@@ -414,6 +409,34 @@ class _BrowsingPageState extends State<BrowsingPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (loading == false && userList!.isEmpty) {
+      return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'No users found',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Go Back'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     if (loading == false) {
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
