@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:permission_handler/permission_handler.dart';
+
 import 'dart:io';
 
 /// Needed for the [PhotoPageState] class.
@@ -21,32 +21,34 @@ class PhotosPage extends StatefulWidget {
 }
 
 class PhotosPageState extends State<PhotosPage> {
-  String imageUrl = "";
+  List<String> imageUrlList = List.filled(6, '');
 
-  // you guessed it
-  uploadImageToDatabase() async{
-    ImagePicker imagepicker = ImagePicker();
-
-    XFile? file = await imagepicker.pickImage(source: ImageSource.gallery);
-
+  /// uploads imgUrlList to Firebase
+  /// uploads actual image files to Firestore
+  uploadImagesToDatabase() async{
+    
     User? user = FirebaseAuth.instance.currentUser;
     final db = FirebaseFirestore.instance;
     Reference cloudStorage = FirebaseStorage.instance.ref().child('images');
+    List<String> nonEmptyUrlList = [];
 
-    String fileName = DateTime.now().microsecondsSinceEpoch.toString();
+    // get the non-empty elements
+    for (int i = 0; i < 6; i++){
+       if (imageUrlList[i].isNotEmpty) {
+        nonEmptyUrlList.add(imageUrlList[i]);
+        // add to Firestore
+        String fileName = DateTime.now().microsecondsSinceEpoch.toString();
+        await cloudStorage.child(fileName).putFile(File(imageUrlList[i]));
+       }
+    }
 
-    await cloudStorage.child(fileName).putFile(File(file!.path));
-    imageUrl = await cloudStorage.child(fileName).getDownloadURL();
-    
-    await db.collection('users').doc(user!.uid).update({'imageUrl':imageUrl});
-    return imageUrl;
+    // make a list with non-empty elements
+
+    await db.collection('users').doc(user!.uid).update({'imgUrlList':nonEmptyUrlList});
   }
 
   @override
   Widget build(BuildContext context) {    
-
-    // setstate bs
-    Image img = Image.asset('images/marioluigi.jpg');
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -66,23 +68,30 @@ class PhotosPageState extends State<PhotosPage> {
               ),
             ),
             
-            Container(
-              child: IconButton(
-                icon: img,
-                onPressed: (){
-                  uploadImageToDatabase();
-                  setState(() {
-                    img = Image.network(imageUrl);
-                  });
-                },
-                tooltip: "upload photo",
-              ),
+            Column(
+              children: [
+                Row(
+                  children: [
+                    UploadPhotoButton(photoNum: 1, urlList: imageUrlList),
+                    UploadPhotoButton(photoNum: 2, urlList: imageUrlList),
+                    UploadPhotoButton(photoNum: 3, urlList: imageUrlList)                    
+                  ]
+                ),
+                Row(
+                  children: [
+                    UploadPhotoButton(photoNum: 4, urlList: imageUrlList),
+                    UploadPhotoButton(photoNum: 5, urlList: imageUrlList),
+                    UploadPhotoButton(photoNum: 6, urlList: imageUrlList)                    
+                  ]
+                )
+              ]
             ),
             const SpacingBox(),
             Container(
               margin: Consts.bottomButtonPadding,
               child: NextButton(
-                onPressed: (){                  
+                onPressed: (){        
+                  uploadImagesToDatabase();          
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const LoginPage()),
@@ -96,3 +105,52 @@ class PhotosPageState extends State<PhotosPage> {
     );  
   }
 }
+
+
+
+// ignore: must_be_immutable
+class UploadPhotoButton extends StatefulWidget {
+  final int photoNum;
+  List<String> urlList;
+  UploadPhotoButton({Key? key, required this.photoNum, required this.urlList}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => UploadPhotoButtonState();
+}
+
+class UploadPhotoButtonState extends State<UploadPhotoButton> {
+  XFile? image;
+
+  XFile? getImage() {
+    return image;
+  }
+
+  /// sets the image that this button displays
+  void setImage() async{
+    ImagePicker imagepicker = ImagePicker();
+    XFile? pickedImage = await imagepicker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        image = pickedImage;
+      });
+      widget.urlList[widget.photoNum - 1] = pickedImage.path;
+    }
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: IconButton(
+        icon: image != null
+            ? Image.file(File(image!.path))
+            : Image.asset('images/marioluigi.jpg'),
+        onPressed: () async {
+          setImage();
+        },
+        tooltip: "upload photo",
+      ),
+    );
+  }  
+}
+
