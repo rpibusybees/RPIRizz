@@ -18,6 +18,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
+  image: ^4.0.17
   image_picker: ^1.0.1
   permission_handler: ^10.4.3
 
