@@ -35,10 +35,11 @@ class PhotosPageState extends State<PhotosPage> {
     // get the non-empty elements
     for (int i = 0; i < 6; i++){
        if (imageUrlList[i].isNotEmpty) {
-        nonEmptyUrlList.add(imageUrlList[i]);
         // add to Firestore
         String fileName = DateTime.now().microsecondsSinceEpoch.toString();
         await cloudStorage.child(fileName).putFile(File(imageUrlList[i]));
+        // add to non-empty element list
+        nonEmptyUrlList.add(await cloudStorage.child(fileName).getDownloadURL());
        }
     }
 
