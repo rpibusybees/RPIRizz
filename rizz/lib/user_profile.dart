@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'userObjects.dart';
 
 class UserProfilePage extends StatefulWidget {
   @override
@@ -7,14 +9,43 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
-  String userName = FakeData.user3.name;
-  String userProfilePictureUrl = FakeData.user3.profilephoto;
-  String aboutMe = FakeData.user3.aboutMe;
-  num age = FakeData.user3.age;
-  String pronoun = FakeData.user3.pronouns;
+  UserData? userData;
+  User? user;
+  bool? loading;
+
+  final db = FirebaseFirestore.instance;
+
+  void getUserData() async {
+    final docRef = db.collection('users').doc(user!.uid).withConverter(
+          fromFirestore: UserData.fromFirestore,
+          toFirestore: (UserData user, SetOptions? options) =>
+              user.toFirestore(),
+        );
+    final userSnap = await docRef.get();
+    userData = userSnap.data();
+    setState(() {
+      loading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    user = FirebaseAuth.instance.currentUser;
+    loading = true;
+    getUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (loading == true) {
+      return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Container(
       padding: EdgeInsets.only(top: 20),
       child: Scaffold(
@@ -32,21 +63,16 @@ class _UserProfilePageState extends State<UserProfilePage> {
             children: [
               CircleAvatar(
                 radius: 100,
-                backgroundImage: NetworkImage(userProfilePictureUrl),
+                backgroundImage: NetworkImage(userData!.imgUrlList![0]),
               ),
               SizedBox(height: 20),
               Text(
-                userName + ", " + age.toString(),
+                '${userData!.name}, ${userData!.getAge()}',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              SizedBox(height: 5),
-              Text(
-                pronoun,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
               SizedBox(height: 20),
               Text(
-                aboutMe,
+                '${userData!.aboutme}',
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               SizedBox(height: 30),
