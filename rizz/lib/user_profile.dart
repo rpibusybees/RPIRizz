@@ -143,8 +143,43 @@ class UserProfilePageState extends State<UserProfilePage> {
                               )
                             ]),
                         child: ElevatedButton(
+                          child: Text(
+                            'Log Out',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ), // Change the button text to 'About Me'
                           onPressed: () {
-                            // You can leave this empty since you don't want any function.
+                            showModalBottomSheet(
+                              context: context,
+                              
+                              builder: (BuildContext context){
+                                
+                                return  Container(
+                                  height: 250,
+                                    color:   Color.fromRGBO(245, 220, 215, 1),
+                                    child: Center(
+                                     child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                      Text('Are you sure?',  style: Theme.of(context).textTheme.labelLarge),
+                                      SizedBox(height: 20),
+                                      ElevatedButton(
+                                        child: Text(
+                                        'Log Out',
+                                        style: Theme.of(context).textTheme.labelMedium,
+                                      ), // Change the button text to 'About Me'
+                                        onPressed:(){
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      ],
+                                     ),
+
+                                  ),
+                                 
+                                );
+                            },
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors
@@ -153,10 +188,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                             shadowColor:
                                 Colors.transparent, // Hide the button shadow
                           ),
-                          child: Text(
-                            'Log Out',
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ), // Change the button text to 'About Me'
+                          
                         ),
                       ),
                     ],
