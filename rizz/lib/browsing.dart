@@ -128,7 +128,7 @@ class _PhotoSwipeState extends State<PhotoSwipe> {
               .toList(),
           carouselController: _controller,
           options: CarouselOptions(
-            height: MediaQuery.of(context).size.height * 0.75,
+            height: MediaQuery.of(context).size.height * 0.70,
             aspectRatio: 1,
             viewportFraction: 1,
             autoPlay: false,
@@ -233,20 +233,6 @@ class InfoCol extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: Consts.lowPadding,
-                child: Icon(Icons.face),
-              ),
-              Text('Add Pronouns'),
-            ],
-          ),
-          Divider(
-            thickness: 1,
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
-          ),
           // About Me
           Container(
             padding: Consts.lowPadding,
@@ -257,7 +243,7 @@ class InfoCol extends StatelessWidget {
           ),
           Container(
             padding: Consts.sidePadding,
-            child: Text('I hate Alex'),
+            child: Text(user!.aboutme!),
           ),
           Divider(
             thickness: 1,
@@ -336,7 +322,6 @@ class _BrowsingPageState extends State<BrowsingPage> {
         }
       }
     );
-    print(userList![0].imgUrlList![0]);
     setState(() {
       loading = false;
     });
