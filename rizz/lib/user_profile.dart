@@ -4,11 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'userObjects.dart';
 
 class UserProfilePage extends StatefulWidget {
+  const UserProfilePage({Key? key}) : super(key: key);
+
   @override
-  _UserProfilePageState createState() => _UserProfilePageState();
+  UserProfilePageState createState() => UserProfilePageState();
 }
 
-class _UserProfilePageState extends State<UserProfilePage> {
+class UserProfilePageState extends State<UserProfilePage> {
   UserData? userData;
   User? user;
   bool? loading;
@@ -46,112 +48,124 @@ class _UserProfilePageState extends State<UserProfilePage> {
         ),
       );
     }
-    return Container(
-      padding: EdgeInsets.only(top: 20),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Your Profile',
-              style: Theme.of(context).textTheme.displayLarge),
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          centerTitle: true,
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        title: Text(
+          'Your Profile',
+          style: Theme.of(context).textTheme.displaySmall,
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 100,
-                backgroundImage: NetworkImage(userData!.imgUrlList![0]),
-              ),
-              SizedBox(height: 20),
-              Text(
-                '${userData!.name}, ${userData!.getAge()}',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              SizedBox(height: 20),
-              Text(
-                '${userData!.aboutme}',
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 200,
-                    height: 70,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        color: Color.fromRGBO(245, 220, 215,
-                            1), // Customize the button color here
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            spreadRadius: 4,
-                            blurRadius: 10,
-                            offset: Offset(0, 3),
-                          )
-                        ]),
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        // You can leave this empty since you don't want any function.
-                      },
-                      icon: Icon(
-                        Icons.person_2_rounded,
-                        size: 24.0,
-                        color: Colors.black,
-                      ),
-                      label: Text(
-                        'Edit Information',
-                        style: Theme.of(context).textTheme.labelMedium,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 60),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 200,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        color: Color.fromRGBO(
-                            188, 83, 100, 1), // Customize the button color here
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            spreadRadius: 4,
-                            blurRadius: 10,
-                            offset: Offset(0, 3),
-                          )
-                        ]),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // You can leave this empty since you don't want any function.
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary:
-                            Colors.transparent, // Make the button transparent
-
-                        shadowColor:
-                            Colors.transparent, // Hide the button shadow
-                      ),
-                      child: Text('Log Out',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium), // Change the button text to 'About Me'
-                    ),
-                  ),
-                ],
-              ),
-            ],
+        backgroundColor: Theme.of(context).colorScheme.background,
+        shadowColor: Theme.of(context).colorScheme.background,
+        centerTitle: true,
+        elevation: 0,
+      ),
+      body: Stack(
+        children: [
+          Positioned(
+            // TODO ADD SVG IMAGE HERE
+            child: Container(),
           ),
-        ),
+          Container(
+            padding: const EdgeInsets.only(top: 20),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 100,
+                    backgroundImage: NetworkImage(userData!.imgUrlList![0]),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    '${userData!.name}, ${userData!.getAge()}',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    '${userData!.aboutme}',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 200,
+                        height: 70,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: const Color.fromRGBO(245, 220, 215,
+                                1), // Customize the button color here
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 4,
+                                blurRadius: 10,
+                                offset: Offset(0, 3),
+                              )
+                            ]),
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            // You can leave this empty since you don't want any function.
+                          },
+                          icon: const Icon(
+                            Icons.person_2_rounded,
+                            size: 24.0,
+                            color: Colors.black,
+                          ),
+                          label: Text(
+                            'Edit Information',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 60),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 200,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: const Color.fromRGBO(188, 83, 100,
+                                1), // Customize the button color here
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 4,
+                                blurRadius: 10,
+                                offset: const Offset(0, 3),
+                              )
+                            ]),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // You can leave this empty since you don't want any function.
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors
+                                .transparent, // Make the button transparent
+
+                            shadowColor:
+                                Colors.transparent, // Hide the button shadow
+                          ),
+                          child: Text(
+                            'Log Out',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ), // Change the button text to 'About Me'
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

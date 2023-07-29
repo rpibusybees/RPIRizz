@@ -18,6 +18,18 @@ class RizzTheme {
     brightness: Brightness.light,
   );
   static const TextTheme rizzText = TextTheme(
+    displaySmall: TextStyle(
+      color: Color.fromRGBO(49, 49, 49, 1),
+      fontSize: 48,
+      fontWeight: FontWeight.w600,
+      shadows: [
+        Shadow(
+          offset: Offset(0, 4),
+          blurRadius: 4,
+          color: Color.fromRGBO(0, 0, 0, 0.25),
+        ),
+      ],
+    ),
     displayLarge: TextStyle(
       color: Color.fromRGBO(49, 49, 49, 1),
       fontSize: 32,
