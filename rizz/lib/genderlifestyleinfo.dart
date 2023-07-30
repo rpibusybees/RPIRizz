@@ -348,7 +348,7 @@ class LifestyleButtonState extends State<LifestyleButton> {
               width: getWidth(),
             ),
           ),
-          elevation: 10,
+          elevation: 4,
         ),
         child: Text(
           widget.lifeObj.lifestyle,
