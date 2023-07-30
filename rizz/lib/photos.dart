@@ -20,6 +20,8 @@ class PhotosPage extends StatefulWidget {
   State<StatefulWidget> createState() => PhotosPageState();
 }
 
+/// Makes the PhotosPage. Contains six 
+/// [UploadPhotoButton]
 class PhotosPageState extends State<PhotosPage> {
   List<String> imageUrlList = List.filled(6, '');
 
@@ -45,7 +47,7 @@ class PhotosPageState extends State<PhotosPage> {
 
     // make a list with non-empty elements
 
-    await db.collection('users').doc(user!.uid).update({'imgUrlList':nonEmptyUrlList, "isSetUp" : false});
+    await db.collection('users').doc(user!.uid).update({'imgUrlList':nonEmptyUrlList, "isSetUp" : true});
   }
 
   @override
@@ -111,6 +113,8 @@ class PhotosPageState extends State<PhotosPage> {
 
 
 
+
+/// Used for [UploadPhotoButtonState]
 // ignore: must_be_immutable
 class UploadPhotoButton extends StatefulWidget {
   final int photoNum;
@@ -121,6 +125,7 @@ class UploadPhotoButton extends StatefulWidget {
   State<StatefulWidget> createState() => UploadPhotoButtonState();
 }
 
+/// The button that prompts an image. 
 class UploadPhotoButtonState extends State<UploadPhotoButton> {
   XFile? image;
 
