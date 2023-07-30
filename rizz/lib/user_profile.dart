@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'userObjects.dart';
+import 'name.dart';
+import 'login.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({Key? key}) : super(key: key);
@@ -114,7 +116,11 @@ class UserProfilePageState extends State<UserProfilePage> {
                             ]),
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            // You can leave this empty since you don't want any function.
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                        NamePage()));
                           },
                           icon: const Icon(
                             Icons.person_2_rounded,
@@ -178,7 +184,11 @@ class UserProfilePageState extends State<UserProfilePage> {
                                         style: Theme.of(context).textTheme.labelMedium,
                                       ), // Change the button text to 'About Me'
                                         onPressed:(){
-                                          Navigator.pop(context);
+                                          Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginPage()));
                                         },
                                       ),
                                        ElevatedButton(
