@@ -48,9 +48,11 @@ class UserProfilePageState extends State<UserProfilePage> {
         ),
       );
     }
+    
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
+        
         title: Text(
           'Your Profile',
           style: Theme.of(context).textTheme.displaySmall,
@@ -82,11 +84,15 @@ class UserProfilePageState extends State<UserProfilePage> {
                     '${userData!.name}, ${userData!.getAge()}',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  const SizedBox(height: 20),
-                  Text(
+               
+                  Padding(
+                    padding: EdgeInsets.only(left:20, bottom: 20, right: 20, top:20), //apply padding to some sides only
+                    child: Text(
                     '${userData!.aboutme}',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
+                  ),
+                  
                   const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -123,7 +129,7 @@ class UserProfilePageState extends State<UserProfilePage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 60),
+                  const SizedBox(height: 50),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -161,11 +167,24 @@ class UserProfilePageState extends State<UserProfilePage> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                      Text('Are you sure?',  style: Theme.of(context).textTheme.labelLarge),
+                                      Text('Are you sure you want to Log out?',  style: Theme.of(context).textTheme.labelLarge),
                                       SizedBox(height: 20),
                                       ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary:Color.fromRGBO(188, 83, 100, 1), // Background color
+                                        ),
                                         child: Text(
                                         'Log Out',
+                                        style: Theme.of(context).textTheme.labelMedium,
+                                      ), // Change the button text to 'About Me'
+                                        onPressed:(){
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                       ElevatedButton(
+                                        
+                                        child: Text(
+                                        'Cancel',
                                         style: Theme.of(context).textTheme.labelMedium,
                                       ), // Change the button text to 'About Me'
                                         onPressed:(){
