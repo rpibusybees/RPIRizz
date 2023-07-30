@@ -45,7 +45,7 @@ class PhotosPageState extends State<PhotosPage> {
 
     // make a list with non-empty elements
 
-    await db.collection('users').doc(user!.uid).update({'imgUrlList':nonEmptyUrlList});
+    await db.collection('users').doc(user!.uid).update({'imgUrlList':nonEmptyUrlList, "isSetUp" : false});
   }
 
   @override
@@ -72,6 +72,7 @@ class PhotosPageState extends State<PhotosPage> {
             Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     UploadPhotoButton(photoNum: 1, urlList: imageUrlList),
                     UploadPhotoButton(photoNum: 2, urlList: imageUrlList),
@@ -79,6 +80,7 @@ class PhotosPageState extends State<PhotosPage> {
                   ]
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     UploadPhotoButton(photoNum: 4, urlList: imageUrlList),
                     UploadPhotoButton(photoNum: 5, urlList: imageUrlList),
@@ -143,9 +145,10 @@ class UploadPhotoButtonState extends State<UploadPhotoButton> {
   Widget build(BuildContext context) {
     return Container(
       child: IconButton(
+        iconSize: (MediaQuery.sizeOf(context).width / 7) ,
         icon: image != null
             ? Image.file(File(image!.path))
-            : Image.asset('images/marioluigi.jpg'),
+            : const Icon(Icons.add_photo_alternate_outlined),
         onPressed: () async {
           setImage();
         },
