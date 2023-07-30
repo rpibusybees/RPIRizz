@@ -4,7 +4,6 @@
 library lifestylequiz.dart;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rizz/seeking.dart';
 import 'consts.dart';
 import 'genderlifestyleinfo.dart';
 import 'nextbutton.dart';
@@ -20,6 +19,8 @@ class LifestyleQuizPage extends StatefulWidget{
   State<StatefulWidget> createState() => LifestyleQuizPageState();
 }
 
+/// Implements the same thing as [LifestylePage] but for who
+/// the user wants to see in others
 class LifestyleQuizPageState extends State<LifestyleQuizPage>{
 
   @override
