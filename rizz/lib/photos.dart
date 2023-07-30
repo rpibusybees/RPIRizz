@@ -20,6 +20,8 @@ class PhotosPage extends StatefulWidget {
   State<StatefulWidget> createState() => PhotosPageState();
 }
 
+/// Makes the PhotosPage. Contains six 
+/// [UploadPhotoButton]
 class PhotosPageState extends State<PhotosPage> {
   List<String> imageUrlList = List.filled(6, '');
 
@@ -35,16 +37,17 @@ class PhotosPageState extends State<PhotosPage> {
     // get the non-empty elements
     for (int i = 0; i < 6; i++){
        if (imageUrlList[i].isNotEmpty) {
-        nonEmptyUrlList.add(imageUrlList[i]);
         // add to Firestore
         String fileName = DateTime.now().microsecondsSinceEpoch.toString();
         await cloudStorage.child(fileName).putFile(File(imageUrlList[i]));
+        // add to non-empty element list
+        nonEmptyUrlList.add(await cloudStorage.child(fileName).getDownloadURL());
        }
     }
 
     // make a list with non-empty elements
 
-    await db.collection('users').doc(user!.uid).update({'imgUrlList':nonEmptyUrlList});
+    await db.collection('users').doc(user!.uid).update({'imgUrlList':nonEmptyUrlList, "isSetUp" : true});
   }
 
   @override
@@ -71,6 +74,7 @@ class PhotosPageState extends State<PhotosPage> {
             Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     UploadPhotoButton(photoNum: 1, urlList: imageUrlList),
                     UploadPhotoButton(photoNum: 2, urlList: imageUrlList),
@@ -78,6 +82,7 @@ class PhotosPageState extends State<PhotosPage> {
                   ]
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     UploadPhotoButton(photoNum: 4, urlList: imageUrlList),
                     UploadPhotoButton(photoNum: 5, urlList: imageUrlList),
@@ -108,6 +113,8 @@ class PhotosPageState extends State<PhotosPage> {
 
 
 
+
+/// Used for [UploadPhotoButtonState]
 // ignore: must_be_immutable
 class UploadPhotoButton extends StatefulWidget {
   final int photoNum;
@@ -118,6 +125,7 @@ class UploadPhotoButton extends StatefulWidget {
   State<StatefulWidget> createState() => UploadPhotoButtonState();
 }
 
+/// The button that prompts an image. 
 class UploadPhotoButtonState extends State<UploadPhotoButton> {
   XFile? image;
 
@@ -142,9 +150,10 @@ class UploadPhotoButtonState extends State<UploadPhotoButton> {
   Widget build(BuildContext context) {
     return Container(
       child: IconButton(
+        iconSize: (MediaQuery.sizeOf(context).width / 7) ,
         icon: image != null
             ? Image.file(File(image!.path))
-            : Image.asset('images/marioluigi.jpg'),
+            : const Icon(Icons.add_photo_alternate_outlined),
         onPressed: () async {
           setImage();
         },
