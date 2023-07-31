@@ -22,8 +22,8 @@ class InfoOverlay extends StatelessWidget {
       {Key? key,
       required this.carController,
       required this.user,
-      required this.expandInfo
-  })  : super(key: key);
+      required this.expandInfo})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,11 +94,8 @@ class InfoOverlay extends StatelessWidget {
 class PhotoSwipe extends StatefulWidget {
   final UserData? user;
   final Function()? expandInfo;
-  const PhotoSwipe(
-    {Key? key, 
-    required this.user, 
-    required this.expandInfo
-  })  : super(key: key);
+  const PhotoSwipe({Key? key, required this.user, required this.expandInfo})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PhotoSwipeState();
@@ -220,11 +217,8 @@ class LikeDislikeButtons extends StatelessWidget {
 /// The [user] is passed in from the [BrowsingPage] widget.
 class InfoCol extends StatelessWidget {
   final user;
-  
-  const InfoCol(
-    {Key? key, 
-    required this.user
-  }) : super(key: key);
+
+  const InfoCol({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -319,24 +313,30 @@ class _BrowsingPageState extends State<BrowsingPage> {
 
   void getUserData() async {
     final docRef = db.collection('users').doc(user!.uid).withConverter(
-      fromFirestore: UserData.fromFirestore, 
-      toFirestore: (UserData user, SetOptions? options) => user.toFirestore(),
-    );
+          fromFirestore: UserData.fromFirestore,
+          toFirestore: (UserData user, SetOptions? options) =>
+              user.toFirestore(),
+        );
     final userSnap = await docRef.get();
     userData = userSnap.data();
-    await db.collection('users').withConverter(
-      fromFirestore: UserData.fromFirestore, 
-      toFirestore: (UserData user, SetOptions? options) => user.toFirestore(),
-    ).where('gender', whereIn: [['Man']]).get().then(
-      (QuerySnapshot querySnapshot) {
-        for (var doc in querySnapshot.docs) {
-          // takes doc and converts it to a UserData object
-          UserData tempData = doc.data() as UserData;
-          userList!.add(tempData);
-        }
-      }
-    );
-    print(userList![0].imgUrlList![0]);
+    await db
+        .collection('users')
+        .withConverter(
+          fromFirestore: UserData.fromFirestore,
+          toFirestore: (UserData user, SetOptions? options) =>
+              user.toFirestore(),
+        )
+        .where('gender', whereIn: [
+          ['Woman']
+        ])
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+          for (var doc in querySnapshot.docs) {
+            // takes doc and converts it to a UserData object
+            UserData tempData = doc.data() as UserData;
+            userList!.add(tempData);
+          }
+        });
     setState(() {
       loading = false;
     });
