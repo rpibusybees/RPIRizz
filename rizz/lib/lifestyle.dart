@@ -71,7 +71,7 @@ class LifestylePageState extends State<LifestylePage> {
             Container(
               padding: Consts.titleQuestionPadding,
               child: Text(
-                'I am...',
+                'I like/dislike...',
                 style: Theme.of(context).textTheme.displayLarge,
                 textAlign: TextAlign.center,
               ),
