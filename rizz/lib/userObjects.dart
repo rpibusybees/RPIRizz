@@ -55,38 +55,39 @@ class UserData {
 
   Map<String, dynamic> toFirestore() {
     return {
-      if(aboutme != null) 'aboutme': aboutme,
-      if(birthday != null) 'birthday': birthday,
-      if(email != null) 'email': email,
-      if(gender != null) 'gender': gender,
-      if(imgUrlList != null) 'imgUrlList': imgUrlList,
-      if(isSetUp != null) 'isSetUp': isSetUp,
-      if(myDislikes != null) 'myDislikes': myDislikes,
-      if(myLikes != null) 'myLikes': myLikes,
-      if(name != null) 'name': name,
-      if(seeking != null) 'seeking': seeking,
-      if(theirDislikes != null) 'theirDislikes': theirDislikes,
-      if(theirLikes != null) 'theirLikes': theirLikes,
-      if(uid != null) 'uid': uid,
+      if (aboutme != null) 'aboutme': aboutme,
+      if (birthday != null) 'birthday': birthday,
+      if (email != null) 'email': email,
+      if (gender != null) 'gender': gender,
+      if (imgUrlList != null) 'imgUrlList': imgUrlList,
+      if (isSetUp != null) 'isSetUp': isSetUp,
+      if (myDislikes != null) 'myDislikes': myDislikes,
+      if (myLikes != null) 'myLikes': myLikes,
+      if (name != null) 'name': name,
+      if (seeking != null) 'seeking': seeking,
+      if (theirDislikes != null) 'theirDislikes': theirDislikes,
+      if (theirLikes != null) 'theirLikes': theirLikes,
+      if (uid != null) 'uid': uid,
     };
   }
-  int getAge() {
-  // Convert the birthDate Timestamp to a DateTime object
-  DateTime birthDateTime = birthday?.toDate() ?? DateTime.now();
-  
-  // Get the current date as a DateTime object
-  DateTime currentDate = DateTime.now();
-  
-  // Calculate the difference between the current date and the birth date in years
-  int ageInYears = currentDate.year - birthDateTime.year;
-  
-  // Check if the birth date hasn't occurred yet this year
-  if (currentDate.month < birthDateTime.month ||
-      (currentDate.month == birthDateTime.month && currentDate.day < birthDateTime.day)) {
-    ageInYears--;
-  }
-  
-  return ageInYears;
-}
-}
 
+  int getAge() {
+    // Convert the birthDate Timestamp to a DateTime object
+    DateTime birthDateTime = birthday?.toDate() ?? DateTime.now();
+
+    // Get the current date as a DateTime object
+    DateTime currentDate = DateTime.now();
+
+    // Calculate the difference between the current date and the birth date in years
+    int ageInYears = currentDate.year - birthDateTime.year;
+
+    // Check if the birth date hasn't occurred yet this year
+    if (currentDate.month < birthDateTime.month ||
+        (currentDate.month == birthDateTime.month &&
+            currentDate.day < birthDateTime.day)) {
+      ageInYears--;
+    }
+
+    return ageInYears;
+  }
+}

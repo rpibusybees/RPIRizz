@@ -91,6 +91,7 @@ class LifestyleQuizPageState extends State<LifestyleQuizPage> {
               flex: 1,
               child: SingleChildScrollView(
                 child: Wrap(
+                  alignment: WrapAlignment.center,
                   spacing: 10,
                   runSpacing: 10,
                   children: lifestyles

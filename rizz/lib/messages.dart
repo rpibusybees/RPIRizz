@@ -12,12 +12,13 @@ class MessagesPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Matches', 
+            'Matches',
             style: Theme.of(context).textTheme.displayLarge,
           ),
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           centerTitle: true,
+          automaticallyImplyLeading: false,
         ),
         body: Padding(
           padding: Consts.lowPadding,
@@ -56,26 +57,30 @@ class MatchListTile extends StatelessWidget {
       padding: Consts.lowVertPadding,
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: Theme.of(context).colorScheme.onPrimaryContainer),
-          ),
+          top: BorderSide(
+              color: Theme.of(context).colorScheme.onPrimaryContainer),
         ),
+      ),
       child: ListTile(
         leading: Container(
-            width: 60,
-            height: 60,       
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                  width: 2.0,
-                  style: BorderStyle.solid,
-                  color: Colors.transparent,
-                ),
-              gradient: LinearGradient(
-                colors: [Theme.of(context).colorScheme.secondary, Theme.of(context).colorScheme.tertiary],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              width: 2.0,
+              style: BorderStyle.solid,
+              color: Colors.transparent,
             ),
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).colorScheme.secondary,
+                Theme.of(context).colorScheme.tertiary
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
           child: CircleAvatar(
             //radius: MediaQuery.of(context).size.height / 20,
             backgroundImage: AssetImage(profilePicture),
@@ -85,14 +90,14 @@ class MatchListTile extends StatelessWidget {
         title: Text(name),
         titleTextStyle: Theme.of(context).textTheme.titleMedium,
         subtitle: Text(
-              newestMsg,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+          newestMsg,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
         subtitleTextStyle: Theme.of(context).textTheme.labelSmall,
         onTap: () {
           ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Brings you to chat')));
+              const SnackBar(content: Text('Brings you to chat')));
         },
       ),
     );
@@ -111,7 +116,7 @@ class Match {
   });
 }
 
-//HARDCODED FOR TESTING 
+//HARDCODED FOR TESTING
 final List<Match> matches = [
   Match(
     profilePicture: 'assets/barry_profile.jpg',
@@ -121,12 +126,14 @@ final List<Match> matches = [
   Match(
     profilePicture: 'assets/barry_profile2.jpg',
     name: 'Jane Smith',
-    newestMsg: "Hey there, lovely! Are you a queen bee? Because you've got me buzzing with admiration!",
+    newestMsg:
+        "Hey there, lovely! Are you a queen bee? Because you've got me buzzing with admiration!",
   ),
   Match(
     profilePicture: 'assets/FakePhotos/IMG-5204.JPG',
     name: 'Ryan Hickey',
-    newestMsg: "If you give me a chance, I promise to be as sweet as honey and pollinate your world with love! If you give me a chance, I promise to be as sweet as honey and pollinate your world with love!",
+    newestMsg:
+        "If you give me a chance, I promise to be as sweet as honey and pollinate your world with love! If you give me a chance, I promise to be as sweet as honey and pollinate your world with love!",
   ),
   Match(
     profilePicture: 'assets/FakePhotos/IMG-4995.PNG',

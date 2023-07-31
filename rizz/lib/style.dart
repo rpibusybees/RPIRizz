@@ -55,7 +55,7 @@ class RizzTheme {
       fontWeight: FontWeight.w500,
     ),
     labelMedium: TextStyle(
-      color: Color.fromRGBO(255, 248, 245, 1),
+      color: Color.fromRGBO(49, 49, 49, 1),
       fontSize: 16,
       fontWeight: FontWeight.w500,
     ),

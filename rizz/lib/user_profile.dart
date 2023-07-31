@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'userObjects.dart';
 import 'name.dart';
 import 'login.dart';
+
+const bkgSVG = '''
+<svg xmlns="http://www.w3.org/2000/svg" width="393" height="411" viewBox="0 0 393 411" fill="none">
+  <g filter="url(#filter0_d_24_216)">
+    <path d="M393 0L393 354.528C332.11 371.614 265.763 381 196.332 381C127.029 381 60.7978 371.648 0 354.622L6.15047e-05 0H393Z" fill="#FFF8F5"/>
+  </g>
+  <defs>
+    <filter id="filter0_d_24_216" x="-21.8333" y="-14.4436" width="436.667" height="424.667" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="7.38974"/>
+      <feGaussianBlur stdDeviation="10.9167"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.50592 0 0 0 0 0.571885 0 0 0 0 0.670833 0 0 0 0.1 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_24_216"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_24_216" result="shape"/>
+    </filter>
+  </defs>
+</svg>
+''';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({Key? key}) : super(key: key);
@@ -50,11 +71,10 @@ class UserProfilePageState extends State<UserProfilePage> {
         ),
       );
     }
-    
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        
         title: Text(
           'Your Profile',
           style: Theme.of(context).textTheme.displaySmall,
@@ -63,12 +83,15 @@ class UserProfilePageState extends State<UserProfilePage> {
         shadowColor: Theme.of(context).colorScheme.background,
         centerTitle: true,
         elevation: 0,
+        automaticallyImplyLeading: false,
       ),
       body: Stack(
         children: [
           Positioned(
-            // TODO ADD SVG IMAGE HERE
-            child: Container(),
+            child: SvgPicture.string(
+              bkgSVG,
+              width: MediaQuery.sizeOf(context).width,
+            ),
           ),
           Container(
             padding: const EdgeInsets.only(top: 20),
@@ -86,15 +109,17 @@ class UserProfilePageState extends State<UserProfilePage> {
                     '${userData!.name}, ${userData!.getAge()}',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-               
                   Padding(
-                    padding: EdgeInsets.only(left:20, bottom: 20, right: 20, top:20), //apply padding to some sides only
+                    padding: const EdgeInsets.only(
+                        left: 20,
+                        bottom: 20,
+                        right: 20,
+                        top: 20), //apply padding to some sides only
                     child: Text(
-                    '${userData!.aboutme}',
-                    style: Theme.of(context).textTheme.titleSmall,
+                      '${userData!.aboutme}',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
                   ),
-                  ),
-                  
                   const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -117,10 +142,9 @@ class UserProfilePageState extends State<UserProfilePage> {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                        NamePage()));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const NamePage()));
                           },
                           icon: const Icon(
                             Icons.person_2_rounded,
@@ -155,59 +179,62 @@ class UserProfilePageState extends State<UserProfilePage> {
                               )
                             ]),
                         child: ElevatedButton(
-                          child: Text(
-                            'Log Out',
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ), // Change the button text to 'About Me'
                           onPressed: () {
                             showModalBottomSheet(
                               context: context,
-                              
-                              builder: (BuildContext context){
-                                
-                                return  Container(
+                              builder: (BuildContext context) {
+                                return Container(
                                   height: 250,
-                                    color:   Color.fromRGBO(245, 220, 215, 1),
-                                    child: Center(
-                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                  color: Color.fromRGBO(245, 220, 215, 1),
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                      Text('Are you sure you want to Log out?',  style: Theme.of(context).textTheme.labelLarge),
-                                      SizedBox(height: 20),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          primary:Color.fromRGBO(188, 83, 100, 1), // Background color
+                                        Text(
+                                            'Are you sure you want to Log out?',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelLarge),
+                                        const SizedBox(height: 20),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                const Color.fromRGBO(188, 83,
+                                                    100, 1), // Background color
+                                          ),
+                                          child: Text(
+                                            'Log Out',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelMedium,
+                                          ), // Change the button text to 'About Me'
+                                          onPressed: () {
+                                            FirebaseAuth.instance.signOut();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const LoginPage()));
+                                          },
                                         ),
-                                        child: Text(
-                                        'Log Out',
-                                        style: Theme.of(context).textTheme.labelMedium,
-                                      ), // Change the button text to 'About Me'
-                                        onPressed:(){
-                                          Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginPage()));
-                                        },
-                                      ),
-                                       ElevatedButton(
-                                        
-                                        child: Text(
-                                        'Cancel',
-                                        style: Theme.of(context).textTheme.labelMedium,
-                                      ), // Change the button text to 'About Me'
-                                        onPressed:(){
-                                          Navigator.pop(context);
-                                        },
-                                      ),
+                                        ElevatedButton(
+                                          child: Text(
+                                            'Cancel',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelMedium,
+                                          ), // Change the button text to 'About Me'
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
                                       ],
-                                     ),
-
+                                    ),
                                   ),
-                                 
                                 );
-                            },
+                              },
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -217,7 +244,10 @@ class UserProfilePageState extends State<UserProfilePage> {
                             shadowColor:
                                 Colors.transparent, // Hide the button shadow
                           ),
-                          
+                          child: Text(
+                            'Log Out',
+                            style: Theme.of(context).textTheme.labelMedium,
+                          ),
                         ),
                       ),
                     ],

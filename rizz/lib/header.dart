@@ -59,6 +59,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Builder(
       builder: (BuildContext context) {
         return AppBar(
+          automaticallyImplyLeading: false,
           centerTitle: true,
           actions: <Widget>[
             const Spacer(flex: 1),
