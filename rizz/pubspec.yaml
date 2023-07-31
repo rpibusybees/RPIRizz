@@ -1,17 +1,18 @@
 name: rizz
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 assets:
   - .env
 
 environment:
-  sdk: '>=3.0.5 <4.0.0'
+  sdk: ">=3.0.5 <4.0.0"
 
 dependencies:
   cloud_firestore: ^4.8.3
   firebase_app_check: ^0.1.5+1
+  carousel_slider: ^4.2.1
   firebase_auth: ^4.6.3
   firebase_core: ^2.14.0
   firebase_storage: ^11.2.5
@@ -21,6 +22,7 @@ dependencies:
   image: ^4.0.17
   image_picker: ^1.0.1
   permission_handler: ^10.4.3
+  flutter_svg: ^2.0.7
 
 dev_dependencies:
   flutter_test:
@@ -31,7 +33,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/RizzLogoFlask.png
-    - images/
+    - assets/FakePhotos/
+    - assets/barry_profile.jpg
+    - assets/barry_profile2.jpg
   fonts:
     - family: Poppins
       fonts:

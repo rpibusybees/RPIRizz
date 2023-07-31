@@ -4,9 +4,10 @@ library main;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
+import 'header.dart';
 import 'login.dart';
 import 'style.dart';
-import 'photos.dart';
+
 /// [main] intializes Firebase, then calls
 /// ```dart
 /// runApp(const MainApp());
@@ -34,7 +35,7 @@ class MainApp extends StatelessWidget {
         fontFamily: 'Poppins',
         textTheme: RizzTheme.rizzText,
       ),
-      home: const PhotosPage(),
+      home: const HeaderPage(),
       debugShowCheckedModeBanner: false,
     );
   }

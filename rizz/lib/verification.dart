@@ -1,27 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rizz/header.dart';
 import 'package:rizz/name.dart';
 import 'login.dart';
 
-/// Used for making a stateful [ResendVerifyButton] widget.
-class ResendVerifyButton extends StatefulWidget {
+/// Handles a resend verification email attempt. Actual logic for resending
+/// verification email is handled in [ResendVerifyButton.build]
+class ResendVerifyButton extends StatelessWidget {
   final User? user;
 
   const ResendVerifyButton({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => ResendVerifyButtonState();
-}
-
-/// Handles a resend verification email attempt. Actual logic for resending
-/// verification email is handled in [ResendVerifyButtonState.build]
-class ResendVerifyButtonState extends State<ResendVerifyButton> {
-  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
-        await widget.user!.sendEmailVerification();
+        await user!.sendEmailVerification();
       },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
@@ -78,21 +73,31 @@ class _VerificationPageState extends State<VerificationPage> {
         } else if (user != null && user!.emailVerified) {
           // If the user is logged in and email is verified, check user data and navigate to the test page.
           final userRef = db.collection('users').doc(user!.uid);
-          userRef.get().then(
-            (DocumentSnapshot doc) {
-              final userData = doc.data();
-              if (userData == null) {
-                // If user data does not exist, set initial data.
-                final initialData = {
-                  'email': user!.email!,
-                  'isSetUp': false,
-                };
-                userRef.set(initialData);
-              }
-            },
-          );
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const NamePage()));
+          userRef.get().then((DocumentSnapshot doc) {
+            final userData = doc.data();
+            if (userData == null) {
+              // If user data does not exist, set initial data.
+              final initialData = {
+                'email': user!.email!,
+                'isSetUp': false,
+                'uid': user!.uid,
+              };
+              userRef.set(initialData);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const NamePage()));
+            } else {
+              // If user data exists, navigate to the test page.
+              doc.get('isSetUp') == true
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HeaderPage()))
+                  : Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NamePage()));
+            }
+          });
         }
       },
     );

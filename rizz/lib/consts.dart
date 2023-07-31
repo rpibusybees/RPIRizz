@@ -21,7 +21,19 @@ class Consts {
   // padding used to space the questions in the
   // gender and lifestyle pages
   static const EdgeInsets titleQuestionPadding = EdgeInsets.only(top: 50);
-
+  
+  static const EdgeInsets midPadding =
+      EdgeInsets.symmetric(horizontal: 20, vertical: 20);
+  static const EdgeInsets lowPadding =
+      EdgeInsets.symmetric(horizontal: 10, vertical: 10);
+  static const EdgeInsets sidePadding =
+      EdgeInsets.symmetric(horizontal: 20, vertical: 0);
+  static const EdgeInsets vertPadding =
+      EdgeInsets.symmetric(horizontal: 0, vertical: 20);
+  static const EdgeInsets lowVertPadding =
+      EdgeInsets.symmetric(horizontal: 0, vertical: 15);
+  static const EdgeInsets noPadding =
+      EdgeInsets.symmetric(horizontal: 0, vertical: 0);
   // padding used for containing the lifestyle and other bubbles
   // in the lifestyle quiz
   static const EdgeInsets lifestyleBubblePadding =
