@@ -15,7 +15,7 @@ class Gender {
   ];
 
   static List<GenderCheckbox> getGenders() {
-    for (int i = 0; i < checkboxList.length; i++){
+    for (int i = 0; i < checkboxList.length; i++) {
       checkboxList[i].value = false;
     }
     return checkboxList;

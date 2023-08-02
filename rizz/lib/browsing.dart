@@ -6,8 +6,110 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'consts.dart';
 import 'userObjects.dart';
+
+class LifestyleDisplayItem extends StatelessWidget {
+  final String lifestyle;
+
+  const LifestyleDisplayItem({Key? key, required this.lifestyle})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicWidth(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.secondary,
+            width: 1,
+          ),
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+          child: Text(
+            lifestyle,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class LifestyleDisplayBox extends StatefulWidget {
+  final List<dynamic>? lifestyles;
+
+  const LifestyleDisplayBox({Key? key, required this.lifestyles})
+      : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _LifestyleDisplayBoxState();
+}
+
+class _LifestyleDisplayBoxState extends State<LifestyleDisplayBox> {
+  bool? showMore;
+  int? numShown;
+  String? text;
+  int? minShown;
+
+  @override
+  void initState() {
+    super.initState();
+    showMore = false;
+    widget.lifestyles!.length > 4
+        ? minShown = 4
+        : minShown = widget.lifestyles!.length;
+    numShown = minShown;
+    text = 'Show More';
+  }
+
+  void changeState() {
+    setState(() {
+      showMore = !showMore!;
+      showMore! ? numShown = widget.lifestyles!.length : numShown = minShown;
+      showMore! ? text = 'Show Less' : text = 'Show More';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: Consts.lifestyleBubblePadding,
+      child: Wrap(
+        spacing: 10,
+        runSpacing: 10,
+        children: [
+          ...widget.lifestyles!
+              .take(numShown!)
+              .map((lifestyle) => LifestyleDisplayItem(lifestyle: lifestyle))
+              .toList(),
+          IntrinsicWidth(
+            child: TextButton(
+              onPressed: changeState,
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                  side: const BorderSide(
+                    color: Color.fromRGBO(49, 49, 49, 1),
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: Text(
+                text!,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 /// Handles the name and extra button at the bottom of the screen
 /// for the [PhotoSwipe] widget.
@@ -125,7 +227,7 @@ class _PhotoSwipeState extends State<PhotoSwipe> {
               .toList(),
           carouselController: _controller,
           options: CarouselOptions(
-            height: MediaQuery.of(context).size.height * 0.75,
+            height: MediaQuery.of(context).size.height * 0.70,
             aspectRatio: 1,
             viewportFraction: 1,
             autoPlay: false,
@@ -216,7 +318,7 @@ class LikeDislikeButtons extends StatelessWidget {
 /// It contains the user's pronouns, about me, and lifestyle and interests.
 /// The [user] is passed in from the [BrowsingPage] widget.
 class InfoCol extends StatelessWidget {
-  final user;
+  final UserData user;
 
   const InfoCol({Key? key, required this.user}) : super(key: key);
 
@@ -227,16 +329,6 @@ class InfoCol extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: Consts.lowPadding,
-                child: Icon(Icons.face),
-              ),
-              Text('Add Pronouns'),
-            ],
-          ),
           Divider(
             thickness: 1,
             color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -251,7 +343,7 @@ class InfoCol extends StatelessWidget {
           ),
           Container(
             padding: Consts.sidePadding,
-            child: Text('I hate Alex'),
+            child: Text(user.aboutme!),
           ),
           Divider(
             thickness: 1,
@@ -267,7 +359,7 @@ class InfoCol extends StatelessWidget {
           ),
           Container(
             padding: Consts.sidePadding,
-            child: Text(user!.myLikes.join(', ')),
+            child: LifestyleDisplayBox(lifestyles: user.myLikes),
           ),
         ],
       ),
@@ -326,28 +418,39 @@ class _BrowsingPageState extends State<BrowsingPage> {
           toFirestore: (UserData user, SetOptions? options) =>
               user.toFirestore(),
         )
-        .where('gender', whereIn: [
-          ['Woman']
-        ])
         .get()
-        .then((QuerySnapshot querySnapshot) {
-          for (var doc in querySnapshot.docs) {
-            // takes doc and converts it to a UserData object
-            UserData tempData = doc.data() as UserData;
+        .then(
+      (QuerySnapshot querySnapshot) {
+        for (var doc in querySnapshot.docs) {
+          // takes doc and converts it to a UserData object
+          UserData tempData = doc.data() as UserData;
+          // if the user has already seen this user, skip
+          if (userData!.seen!.contains(tempData.uid)) continue;
+          // Check if there's any common element between the user's gender and seeking lists
+          bool hasCommonGender = false;
+          for (var gender in tempData.gender ?? []) {
+            if (userData!.seeking!.contains(gender)) {
+              hasCommonGender = true;
+            }
+          }
+
+          if (hasCommonGender) {
             userList!.add(tempData);
           }
-        });
+        }
+      },
+    );
     setState(() {
       loading = false;
     });
   }
 
-  onLike() {
+  onNextUser() {
     setState(
       () {
-        currentUser != null && currentUser! < userList!.length - 1
-            ? currentUser = currentUser! + 1
-            : currentUser = 0;
+        if (currentUser == null) return;
+        // remove current user then go to the next user
+        userList!.removeAt(currentUser!);
         moreInfo = 0.0;
         _scrollController!.animateTo(
           _scrollController!.position.minScrollExtent,
@@ -358,20 +461,55 @@ class _BrowsingPageState extends State<BrowsingPage> {
     );
   }
 
+  onLike() async {
+    db.collection('users').doc(user!.uid).update({
+      'seen': FieldValue.arrayUnion([userList![currentUser!].uid]),
+      'likedUsers': FieldValue.arrayUnion([userList![currentUser!].uid]),
+    });
+    if (userList![currentUser!].likedUsers!.contains(user!.uid)) {
+      await db.collection('matches').add({
+        'users': {
+          user!.uid: {
+            'name': userData!.name,
+            'photo': userData!.imgUrlList![0],
+          },
+          userList![currentUser!].uid: {
+            'name': userList![currentUser!].name,
+            'photo': userList![currentUser!].imgUrlList![0],
+          },
+        },
+        'newestMessage': 'Send them a message!',
+        'timestamp': FieldValue.serverTimestamp(),
+      }).then(
+        (value) => {
+          // add the match.id to both users in the database
+          db.collection('users').doc(user!.uid).update({
+            'matches': FieldValue.arrayUnion([value.id]),
+          }),
+          db.collection('users').doc(userList![currentUser!].uid).update({
+            'matches': FieldValue.arrayUnion([value.id]),
+          }),
+        },
+      );
+      Fluttertoast.showToast(
+        msg: 'You matched with ${userList![currentUser!].name}!',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        // ignore: use_build_context_synchronously
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        // ignore: use_build_context_synchronously
+        textColor: Theme.of(context).colorScheme.background,
+      );
+    }
+
+    onNextUser();
+  }
+
   onDislike() {
-    setState(
-      () {
-        currentUser != null && currentUser! < userList!.length - 1
-            ? currentUser = currentUser! + 1
-            : currentUser = 0;
-        moreInfo = 0.0;
-        _scrollController!.animateTo(
-          _scrollController!.position.minScrollExtent,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        );
-      },
-    );
+    db.collection('users').doc(user!.uid).update({
+      'seen': FieldValue.arrayUnion([userList![currentUser!].uid]),
+    });
+    onNextUser();
   }
 
   scrollUp() {
@@ -449,6 +587,9 @@ class _BrowsingPageState extends State<BrowsingPage> {
               ),
               PhotoSwipe(
                   user: userList![currentUser ?? 0], expandInfo: expandInfo),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .01,
+              ),
               LikeDislikeButtons(
                 currUser: currentUser,
                 onLike: onLike,

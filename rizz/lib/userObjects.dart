@@ -7,10 +7,13 @@ class UserData {
   final List<dynamic>? gender;
   final List<dynamic>? imgUrlList;
   final bool? isSetUp;
+  final List<dynamic>? likedUsers;
+  final List<dynamic>? matches;
   final List<dynamic>? myDislikes;
   final List<dynamic>? myLikes;
   final String? name;
   final List<dynamic>? seeking;
+  final List<dynamic>? seen;
   final List<dynamic>? theirDislikes;
   final List<dynamic>? theirLikes;
   final String? uid;
@@ -22,10 +25,13 @@ class UserData {
     this.gender,
     this.imgUrlList,
     this.isSetUp,
+    this.likedUsers,
+    this.matches,
     this.myDislikes,
     this.myLikes,
     this.name,
     this.seeking,
+    this.seen,
     this.theirDislikes,
     this.theirLikes,
     this.uid,
@@ -43,10 +49,13 @@ class UserData {
       gender: data?['gender'],
       imgUrlList: data?['imgUrlList'],
       isSetUp: data?['isSetUp'],
+      likedUsers: data?['likedUsers'],
+      matches: data?['matches'],
       myDislikes: data?['myDislikes'],
       myLikes: data?['myLikes'],
       name: data?['name'],
       seeking: data?['seeking'],
+      seen: data?['seen'],
       theirDislikes: data?['theirDislikes'],
       theirLikes: data?['theirLikes'],
       uid: data?['uid'],
@@ -61,10 +70,13 @@ class UserData {
       if (gender != null) 'gender': gender,
       if (imgUrlList != null) 'imgUrlList': imgUrlList,
       if (isSetUp != null) 'isSetUp': isSetUp,
+      if (likedUsers != null) 'likedUsers': likedUsers,
+      if (matches != null) 'matches': matches,
       if (myDislikes != null) 'myDislikes': myDislikes,
       if (myLikes != null) 'myLikes': myLikes,
       if (name != null) 'name': name,
       if (seeking != null) 'seeking': seeking,
+      if (seen != null) 'seen': seen,
       if (theirDislikes != null) 'theirDislikes': theirDislikes,
       if (theirLikes != null) 'theirLikes': theirLikes,
       if (uid != null) 'uid': uid,
@@ -90,4 +102,59 @@ class UserData {
 
     return ageInYears;
   }
+}
+
+class MatchData {
+  final Map<String, UserInfo>? users;
+  final String? newestMessage;
+  final Timestamp? timestamp;
+
+  MatchData({
+    this.users,
+    this.newestMessage,
+    this.timestamp,
+  });
+
+  factory MatchData.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    final usersData = (data?['users'] as Map<String, dynamic>).map(
+      (uid, MatchData) => MapEntry(
+        uid,
+        UserInfo(
+          name: MatchData['name'],
+          photo: MatchData['photo'],
+        ),
+      ),
+    );
+
+    return MatchData(
+      users: usersData,
+      newestMessage: data?['newestMessage'],
+      timestamp: data?['timestamp'],
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      'users': users?.map((uid, MatchData) => MapEntry(uid, {
+            'name': MatchData.name,
+            'photo': MatchData.photo,
+          })),
+      'newestMessage': newestMessage,
+      'timestamp': timestamp,
+    };
+  }
+}
+
+class UserInfo {
+  final String name;
+  final String photo;
+
+  UserInfo({
+    required this.name,
+    required this.photo,
+  });
 }

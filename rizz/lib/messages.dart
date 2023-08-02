@@ -1,12 +1,60 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'userObjects.dart';
 import 'consts.dart';
 
-class MessagesPage extends StatelessWidget {
+class MessagesPage extends StatefulWidget {
   const MessagesPage({Key? key}) : super(key: key);
 
   @override
+  State<MessagesPage> createState() => _MessagesPageState();
+}
+
+class _MessagesPageState extends State<MessagesPage> {
+  User? user;
+  UserData? userData;
+  final db = FirebaseFirestore.instance;
+  Stream<QuerySnapshot>? _mathcesStream;
+  bool _loading = false;
+  List<MatchData>? matches;
+
+  @override
+  void initState() {
+    super.initState();
+    user = FirebaseAuth.instance.currentUser;
+    getUserData();
+  }
+
+  void getUserData() async {
+    final docRef = db.collection('users').doc(user!.uid).withConverter(
+          fromFirestore: UserData.fromFirestore,
+          toFirestore: (UserData user, SetOptions? options) =>
+              user.toFirestore(),
+        );
+    final userSnap = await docRef.get();
+    userData = userSnap.data();
+    setState(() {
+      _mathcesStream = db
+          .collection('matches')
+          .where(FieldPath.documentId, whereIn: userData!.matches)
+          .withConverter<MatchData>(
+            fromFirestore: (snapshot, options) =>
+                MatchData.fromFirestore(snapshot, options),
+            toFirestore: (match, options) => match.toFirestore(),
+          )
+          .snapshots();
+      _loading = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_loading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Padding(
       padding: Consts.vertPadding,
       child: Scaffold(
@@ -15,21 +63,57 @@ class MessagesPage extends StatelessWidget {
             'Matches',
             style: Theme.of(context).textTheme.displayLarge,
           ),
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          shadowColor: Theme.of(context).colorScheme.background,
           centerTitle: true,
+          elevation: 0,
           automaticallyImplyLeading: false,
         ),
         body: Padding(
           padding: Consts.lowPadding,
-          child: ListView.builder(
-            itemCount: matches.length,
-            itemBuilder: (BuildContext context, int index) {
-              final match = matches[index];
-              return MatchListTile(
-                profilePicture: match.profilePicture,
-                name: match.name,
-                newestMsg: match.newestMsg,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: _mathcesStream,
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.data == null) {
+                return const Center(child: Text('No data available'));
+              }
+
+              if (snapshot.data!.docs.isEmpty) {
+                return const Center(child: Text('No matches yet'));
+              }
+
+              matches = snapshot.data!.docs
+                  .map((doc) => doc.data())
+                  .cast<MatchData>()
+                  .toList();
+              // order matches by timestamp
+              matches!.sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
+
+              return ListView.builder(
+                itemCount: matches!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final match = matches![index];
+                  final matchedUserUid = match.users!.keys.firstWhere(
+                    (uid) => uid != user!.uid,
+                    orElse: () => '',
+                  );
+                  final matchedUserInfo = match.users![matchedUserUid];
+
+                  return MatchListTile(
+                    profilePicture: matchedUserInfo!.photo,
+                    name: matchedUserInfo.name,
+                    newestMsg: match.newestMessage!,
+                  );
+                },
               );
             },
           ),
@@ -83,7 +167,7 @@ class MatchListTile extends StatelessWidget {
           ),
           child: CircleAvatar(
             //radius: MediaQuery.of(context).size.height / 20,
-            backgroundImage: AssetImage(profilePicture),
+            backgroundImage: NetworkImage(profilePicture),
             radius: 80,
           ),
         ),
@@ -103,42 +187,3 @@ class MatchListTile extends StatelessWidget {
     );
   }
 }
-
-class Match {
-  final String profilePicture;
-  final String name;
-  final String newestMsg;
-
-  const Match({
-    required this.profilePicture,
-    required this.name,
-    required this.newestMsg,
-  });
-}
-
-//HARDCODED FOR TESTING
-final List<Match> matches = [
-  Match(
-    profilePicture: 'assets/barry_profile.jpg',
-    name: 'Barry B Benson',
-    newestMsg: 'Ya like Jazz',
-  ),
-  Match(
-    profilePicture: 'assets/barry_profile2.jpg',
-    name: 'Jane Smith',
-    newestMsg:
-        "Hey there, lovely! Are you a queen bee? Because you've got me buzzing with admiration!",
-  ),
-  Match(
-    profilePicture: 'assets/FakePhotos/IMG-5204.JPG',
-    name: 'Ryan Hickey',
-    newestMsg:
-        "If you give me a chance, I promise to be as sweet as honey and pollinate your world with love! If you give me a chance, I promise to be as sweet as honey and pollinate your world with love!",
-  ),
-  Match(
-    profilePicture: 'assets/FakePhotos/IMG-4995.PNG',
-    name: 'Alex Orr',
-    newestMsg: "Sup",
-  ),
-  // Add more messages here
-];

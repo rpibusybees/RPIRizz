@@ -69,5 +69,10 @@ class RizzTheme {
       fontSize: 16,
       fontWeight: FontWeight.w400,
     ),
+    bodySmall: TextStyle(
+      color: Color.fromRGBO(49, 49, 49, 1),
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+    ),
   );
 }

@@ -81,6 +81,8 @@ class _VerificationPageState extends State<VerificationPage> {
                 'email': user!.email!,
                 'isSetUp': false,
                 'uid': user!.uid,
+                'seen': [],
+                'matches': [],
               };
               userRef.set(initialData);
               Navigator.push(context,
