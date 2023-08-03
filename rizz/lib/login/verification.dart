@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rizz/header.dart';
-import 'package:rizz/name.dart';
+import '../header.dart';
+import '../questionnaire/name.dart';
 import 'login.dart';
 
 /// Handles a resend verification email attempt. Actual logic for resending

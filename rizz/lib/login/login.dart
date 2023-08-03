@@ -4,7 +4,7 @@ library login;
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'consts.dart';
+import '../consts.dart';
 import 'login_register_helpers.dart';
 
 import 'register.dart';

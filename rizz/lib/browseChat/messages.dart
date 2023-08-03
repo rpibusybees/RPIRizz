@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'userObjects.dart';
-import 'consts.dart';
+import '../userObjects.dart';
+import '../consts.dart';
 
 class MessagesPage extends StatefulWidget {
   const MessagesPage({Key? key}) : super(key: key);
@@ -181,7 +181,7 @@ class MatchListTile extends StatelessWidget {
         subtitleTextStyle: Theme.of(context).textTheme.labelSmall,
         onTap: () {
           ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Brings you to chat')));
+              SnackBar(content: Text('Brings you to with $name')));
         },
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rizz/user_profile.dart';
-import 'browsing.dart';
-import 'messages.dart';
+import 'package:rizz/profile/user_profile.dart';
+import 'browseChat/browsing.dart';
+import 'browseChat/messages.dart';
 
 class HeaderPage extends StatefulWidget {
   const HeaderPage({super.key});
