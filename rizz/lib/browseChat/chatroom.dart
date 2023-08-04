@@ -71,8 +71,7 @@ class _ChatPageState extends State<ChatPage> {
             style: Theme.of(context).textTheme.displayLarge,
           ),
           iconTheme: IconThemeData(
-              color: Theme.of(context).colorScheme.onPrimaryContainer
-          ),
+              color: Theme.of(context).colorScheme.onPrimaryContainer),
           // backgroundColor: Theme.of(context).colorScheme.primary,
           // shadowColor: Theme.of(context).colorScheme.background,
           // elevation: 0,
@@ -164,7 +163,9 @@ class _ChatListTileState extends State<ChatListTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: widget.self ? Theme.of(context).colorScheme.tertiary : Theme.of(context).colorScheme.surface,
+      color: widget.self
+          ? Theme.of(context).colorScheme.tertiary
+          : Theme.of(context).colorScheme.surface,
       padding: Consts.lowPadding,
       child: ListTile(
         title: Text(widget.msg),
@@ -176,6 +177,66 @@ class _ChatListTileState extends State<ChatListTile> {
           setState(() {
             time = !time!;
           });
+        },
+      ),
+    );
+  }
+}
+
+class SendMessage extends StatefulWidget {
+  final TextEditingController? controller;
+
+  const SendMessage({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _SendMessageState();
+}
+
+class _SendMessageState extends State<SendMessage> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: TextFormField(
+        autocorrect: false,
+        autofocus: false,
+        controller: widget.controller,
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(
+                // add onSecondary as border color
+                color: Theme.of(context).colorScheme.onSecondary,
+                width: 2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.error, width: 2),
+          ),
+          labelText: 'Message ...',
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.arrow_circle_up_outlined),
+            onPressed: () {},
+          ),
+          filled: true,
+          fillColor: Theme.of(context).colorScheme.secondary,
+          labelStyle: Theme.of(context).textTheme.labelMedium,
+        ),
+        keyboardType: TextInputType.text,
+        textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.done,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'Please enter a message';
+          }
+          return null;
         },
       ),
     );
