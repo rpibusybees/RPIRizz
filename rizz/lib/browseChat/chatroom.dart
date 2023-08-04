@@ -7,7 +7,7 @@ import '../consts.dart';
 class ChatPage extends StatefulWidget {
   final MatchData match;
   const ChatPage({Key? key, required this.match}) : super(key: key);
-  
+
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
@@ -46,7 +46,10 @@ class _ChatPageState extends State<ChatPage> {
             toFirestore: (chat, options) => chat.toFirestore(),
           )
           .snapshots();
-          String matchID = widget.match.users!.keys.firstWhere((element) => element != user!.uid, orElse: () => '',);
+      String matchID = widget.match.users!.keys.firstWhere(
+        (element) => element != user!.uid,
+        orElse: () => '',
+      );
       matchName = widget.match.users![matchID]!.name;
       _loading = false;
     });
@@ -63,12 +66,12 @@ class _ChatPageState extends State<ChatPage> {
       padding: Consts.vertPadding,
       child: Scaffold(
         appBar: AppBar(
-          
           title: Text(
             matchName ?? 'Chat',
             style: Theme.of(context).textTheme.displayLarge,
           ),
-          iconTheme: IconThemeData(color: Theme.of(context).colorScheme.onPrimaryContainer),
+          iconTheme: IconThemeData(
+              color: Theme.of(context).colorScheme.onPrimaryContainer),
           // backgroundColor: Theme.of(context).colorScheme.primary,
           // shadowColor: Theme.of(context).colorScheme.background,
           // elevation: 0,
@@ -108,10 +111,20 @@ class _ChatPageState extends State<ChatPage> {
                 itemBuilder: (BuildContext context, int index) {
                   final chat = chats![index];
                   bool isUser = chat.sender == user!.uid ? true : false;
-                  return ChatListTile(
-                    msg: chat.message!,
-                    time: chat.formatChatTimestamp(),
-                    self: isUser,
+                  return Align(
+                    alignment:
+                        isUser ? Alignment.centerRight : Alignment.centerLeft,
+                    child: IntrinsicWidth(
+                      child: Container(
+                        constraints: BoxConstraints(
+                            maxWidth: MediaQuery.sizeOf(context).width * 0.7),
+                        child: ChatListTile(
+                          msg: chat.message!,
+                          time: chat.formatChatTimestamp(),
+                          self: isUser,
+                        ),
+                      ),
+                    ),
                   );
                 },
               );
@@ -140,7 +153,7 @@ class ChatListTile extends StatefulWidget {
 }
 
 class _ChatListTileState extends State<ChatListTile> {
-  bool?  time;
+  bool? time;
   @override
   void initState() {
     super.initState();
@@ -149,22 +162,20 @@ class _ChatListTileState extends State<ChatListTile> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 200,
-      child: Container(
-        color: widget.self ? Colors.blue : Colors.green,
-        padding: Consts.lowPadding,
-        child: ListTile(
-          minLeadingWidth: 200,
-          title: Text(widget.msg),
-          titleTextStyle: Theme.of(context).textTheme.bodySmall,
-          subtitle: time == true ? Text(widget.time, style: Theme.of(context).textTheme.titleSmall) : null,
-         onTap: () {
-           setState(() {
-             time = !time!;
-           });
-          },
-        ),
+    return Container(
+      color: widget.self ? Colors.blue : Colors.green,
+      padding: Consts.lowPadding,
+      child: ListTile(
+        title: Text(widget.msg),
+        titleTextStyle: Theme.of(context).textTheme.bodySmall,
+        subtitle: time == true
+            ? Text(widget.time, style: Theme.of(context).textTheme.titleSmall)
+            : null,
+        onTap: () {
+          setState(() {
+            time = !time!;
+          });
+        },
       ),
     );
   }
