@@ -71,7 +71,8 @@ class _ChatPageState extends State<ChatPage> {
             style: Theme.of(context).textTheme.displayLarge,
           ),
           iconTheme: IconThemeData(
-              color: Theme.of(context).colorScheme.onPrimaryContainer),
+              color: Theme.of(context).colorScheme.onPrimaryContainer
+          ),
           // backgroundColor: Theme.of(context).colorScheme.primary,
           // shadowColor: Theme.of(context).colorScheme.background,
           // elevation: 0,
@@ -163,7 +164,7 @@ class _ChatListTileState extends State<ChatListTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: widget.self ? Colors.blue : Colors.green,
+      color: widget.self ? Theme.of(context).colorScheme.tertiary : Theme.of(context).colorScheme.surface,
       padding: Consts.lowPadding,
       child: ListTile(
         title: Text(widget.msg),
