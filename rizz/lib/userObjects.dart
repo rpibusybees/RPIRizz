@@ -162,3 +162,39 @@ class UserInfo {
     required this.photo,
   });
 }
+
+class ChatData {
+  final String? matchID;
+  final String? message;
+  final Timestamp? timestamp;
+  final String? sender;
+
+  ChatData({
+    this.matchID,
+    this.message,
+    this.timestamp,
+    this.sender,
+  });
+
+  factory ChatData.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    return ChatData(
+      matchID: data?['matchID'],
+      message: data?['message'],
+      timestamp: data?['timestamp'],
+      sender: data?['sender'],
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      if (matchID != null) 'matchID': matchID,
+      if (message != null) 'message': message,
+      if (timestamp != null) 'timestamp': timestamp,
+      if (sender != null) 'sender': sender,
+    };
+  }
+}
