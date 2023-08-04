@@ -108,11 +108,13 @@ class MatchData {
   final Map<String, UserInfo>? users;
   final String? newestMessage;
   final Timestamp? timestamp;
+  final String? matchID;
 
   MatchData({
     this.users,
     this.newestMessage,
     this.timestamp,
+    this.matchID,
   });
 
   factory MatchData.fromFirestore(
@@ -134,6 +136,7 @@ class MatchData {
       users: usersData,
       newestMessage: data?['newestMessage'],
       timestamp: data?['timestamp'],
+      matchID: snapshot.id,
     );
   }
 
@@ -145,6 +148,7 @@ class MatchData {
           })),
       'newestMessage': newestMessage,
       'timestamp': timestamp,
+      'matchID': matchID,
     };
   }
 }

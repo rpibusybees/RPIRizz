@@ -107,9 +107,9 @@ class _MessagesPageState extends State<MessagesPage> {
                     orElse: () => '',
                   );
                   final matchedUserInfo = match.users![matchedUserUid];
-
+                  if (matchedUserInfo == null) return const SizedBox.shrink();
                   return MatchListTile(
-                    profilePicture: matchedUserInfo!.photo,
+                    profilePicture: matchedUserInfo.photo,
                     name: matchedUserInfo.name,
                     newestMsg: match.newestMessage!,
                   );

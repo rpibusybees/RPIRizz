@@ -489,6 +489,10 @@ class _BrowsingPageState extends State<BrowsingPage> {
           db.collection('users').doc(userList![currentUser!].uid).update({
             'matches': FieldValue.arrayUnion([value.id]),
           }),
+          // add the match.id to the match document
+          db.collection('matches').doc(value.id).update({
+            'matchID': value.id,
+          }),
         },
       );
       Fluttertoast.showToast(
