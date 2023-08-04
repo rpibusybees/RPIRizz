@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../userObjects.dart';
 import '../consts.dart';
 import 'chatroom.dart';
@@ -109,14 +108,18 @@ class _MessagesPageState extends State<MessagesPage> {
                   final matchedUserInfo = match.users![matchedUserUid];
                   if (matchedUserInfo == null) return const SizedBox.shrink();
                   return MatchListTile(
-                    profilePicture: matchedUserInfo.photo,
-                    name: matchedUserInfo.name,
-                    newestMsg: match.newestMessage!,
-                    nav: () => { Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ChatPage(match: match,)),
-              )}
-                  );
+                      profilePicture: matchedUserInfo.photo,
+                      name: matchedUserInfo.name,
+                      newestMsg: match.newestMessage!,
+                      nav: () => {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChatPage(
+                                        match: match,
+                                      )),
+                            )
+                          });
                 },
               );
             },
