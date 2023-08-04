@@ -213,22 +213,28 @@ class _ChatListTileState extends State<ChatListTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: widget.self
-          ? Theme.of(context).colorScheme.tertiary
-          : Theme.of(context).colorScheme.surface,
-      padding: Consts.lowPadding,
-      child: ListTile(
-        title: Text(widget.msg),
-        titleTextStyle: Theme.of(context).textTheme.bodySmall,
-        subtitle: time == true
-            ? Text(widget.time, style: Theme.of(context).textTheme.titleSmall)
-            : null,
-        onTap: () {
-          setState(() {
-            time = !time!;
-          });
-        },
+    return Padding(
+      padding: const EdgeInsets.all(1),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Container(
+          color: widget.self
+              ? Theme.of(context).colorScheme.surface
+              : Theme.of(context).colorScheme.primary,
+          padding: Consts.chatPadding,
+          child: ListTile(
+            title: Text(widget.msg),
+            titleTextStyle: Theme.of(context).textTheme.bodyMedium,
+            subtitle: time == true
+                ? Text(widget.time, style: Theme.of(context).textTheme.titleSmall)
+                : null,
+            onTap: () {
+              setState(() {
+                time = !time!;
+              });
+            }
+          ),
+        ),
       ),
     );
   }
@@ -274,7 +280,7 @@ class SendMessage extends StatelessWidget {
             ),
             labelText: 'Message ...',
             filled: true,
-            fillColor: Theme.of(context).colorScheme.secondary,
+            fillColor: Theme.of(context).colorScheme.surface,
             labelStyle: Theme.of(context).textTheme.labelMedium,
           ),
           keyboardType: TextInputType.text,
@@ -291,3 +297,5 @@ class SendMessage extends StatelessWidget {
     );
   }
 }
+
+

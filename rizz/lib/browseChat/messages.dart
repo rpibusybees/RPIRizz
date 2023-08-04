@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../userObjects.dart';
 import '../consts.dart';
 import 'chatroom.dart';
@@ -52,9 +53,7 @@ class _MessagesPageState extends State<MessagesPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return Consts.loadingHeart;
     }
     return Padding(
       padding: Consts.vertPadding,
