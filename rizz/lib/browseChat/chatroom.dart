@@ -20,11 +20,15 @@ class _ChatPageState extends State<ChatPage> {
   Stream<QuerySnapshot>? _chatStream;
   bool _loading = false;
   List<ChatData>? chats;
+  TextEditingController? _controller;
+  GlobalKey<FormState>? _formKey;
 
   @override
   void initState() {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
+    _controller = TextEditingController();
+    _formKey = GlobalKey<FormState>();
     getUserData();
   }
 
@@ -56,6 +60,12 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   @override
+  void dispose() {
+    _controller!.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (_loading) {
       return const Center(
@@ -72,64 +82,105 @@ class _ChatPageState extends State<ChatPage> {
           ),
           iconTheme: IconThemeData(
               color: Theme.of(context).colorScheme.onPrimaryContainer),
-          // backgroundColor: Theme.of(context).colorScheme.primary,
-          // shadowColor: Theme.of(context).colorScheme.background,
-          // elevation: 0,
           centerTitle: true,
         ),
-        body: Padding(
-          padding: Consts.lowPadding,
-          child: StreamBuilder<QuerySnapshot>(
-            stream: _chatStream,
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              }
+        body: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: Consts.lowPadding,
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: _chatStream,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
 
-              if (snapshot.data == null) {
-                return const Center(child: Text('No data available'));
-              }
+                    if (snapshot.data == null) {
+                      return const Center(child: Text('No data available'));
+                    }
 
-              if (snapshot.data!.docs.isEmpty) {
-                return const Center(child: Text('Start Chatting'));
-              }
+                    if (snapshot.data!.docs.isEmpty) {
+                      return const Center(child: Text('Start Chatting'));
+                    }
 
-              chats = snapshot.data!.docs
-                  .map((doc) => doc.data())
-                  .cast<ChatData>()
-                  .toList();
-              // order matches by timestamp
-              chats!.sort((a, b) => a.timestamp!.compareTo(b.timestamp!));
+                    chats = snapshot.data!.docs
+                        .map((doc) => doc.data())
+                        .cast<ChatData>()
+                        .toList();
+                    // order matches by timestamp
+                    chats!.sort((a, b) => a.timestamp!.compareTo(b.timestamp!));
 
-              return ListView.builder(
-                itemCount: chats!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final chat = chats![index];
-                  bool isUser = chat.sender == user!.uid ? true : false;
-                  return Align(
-                    alignment:
-                        isUser ? Alignment.centerRight : Alignment.centerLeft,
-                    child: IntrinsicWidth(
-                      child: Container(
-                        constraints: BoxConstraints(
-                            maxWidth: MediaQuery.sizeOf(context).width * 0.7),
-                        child: ChatListTile(
-                          msg: chat.message!,
-                          time: chat.formatChatTimestamp(),
-                          self: isUser,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+                    return ListView.builder(
+                      itemCount: chats!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final chat = chats![index];
+                        bool isUser = chat.sender == user!.uid ? true : false;
+                        return Align(
+                          alignment: isUser
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          child: IntrinsicWidth(
+                            child: Container(
+                              constraints: BoxConstraints(
+                                  maxWidth:
+                                      MediaQuery.sizeOf(context).width * 0.7),
+                              child: ChatListTile(
+                                msg: chat.message!,
+                                time: chat.formatChatTimestamp(),
+                                self: isUser,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: SendMessage(
+                    controller: _controller,
+                    formKey: _formKey,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_circle_up_outlined,
+                    size: 40,
+                  ),
+                  onPressed: () async {
+                    if (_formKey!.currentState!.validate()) {
+                      final chat = ChatData(
+                        matchID: widget.match.matchID,
+                        message: _controller!.text,
+                        timestamp: Timestamp.now(),
+                        sender: user!.uid,
+                      );
+                      await db.collection('chats').add(chat.toFirestore());
+
+                      await db
+                          .collection('matches')
+                          .doc(widget.match.matchID)
+                          .update({
+                        'newestMessage': _controller!.text,
+                        'timestamp': Timestamp.now(),
+                      });
+                      _controller!.clear();
+                    }
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -183,61 +234,59 @@ class _ChatListTileState extends State<ChatListTile> {
   }
 }
 
-class SendMessage extends StatefulWidget {
+class SendMessage extends StatelessWidget {
   final TextEditingController? controller;
+  final GlobalKey<FormState>? formKey;
 
   const SendMessage({
     Key? key,
     required this.controller,
+    required this.formKey,
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SendMessageState();
-}
-
-class _SendMessageState extends State<SendMessage> {
-  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: TextFormField(
-        autocorrect: false,
-        autofocus: false,
-        controller: widget.controller,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+    return Form(
+      key: formKey,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: TextFormField(
+          maxLength: 160,
+          maxLines: null,
+          autocorrect: false,
+          autofocus: false,
+          controller: controller,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide(
+                  // add onSecondary as border color
+                  color: Theme.of(context).colorScheme.onSecondary,
+                  width: 2),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error, width: 2),
+            ),
+            labelText: 'Message ...',
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.secondary,
+            labelStyle: Theme.of(context).textTheme.labelMedium,
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            borderSide: BorderSide(
-                // add onSecondary as border color
-                color: Theme.of(context).colorScheme.onSecondary,
-                width: 2),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.error, width: 2),
-          ),
-          labelText: 'Message ...',
-          suffixIcon: IconButton(
-            icon: const Icon(Icons.arrow_circle_up_outlined),
-            onPressed: () {},
-          ),
-          filled: true,
-          fillColor: Theme.of(context).colorScheme.secondary,
-          labelStyle: Theme.of(context).textTheme.labelMedium,
+          keyboardType: TextInputType.text,
+          textCapitalization: TextCapitalization.sentences,
+          textInputAction: TextInputAction.done,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a message';
+            }
+            return null;
+          },
         ),
-        keyboardType: TextInputType.text,
-        textCapitalization: TextCapitalization.sentences,
-        textInputAction: TextInputAction.done,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return 'Please enter a message';
-          }
-          return null;
-        },
       ),
     );
   }
