@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../userObjects.dart';
 import '../consts.dart';
+import 'chatroom.dart';
 
 class MessagesPage extends StatefulWidget {
   const MessagesPage({Key? key}) : super(key: key);
@@ -112,6 +113,10 @@ class _MessagesPageState extends State<MessagesPage> {
                     profilePicture: matchedUserInfo.photo,
                     name: matchedUserInfo.name,
                     newestMsg: match.newestMessage!,
+                    nav: () => { Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ChatPage(match: match,)),
+              )}
                   );
                 },
               );
@@ -127,12 +132,14 @@ class MatchListTile extends StatelessWidget {
   final String profilePicture;
   final String name;
   final String newestMsg;
+  final Function() nav;
 
   const MatchListTile({
     Key? key,
     required this.profilePicture,
     required this.name,
     required this.newestMsg,
+    required this.nav,
   }) : super(key: key);
 
   @override
@@ -179,10 +186,7 @@ class MatchListTile extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         subtitleTextStyle: Theme.of(context).textTheme.labelSmall,
-        onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Brings you to with $name')));
-        },
+        onTap: nav,
       ),
     );
   }
