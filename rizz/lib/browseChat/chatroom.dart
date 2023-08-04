@@ -62,8 +62,9 @@ class _ChatPageState extends State<ChatPage> {
       padding: Consts.vertPadding,
       child: Scaffold(
         appBar: AppBar(
+          iconTheme: IconThemeData(color:Colors.blue),
           title: Text(
-            '$matchName',
+            widget.match.users![matchName]!.name,
             style: Theme.of(context).textTheme.displayLarge,
           ),
           // backgroundColor: Theme.of(context).colorScheme.primary,
