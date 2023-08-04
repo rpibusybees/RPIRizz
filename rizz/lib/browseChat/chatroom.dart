@@ -46,7 +46,8 @@ class _ChatPageState extends State<ChatPage> {
             toFirestore: (chat, options) => chat.toFirestore(),
           )
           .snapshots();
-      matchName = widget.match.users!.keys.firstWhere((element) => element != user!.uid, orElse: () => '',);
+          String matchID = widget.match.users!.keys.firstWhere((element) => element != user!.uid, orElse: () => '',);
+      matchName = widget.match.users![matchID]!.name;
       _loading = false;
     });
   }
@@ -62,11 +63,12 @@ class _ChatPageState extends State<ChatPage> {
       padding: Consts.vertPadding,
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color:Colors.blue),
+          
           title: Text(
-            widget.match.users![matchName]!.name,
+            matchName ?? 'Chat',
             style: Theme.of(context).textTheme.displayLarge,
           ),
+          iconTheme: IconThemeData(color: Theme.of(context).colorScheme.onPrimaryContainer),
           // backgroundColor: Theme.of(context).colorScheme.primary,
           // shadowColor: Theme.of(context).colorScheme.background,
           // elevation: 0,
@@ -91,7 +93,7 @@ class _ChatPageState extends State<ChatPage> {
               }
 
               if (snapshot.data!.docs.isEmpty) {
-                return const Center(child: Text('No matches yet'));
+                return const Center(child: Text('Start Chatting'));
               }
 
               chats = snapshot.data!.docs
@@ -147,23 +149,22 @@ class _ChatListTileState extends State<ChatListTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: Consts.lowVertPadding,
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-              color: Theme.of(context).colorScheme.onPrimaryContainer),
+    return SizedBox(
+      width: 200,
+      child: Container(
+        color: widget.self ? Colors.blue : Colors.green,
+        padding: Consts.lowPadding,
+        child: ListTile(
+          minLeadingWidth: 200,
+          title: Text(widget.msg),
+          titleTextStyle: Theme.of(context).textTheme.bodySmall,
+          subtitle: time == true ? Text(widget.time, style: Theme.of(context).textTheme.titleSmall) : null,
+         onTap: () {
+           setState(() {
+             time = !time!;
+           });
+          },
         ),
-      ),
-      child: ListTile(
-        title: Text(widget.msg),
-        titleTextStyle: Theme.of(context).textTheme.bodySmall,
-        subtitle: time == true ? Text(widget.time, style: Theme.of(context).textTheme.titleSmall) : null,
-       onTap: () {
-         setState(() {
-           time = !time!;
-         });
-        },
       ),
     );
   }
