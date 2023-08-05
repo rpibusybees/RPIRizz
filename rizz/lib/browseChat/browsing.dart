@@ -413,6 +413,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
     userData = userSnap.data();
     await db
         .collection('users')
+        .where('uid', isNotEqualTo: user!.uid)
         .withConverter(
           fromFirestore: UserData.fromFirestore,
           toFirestore: (UserData user, SetOptions? options) =>
@@ -612,7 +613,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
     } else {
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
-        body: Consts.loadingHeart, 
+        body: Consts.loadingHeart,
       );
     }
   }
