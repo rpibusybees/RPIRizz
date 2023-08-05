@@ -68,94 +68,95 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return Consts.loadingHeart;
     }
-    return Padding(
-      padding: Consts.vertPadding,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            matchName ?? 'Chat',
-            style: Theme.of(context).textTheme.displayLarge,
-          ),
-          iconTheme: IconThemeData(
-              color: Theme.of(context).colorScheme.onPrimaryContainer),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          matchName ?? 'Chat',
+          style: Theme.of(context).textTheme.displayLarge,
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: Consts.lowPadding,
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: _chatStream,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    }
+        iconTheme: IconThemeData(
+            color: Theme.of(context).colorScheme.onPrimaryContainer),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: Consts.lowPadding,
+              child: StreamBuilder<QuerySnapshot>(
+                stream: _chatStream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                    if (snapshot.data == null) {
-                      return const Center(child: Text('No data available'));
-                    }
+                  if (snapshot.data == null) {
+                    return const Center(child: Text('No data available'));
+                  }
 
-                    if (snapshot.data!.docs.isEmpty) {
-                      return const Center(child: Text('Start Chatting'));
-                    }
+                  if (snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text('Start Chatting'));
+                  }
 
-                    chats = snapshot.data!.docs
-                        .map((doc) => doc.data())
-                        .cast<ChatData>()
-                        .toList();
-                    // order matches by timestamp
-                    chats!.sort((a, b) => a.timestamp!.compareTo(b.timestamp!));
+                  chats = snapshot.data!.docs
+                      .map((doc) => doc.data())
+                      .cast<ChatData>()
+                      .toList();
+                  // order matches by timestamp
+                  chats!.sort((a, b) => a.timestamp!.compareTo(b.timestamp!));
 
-                    return ListView.builder(
-                      itemCount: chats!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final chat = chats![index];
-                        bool isUser = chat.sender == user!.uid ? true : false;
-                        return Align(
-                          alignment: isUser
-                              ? Alignment.centerRight
-                              : Alignment.centerLeft,
-                          child: IntrinsicWidth(
-                            child: Container(
-                              constraints: BoxConstraints(
-                                  maxWidth:
-                                      MediaQuery.sizeOf(context).width * 0.7),
-                              child: ChatListTile(
-                                msg: chat.message!,
-                                time: chat.formatChatTimestamp(),
-                                self: isUser,
-                              ),
+                  return ListView.builder(
+                    itemCount: chats!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final chat = chats![index];
+                      bool isUser = chat.sender == user!.uid ? true : false;
+                      return Align(
+                        alignment: isUser
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: IntrinsicWidth(
+                          child: Container(
+                            constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.sizeOf(context).width * 0.7),
+                            child: ChatListTile(
+                              msg: chat.message!,
+                              time: chat.formatChatTimestamp(),
+                              self: isUser,
                             ),
                           ),
-                        );
-                      },
-                    );
-                  },
-                ),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: SendMessage(
-                    controller: _controller,
-                    formKey: _formKey,
-                  ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: SendMessage(
+                  controller: _controller,
+                  formKey: _formKey,
                 ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.arrow_circle_up_outlined,
-                    size: 40,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 20, top: 10),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.assistant_navigation, //arrow_circle_up_outlined
+                    size: 50,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   onPressed: () async {
                     if (_formKey!.currentState!.validate()) {
@@ -166,7 +167,7 @@ class _ChatPageState extends State<ChatPage> {
                         sender: user!.uid,
                       );
                       await db.collection('chats').add(chat.toFirestore());
-
+              
                       await db
                           .collection('matches')
                           .doc(widget.match.matchID)
@@ -178,10 +179,10 @@ class _ChatPageState extends State<ChatPage> {
                     }
                   },
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -232,7 +233,7 @@ class _ChatListTileState extends State<ChatListTile> {
               setState(() {
                 time = !time!;
               });
-            }
+            },
           ),
         ),
       ),
@@ -255,7 +256,7 @@ class SendMessage extends StatelessWidget {
     return Form(
       key: formKey,
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0),
         child: TextFormField(
           maxLength: 160,
           maxLines: null,

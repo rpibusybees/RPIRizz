@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../consts.dart';
 import '../header.dart';
 import '../questionnaire/name.dart';
 import 'login.dart';
@@ -112,9 +113,7 @@ class _VerificationPageState extends State<VerificationPage> {
       return Scaffold(
         body: Container(
           color: Theme.of(context).colorScheme.background,
-          child: const Center(
-            child: CircularProgressIndicator(),
-          ),
+          child: Consts.loadingHeart,
         ),
       );
     }

@@ -612,9 +612,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
     } else {
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
-        body: const Center(
-          child: CircularProgressIndicator(),
-        ),
+        body: Consts.loadingHeart, 
       );
     }
   }
