@@ -36,6 +36,26 @@ class AboutMePageState extends State<AboutMePage> {
     super.dispose();
   }
 
+  void textPopup(){
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+          content: const Text(
+            "Please make an about me under 250 characters."
+          ),
+          title: const Text('Error'),
+        ),
+      );
+  }
+
   // adds about me text to database
   void addAboutMeToDatabase(String aboutme) async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -91,14 +111,19 @@ class AboutMePageState extends State<AboutMePage> {
               margin: Consts.bottomButtonPadding,
               child: NextButton(
                 onPressed: (){
-                  // TODO: see if about me is valid
                   String aboutme = controller.text;
-                  addAboutMeToDatabase(aboutme);
+                  if (aboutme.length < 250){
+                    addAboutMeToDatabase(aboutme);
                   
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PhotosPage()),
-                  );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const PhotosPage()),
+                    );
+                  }
+                  else{
+                    textPopup();
+                  }
+                  
                 }
               ),
             ),

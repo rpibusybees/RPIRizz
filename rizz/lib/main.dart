@@ -4,7 +4,7 @@ library main;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
-import 'name.dart';
+import 'login.dart';
 import 'style.dart';
 
 /// [main] intializes Firebase, then calls
@@ -34,7 +34,7 @@ class MainApp extends StatelessWidget {
         fontFamily: 'Poppins',
         textTheme: RizzTheme.rizzText,
       ),
-      home: const NamePage(),
+      home: const LoginPage(),
       debugShowCheckedModeBanner: false,
     );
   }
