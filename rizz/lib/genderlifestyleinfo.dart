@@ -20,6 +20,15 @@ class Gender {
     }
     return checkboxList;
   }
+
+  static bool noneChecked(){
+    for (int i = 0; i < checkboxList.length; i++){
+      if (checkboxList[i].value == true){
+        return false;
+      }
+    }
+    return true;
+  }
 }
 
 /// Contains the data structure for a gender checkbox.

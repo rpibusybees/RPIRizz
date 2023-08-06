@@ -1,3 +1,4 @@
 {
-  "cmake.configureOnOpen": true
+  "cmake.configureOnOpen": true,
+  "cmake.sourceDirectory": "C:/Users/alexandorr/Desktop/Schoolwork/SDND/flutter/repobranch/rizz/build/windows/extracted/firebase_cpp_sdk"
 }

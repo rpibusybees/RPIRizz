@@ -44,7 +44,28 @@ class SeekingPageState extends State<SeekingPage>{
     await db.collection('users').doc(user!.uid).update({"seeking": getGender()});
   }
 
-
+    // pop-up for when no genders are added
+  // for when the user puts in an empty name
+  void textPopup(){
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+          content: const Text(
+            "Please select at least one gender."
+          ),
+          title: const Text('Error'),
+        ),
+      );
+  }
+  
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -84,11 +105,16 @@ class SeekingPageState extends State<SeekingPage>{
               margin: Consts.bottomButtonPadding,
               child: NextButton(
                 onPressed: (){
-                  uploadSeekingToDatabase();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LifestyleQuizPage()),
-                  );
+                  if (!Gender.noneChecked()){
+                    uploadSeekingToDatabase();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LifestyleQuizPage()),
+                    );
+                  }
+                  else {
+                    textPopup();
+                  }
 
                 }
               ),

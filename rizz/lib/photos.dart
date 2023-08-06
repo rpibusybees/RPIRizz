@@ -26,6 +26,40 @@ class PhotosPage extends StatefulWidget {
 class PhotosPageState extends State<PhotosPage> {
   List<String> imageUrlList = List.filled(6, '');
 
+
+  // for when the user puts in an empty name
+  void textPopup(){
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+          content: const Text(
+            "Please enter at least one photo."
+          ),
+          title: const Text('Error'),
+        ),
+      );
+  }
+
+  /// checks to see if we would be pushing 
+  /// an empty list to database
+  bool isNotEmpty(){
+    // get the non-empty elements
+    for (int i = 0; i < 6; i++) {
+      if (imageUrlList[i].isNotEmpty) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /// uploads imgUrlList to Firebase
   /// uploads actual image files to Firestore
   uploadImagesToDatabase() async {
@@ -89,12 +123,18 @@ class PhotosPageState extends State<PhotosPage> {
                 Container(
                   margin: Consts.bottomButtonPadding,
                   child: NextButton(onPressed: () {
-                    uploadImagesToDatabase();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HeaderPage()),
-                    );
+                    if (isNotEmpty()){
+                      uploadImagesToDatabase();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HeaderPage()),
+                      );
+                    }
+                    else{
+                      textPopup();
+                    }
+                    
                   }),
                 ),
               ]),

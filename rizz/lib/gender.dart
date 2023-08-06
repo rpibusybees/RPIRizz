@@ -46,6 +46,27 @@ class GenderPageState extends State<GenderPage>{
     await db.collection('users').doc(user!.uid).update({"gender": getGender()});
   }
 
+  // pop-up for when no genders are added
+  // for when the user puts in an empty name
+  void textPopup(){
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+          content: const Text(
+            "Please select at least one gender."
+          ),
+          title: const Text('Error'),
+        ),
+      );
+  }
 
   @override
   Widget build(BuildContext context){
@@ -86,11 +107,17 @@ class GenderPageState extends State<GenderPage>{
               margin: Consts.bottomButtonPadding,
               child: NextButton(
                 onPressed: (){
-                  uploadGenderToDatabase();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LifestylePage()),
-                  );
+                  if (!Gender.noneChecked()){
+                    uploadGenderToDatabase();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LifestylePage()),
+                    );
+                  }
+                  else {
+                    textPopup();
+                  }
+                  
 
                 }
               ),

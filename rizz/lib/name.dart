@@ -43,6 +43,27 @@ class NamePageState extends State<NamePage> {
     await db.collection('users').doc(user!.uid).update({"name": name});
   }
 
+  // for when the user puts in an empty name
+  void textPopup(){
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+          content: const Text(
+            "Please enter a name."
+          ),
+          title: const Text('Error'),
+        ),
+      );
+  }
+
   /*
   * Sized Box
   * Text
@@ -91,14 +112,18 @@ class NamePageState extends State<NamePage> {
               margin: Consts.bottomButtonPadding,
               child: NextButton(
                 onPressed: (){
-                  // TODO: see if name is valid
                   String name = controller.text;
-                  addNameToDatabase(name);
+                  if (name.isNotEmpty) {
+                    addNameToDatabase(name);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const BirthdayPage()),
+                    );
+                  }
+                  else{
+                    textPopup();
+                  }
                   
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const BirthdayPage()),
-                  );
                 }
               ),
             ),
