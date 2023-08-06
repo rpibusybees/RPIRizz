@@ -49,7 +49,7 @@ class AboutMePageState extends State<AboutMePage> {
             ),
           ],
           content: const Text(
-            "Please make an about me under 250 characters."
+            "Please make an about me under 100 characters."
           ),
           title: const Text('Error'),
         ),
@@ -112,7 +112,7 @@ class AboutMePageState extends State<AboutMePage> {
               child: NextButton(
                 onPressed: (){
                   String aboutme = controller.text;
-                  if (aboutme.length < 250){
+                  if (aboutme.length < 100){
                     addAboutMeToDatabase(aboutme);
                   
                     Navigator.push(
