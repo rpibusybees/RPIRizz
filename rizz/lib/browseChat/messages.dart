@@ -36,6 +36,10 @@ class _MessagesPageState extends State<MessagesPage> {
     final userSnap = await docRef.get();
     userData = userSnap.data();
     setState(() {
+      if (userData!.matches!.isEmpty) {
+        _mathcesStream = null;
+        return;
+      }
       _mathcesStream = db
           .collection('matches')
           .where(FieldPath.documentId, whereIn: userData!.matches)
@@ -83,7 +87,7 @@ class _MessagesPageState extends State<MessagesPage> {
               }
 
               if (snapshot.data == null) {
-                return const Center(child: Text('No data available'));
+                return const Center(child: Text('No matches yet'));
               }
 
               if (snapshot.data!.docs.isEmpty) {

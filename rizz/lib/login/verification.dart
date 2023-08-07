@@ -83,7 +83,8 @@ class _VerificationPageState extends State<VerificationPage> {
                 'isSetUp': false,
                 'uid': user!.uid,
                 'seen': [],
-                'matches': [''],
+                'matches': [],
+                'likedUsers': [],
               };
               userRef.set(initialData);
               Navigator.push(context,

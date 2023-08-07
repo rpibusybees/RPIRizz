@@ -463,7 +463,7 @@ class _BrowsingPageState extends State<BrowsingPage> {
   }
 
   onLike() async {
-    db.collection('users').doc(user!.uid).update({
+    await db.collection('users').doc(user!.uid).update({
       'seen': FieldValue.arrayUnion([userList![currentUser!].uid]),
       'likedUsers': FieldValue.arrayUnion([userList![currentUser!].uid]),
     });
