@@ -22,6 +22,7 @@ class _ChatPageState extends State<ChatPage> {
   List<ChatData>? chats;
   TextEditingController? _controller;
   GlobalKey<FormState>? _formKey;
+  ScrollController? _scrollController;
 
   @override
   void initState() {
@@ -29,6 +30,7 @@ class _ChatPageState extends State<ChatPage> {
     user = FirebaseAuth.instance.currentUser;
     _controller = TextEditingController();
     _formKey = GlobalKey<FormState>();
+    _scrollController = ScrollController();
     getUserData();
   }
 
@@ -59,9 +61,19 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  void scrollDown() {
+    if (_scrollController == null) return;
+    _scrollController!.animateTo(
+      _scrollController!.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
+
   @override
   void dispose() {
     _controller!.dispose();
+    _scrollController!.dispose();
     super.dispose();
   }
 
@@ -113,10 +125,16 @@ class _ChatPageState extends State<ChatPage> {
                   chats!.sort((a, b) => a.timestamp!.compareTo(b.timestamp!));
 
                   return ListView.builder(
+                    controller: _scrollController,
                     itemCount: chats!.length,
                     itemBuilder: (BuildContext context, int index) {
                       final chat = chats![index];
                       bool isUser = chat.sender == user!.uid ? true : false;
+                      // scroll to the bottom of the screen whenever a new message is sent
+                      if (index == chats!.length - 1) {
+                        WidgetsBinding.instance
+                            .addPostFrameCallback((_) => scrollDown());
+                      }
                       return Align(
                         alignment: isUser
                             ? Alignment.centerRight
@@ -167,7 +185,7 @@ class _ChatPageState extends State<ChatPage> {
                         sender: user!.uid,
                       );
                       await db.collection('chats').add(chat.toFirestore());
-              
+
                       await db
                           .collection('matches')
                           .doc(widget.match.matchID)
@@ -176,6 +194,7 @@ class _ChatPageState extends State<ChatPage> {
                         'timestamp': Timestamp.now(),
                       });
                       _controller!.clear();
+                      // scrollDown();
                     }
                   },
                 ),
@@ -227,7 +246,8 @@ class _ChatListTileState extends State<ChatListTile> {
             title: Text(widget.msg),
             titleTextStyle: Theme.of(context).textTheme.bodyMedium,
             subtitle: time == true
-                ? Text(widget.time, style: Theme.of(context).textTheme.titleSmall)
+                ? Text(widget.time,
+                    style: Theme.of(context).textTheme.titleSmall)
                 : null,
             onTap: () {
               setState(() {
@@ -298,5 +318,3 @@ class SendMessage extends StatelessWidget {
     );
   }
 }
-
-
