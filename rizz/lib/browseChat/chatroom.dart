@@ -23,6 +23,7 @@ class _ChatPageState extends State<ChatPage> {
   TextEditingController? _controller;
   GlobalKey<FormState>? _formKey;
   ScrollController? _scrollController;
+  bool? firstLoad;
 
   @override
   void initState() {
@@ -31,6 +32,7 @@ class _ChatPageState extends State<ChatPage> {
     _controller = TextEditingController();
     _formKey = GlobalKey<FormState>();
     _scrollController = ScrollController();
+    firstLoad = true;
     getUserData();
   }
 
@@ -134,6 +136,12 @@ class _ChatPageState extends State<ChatPage> {
                       if (index == chats!.length - 1) {
                         WidgetsBinding.instance
                             .addPostFrameCallback((_) => scrollDown());
+                      }
+                      // on initial load, scroll to the bottom of the screen
+                      if (index == 0 && firstLoad == true) {
+                        WidgetsBinding.instance
+                            .addPostFrameCallback((_) => scrollDown());
+                        firstLoad = false;
                       }
                       return Align(
                         alignment: isUser
