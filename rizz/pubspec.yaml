@@ -35,7 +35,7 @@ dev_dependencies:
 flutter_launcher_icons:
   andoid: "launcher_icon"
   ios: true
-  image_path: "assets/RizzLogoFlaskCircle.png"
+  image_path: "assets/RizzLogo.png"
 
 flutter:
   uses-material-design: true
