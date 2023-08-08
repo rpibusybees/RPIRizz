@@ -1,27 +1,25 @@
-/// The user will be asked for what
-/// gender(s) they identify as.
-/// This value(s) will be uploaded 
-/// into the database.
-library gender;
+/// This page is about the genders that the user
+/// is seeking out for in others.
+library seeking.dart;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rizz/nextbutton.dart';
-import 'consts.dart';
+import '../consts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'genderlifestyleinfo.dart';
-import 'lifestyle.dart';
+import 'lifestylequiz.dart';
 
-/// Used for making the Gender Page.
-class GenderPage extends StatefulWidget{
-  const GenderPage({Key? key}) : super(key: key);
+/// Used for making the Seeking Page.
+class SeekingPage extends StatefulWidget{
+  const SeekingPage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => GenderPageState();
+  State<StatefulWidget> createState() => SeekingPageState();
 }
 
-/// Makes the Gender Page. 
+/// Makes the Seeking Page. 
 /// Contains text, a list of checkboxes, and the confirm button.
-class GenderPageState extends State<GenderPage>{
+class SeekingPageState extends State<SeekingPage>{
 
   @override
   void initState() {
@@ -40,13 +38,34 @@ class GenderPageState extends State<GenderPage>{
   }
 
   // function to upload data to database
-  void uploadGenderToDatabase() async{
+  void uploadSeekingToDatabase() async{
     User? user = FirebaseAuth.instance.currentUser;
     final db = FirebaseFirestore.instance;
-    await db.collection('users').doc(user!.uid).update({"gender": getGender()});
+    await db.collection('users').doc(user!.uid).update({"seeking": getGender()});
   }
 
-
+    // pop-up for when no genders are added
+  // for when the user puts in an empty name
+  void textPopup(){
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+          content: const Text(
+            "Please select at least one gender."
+          ),
+          title: const Text('Error'),
+        ),
+      );
+  }
+  
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -57,7 +76,7 @@ class GenderPageState extends State<GenderPage>{
             Container(
               padding: Consts.titleQuestionPadding,
               child: Text(
-                'What do you identify as?',
+                'I am looking to date a ',
                 style: Theme.of(context).textTheme.displayLarge,
                 textAlign: TextAlign.center,
               ),
@@ -86,11 +105,16 @@ class GenderPageState extends State<GenderPage>{
               margin: Consts.bottomButtonPadding,
               child: NextButton(
                 onPressed: (){
-                  uploadGenderToDatabase();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LifestylePage()),
-                  );
+                  if (!Gender.noneChecked()){
+                    uploadSeekingToDatabase();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LifestyleQuizPage()),
+                    );
+                  }
+                  else {
+                    textPopup();
+                  }
 
                 }
               ),

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'userObjects.dart';
-import 'name.dart';
-import 'login.dart';
+import 'package:rizz/consts.dart';
+import '../userObjects.dart';
+import '../questionnaire/name.dart';
+import '../login/login.dart';
 
 const bkgSVG = '''
 <svg xmlns="http://www.w3.org/2000/svg" width="393" height="411" viewBox="0 0 393 411" fill="none">
@@ -66,9 +67,7 @@ class UserProfilePageState extends State<UserProfilePage> {
     if (loading == true) {
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
-        body: const Center(
-          child: CircularProgressIndicator(),
-        ),
+        body: Consts.loadingHeart,
       );
     }
 

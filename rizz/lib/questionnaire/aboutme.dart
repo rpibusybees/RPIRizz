@@ -4,11 +4,11 @@ library aboutme;
 
 import 'package:flutter/material.dart';
 import 'photos.dart';
-import 'consts.dart';
-import 'nextbutton.dart';
+import '../consts.dart';
+import '../nextbutton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'spacingbox.dart';
+import '../spacingbox.dart';
 
 
 /// Needed for the [AboutMePageState] class.
@@ -34,6 +34,26 @@ class AboutMePageState extends State<AboutMePage> {
   void dispose() {
     controller.dispose();
     super.dispose();
+  }
+
+  void textPopup(){
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+          content: const Text(
+            "Please make an about me under 100 characters."
+          ),
+          title: const Text('Error'),
+        ),
+      );
   }
 
   // adds about me text to database
@@ -91,14 +111,19 @@ class AboutMePageState extends State<AboutMePage> {
               margin: Consts.bottomButtonPadding,
               child: NextButton(
                 onPressed: (){
-                  // TODO: see if about me is valid
                   String aboutme = controller.text;
-                  addAboutMeToDatabase(aboutme);
+                  if (aboutme.length < 100){
+                    addAboutMeToDatabase(aboutme);
                   
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PhotosPage()),
-                  );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const PhotosPage()),
+                    );
+                  }
+                  else{
+                    textPopup();
+                  }
+                  
                 }
               ),
             ),

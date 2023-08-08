@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Consts {
   Consts._();
@@ -38,4 +39,12 @@ class Consts {
   // in the lifestyle quiz
   static const EdgeInsets lifestyleBubblePadding =
       EdgeInsets.only(left: 15, right: 15);
+  static const EdgeInsets chatPadding =
+      EdgeInsets.symmetric(horizontal: 2, vertical: 2);
+  static const Center loadingHeart =  Center(
+        child: SpinKitPumpingHeart(
+        color: Color.fromRGBO(188, 83, 100, 1),
+        size: 50.0,
+      ),
+      );
 }
