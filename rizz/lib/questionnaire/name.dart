@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../spacingbox.dart';
 
+
 /// Needed for the [NamePageState] class.
 class NamePage extends StatefulWidget {
   const NamePage({Key? key}) : super(key: key);
@@ -42,6 +43,27 @@ class NamePageState extends State<NamePage> {
     await db.collection('users').doc(user!.uid).update({"name": name});
   }
 
+  // for when the user puts in an empty name
+  void textPopup(){
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+          content: const Text(
+            "Please enter a name."
+          ),
+          title: const Text('Error'),
+        ),
+      );
+  }
+
   /*
   * Sized Box
   * Text
@@ -51,52 +73,63 @@ class NamePageState extends State<NamePage> {
   */
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          color: Theme.of(context).colorScheme.background,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                const SpacingBox(),
-                Container(
-                  padding: Consts.questionPadding,
-                  child: Text(
-                    'What is your name?',
-                    style: Theme.of(context).textTheme.displayLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Container(
-                  padding: Consts.fieldPadding,
-                  child: TextField(
-                    controller: controller,
-                    decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 1,
-                              color: Theme.of(context).colorScheme.onSurface)),
-                      hintText: 'Name',
-                    ),
-                  ),
-                ),
-                const SpacingBox(),
-                Container(
-                  margin: Consts.bottomButtonPadding,
-                  child: NextButton(onPressed: () {
-                    // TODO: see if name is valid
-                    String name = controller.text;
-                    addNameToDatabase(name);
 
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        color: Theme.of(context).colorScheme.background,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const SpacingBox(),
+            Container(
+              padding: Consts.questionPadding,
+              child: Text(
+                'What is your name?',
+                style: Theme.of(context).textTheme.displayLarge,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            
+            Container(
+              padding: Consts.fieldPadding,
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1, 
+                      color: Theme.of(context).colorScheme.onSurface
+                    )
+                  ),
+                  hintText: 'Name',
+                ),
+              ),
+            ),
+            const SpacingBox(),
+            Container(
+              margin: Consts.bottomButtonPadding,
+              child: NextButton(
+                onPressed: (){
+                  String name = controller.text;
+                  if (name.isNotEmpty) {
+                    addNameToDatabase(name);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const BirthdayPage()),
+                      MaterialPageRoute(builder: (context) => const BirthdayPage()),
                     );
-                  }),
-                ),
-              ]),
-        ));
+                  }
+                  else{
+                    textPopup();
+                  }
+                  
+                }
+              ),
+            ),
+          ]
+        ),
+      )
+    );  
   }
 }
