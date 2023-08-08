@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../spacingbox.dart';
 
+
 /// Needed for the [AboutMePageState] class.
 class AboutMePage extends StatefulWidget {
   const AboutMePage({Key? key}) : super(key: key);
@@ -35,6 +36,26 @@ class AboutMePageState extends State<AboutMePage> {
     super.dispose();
   }
 
+  void textPopup(){
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+          content: const Text(
+            "Please make an about me under 100 characters."
+          ),
+          title: const Text('Error'),
+        ),
+      );
+  }
+
   // adds about me text to database
   void addAboutMeToDatabase(String aboutme) async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -51,52 +72,64 @@ class AboutMePageState extends State<AboutMePage> {
   */
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          color: Theme.of(context).colorScheme.background,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                const SpacingBox(),
-                Container(
-                  padding: Consts.questionPadding,
-                  child: Text(
-                    'About Me',
-                    style: Theme.of(context).textTheme.displayLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Container(
-                  padding: Consts.fieldPadding,
-                  child: TextField(
-                    controller: controller,
-                    decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              width: 1,
-                              color: Theme.of(context).colorScheme.onSurface)),
-                      hintText: 'About You',
-                    ),
-                  ),
-                ),
-                const SpacingBox(),
-                Container(
-                  margin: Consts.bottomButtonPadding,
-                  child: NextButton(onPressed: () {
-                    // TODO: see if about me is valid
-                    String aboutme = controller.text;
-                    addAboutMeToDatabase(aboutme);
 
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        color: Theme.of(context).colorScheme.background,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const SpacingBox(),
+            Container(
+              padding: Consts.questionPadding,
+              child: Text(
+                'About Me',
+                style: Theme.of(context).textTheme.displayLarge,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            
+            Container(
+              padding: Consts.fieldPadding,
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1, 
+                      color: Theme.of(context).colorScheme.onSurface
+                    )
+                  ),
+                  hintText: 'About You',
+                ),
+              ),
+            ),
+            const SpacingBox(),
+            Container(
+              margin: Consts.bottomButtonPadding,
+              child: NextButton(
+                onPressed: (){
+                  String aboutme = controller.text;
+                  if (aboutme.length < 100){
+                    addAboutMeToDatabase(aboutme);
+                  
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const PhotosPage()),
+                      MaterialPageRoute(builder: (context) => const PhotosPage()),
                     );
-                  }),
-                ),
-              ]),
-        ));
+                  }
+                  else{
+                    textPopup();
+                  }
+                  
+                }
+              ),
+            ),
+          ]
+        ),
+      )
+    );  
   }
 }
