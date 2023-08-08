@@ -3,6 +3,7 @@ library main;
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'firebase_options.dart';
 import 'login/login.dart';
 import 'style.dart';
@@ -14,6 +15,7 @@ import 'style.dart';
 /// which takes the user to the [LoginPage].
 ///
 Future<void> main() async {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
