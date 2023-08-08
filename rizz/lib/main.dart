@@ -15,8 +15,11 @@ import 'style.dart';
 /// which takes the user to the [LoginPage].
 ///
 Future<void> main() async {
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   WidgetsFlutterBinding.ensureInitialized();
+  // Set the device orientation to portrait up only.
+  SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp],
+  );
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
