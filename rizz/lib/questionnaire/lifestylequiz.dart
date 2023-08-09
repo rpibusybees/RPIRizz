@@ -58,10 +58,12 @@ class LifestyleQuizPageState extends State<LifestyleQuizPage> {
   void uploadLifestyleQuizToDatabase() async {
     User? user = FirebaseAuth.instance.currentUser;
     final db = FirebaseFirestore.instance;
+    List<String> likes = getLikes();
+    List<String> dislikes = getDislikes();
     await db
         .collection('users')
         .doc(user!.uid)
-        .update({"theirLikes": getLikes(), "theirDislikes": getDislikes()});
+        .update({"theirLikes": likes, "theirDislikes": dislikes});
   }
 
   @override
@@ -102,12 +104,32 @@ class LifestyleQuizPageState extends State<LifestyleQuizPage> {
             ),
             Container(
               margin: Consts.bottomButtonPadding,
-              child: NextButton(onPressed: () {
-                uploadLifestyleQuizToDatabase();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AboutMePage()),
-                );
+              child: NextButton(onPressed: () async {
+                if (getLikes().isNotEmpty) {
+                  uploadLifestyleQuizToDatabase();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AboutMePage()),
+                  );
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                      content: const Text(
+                          "Please select at least one lifestyle you like."),
+                      title: const Text('Error'),
+                    ),
+                  );
+                }
               }),
             ),
           ],
