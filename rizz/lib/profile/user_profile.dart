@@ -71,191 +71,188 @@ class UserProfilePageState extends State<UserProfilePage> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        title: Text(
-          'Your Profile',
-          style: Theme.of(context).textTheme.displaySmall,
-        ),
-        backgroundColor: Theme.of(context).colorScheme.background,
-        shadowColor: Theme.of(context).colorScheme.background,
-        centerTitle: true,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-      ),
-      body: Stack(
-        children: [
-          Positioned(
-            child: SvgPicture.string(
-              bkgSVG,
-              width: MediaQuery.sizeOf(context).width,
-            ),
+    return Container(
+      padding: Consts.lowVertPadding,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Theme.of(context).colorScheme.background, Theme.of(context).colorScheme.surface], 
           ),
-          Container(
-            padding: const EdgeInsets.only(top: 20),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 100,
-                    backgroundImage: NetworkImage(userData!.imgUrlList![0]),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    '${userData!.name}, ${userData!.getAge()}',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20,
-                        bottom: 20,
-                        right: 20,
-                        top: 20), //apply padding to some sides only
-                    child: Text(
-                      '${userData!.aboutme}',
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 200,
-                        height: 70,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: const Color.fromRGBO(245, 220, 215,
-                                1), // Customize the button color here
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                spreadRadius: 4,
-                                blurRadius: 10,
-                                offset: const Offset(0, 3),
-                              )
-                            ]),
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const NamePage()));
-                          },
-                          icon: const Icon(
-                            Icons.person_2_rounded,
-                            size: 24.0,
-                            color: Colors.black,
-                          ),
-                          label: Text(
-                            'Edit Information',
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 50),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 200,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: const Color.fromRGBO(188, 83, 100,
-                                1), // Customize the button color here
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                spreadRadius: 4,
-                                blurRadius: 10,
-                                offset: const Offset(0, 3),
-                              )
-                            ]),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Container(
-                                  height: 250,
-                                  color: Color.fromRGBO(245, 220, 215, 1),
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Text(
-                                            'Are you sure you want to Log out?',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelLarge),
-                                        const SizedBox(height: 20),
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color.fromRGBO(188, 83,
-                                                    100, 1), // Background color
-                                          ),
-                                          child: Text(
-                                            'Log Out',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelMedium,
-                                          ), // Change the button text to 'About Me'
-                                          onPressed: () {
-                                            FirebaseAuth.instance.signOut();
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const LoginPage()));
-                                          },
-                                        ),
-                                        ElevatedButton(
-                                          child: Text(
-                                            'Cancel',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelMedium,
-                                          ), // Change the button text to 'About Me'
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors
-                                .transparent, // Make the button transparent
+        ),
 
-                            shadowColor:
-                                Colors.transparent, // Hide the button shadow
-                          ),
-                          child: Text(
-                            'Log Out',
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        appBar: AppBar(
+          title: Text(
+            'Your Profile',
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.background,
+          shadowColor: Theme.of(context).colorScheme.background,
+          centerTitle: true,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+        ),
+        body: Stack(
+          children: [
+            Positioned(
+              child: SvgPicture.string(
+                bkgSVG,
+                width: MediaQuery.of(context).size.width,
               ),
             ),
-          ),
-        ],
+            Container(
+              padding: const EdgeInsets.only(top: 20),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 100,
+                      backgroundImage: NetworkImage(userData!.imgUrlList![0]),
+                    ),
+                    const Spacer(flex: 1),
+                    Text(
+                      '${userData!.name}, ${userData!.getAge()}',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Text(
+                        '${userData!.aboutme}',
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
+                    const Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 200,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 4,
+                                blurRadius: 10,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const NamePage()));
+                            },
+                            icon: const Icon(
+                              Icons.person_2_rounded,
+                              size: 24.0,
+                              color: Colors.black,
+                            ),
+                            label: Text(
+                              'Edit Information',
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 200,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Theme.of(context).colorScheme.secondary,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 4,
+                                blurRadius: 10,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    height: 250,
+                                    color: Theme.of(context).colorScheme.onPrimary,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Text(
+                                            'Are you sure you want to Log out?',
+                                            style: Theme.of(context).textTheme.labelLarge,
+                                          ),
+                                          const SizedBox(height: 20),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Theme.of(context).colorScheme.secondary,
+                                            ),
+                                            child: Text(
+                                              'Log Out',
+                                              style: Theme.of(context).textTheme.labelMedium,
+                                            ),
+                                            onPressed: () {
+                                              FirebaseAuth.instance.signOut();
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => const LoginPage()));
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: Text(
+                                              'Cancel',
+                                              style: Theme.of(context).textTheme.labelMedium,
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                            ),
+                            child: Text(
+                              'Log Out',
+                              style: Theme.of(context).textTheme.labelMedium,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const Spacer(flex: 2),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
