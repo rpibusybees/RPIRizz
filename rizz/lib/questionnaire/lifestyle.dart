@@ -54,10 +54,15 @@ class LifestylePageState extends State<LifestylePage> {
   void uploadLifestyleToDatabase() async {
     User? user = FirebaseAuth.instance.currentUser;
     final db = FirebaseFirestore.instance;
+    List<String> likes = getLikes();
+    List<String> dislikes = getDislikes();
+    if (likes.isEmpty) {
+      return;
+    }
     await db
         .collection('users')
         .doc(user!.uid)
-        .update({"myLikes": getLikes(), "myDislikes": getDislikes()});
+        .update({"myLikes": likes, "myDislikes": dislikes});
   }
 
   @override
@@ -99,11 +104,31 @@ class LifestylePageState extends State<LifestylePage> {
             Container(
               margin: Consts.bottomButtonPadding,
               child: NextButton(onPressed: () {
-                uploadLifestyleToDatabase();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SeekingPage()),
-                );
+                if (getLikes().isNotEmpty) {
+                  uploadLifestyleToDatabase();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SeekingPage()),
+                  );
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                      content: const Text(
+                          "Please select at least one lifestyle you like."),
+                      title: const Text('Error'),
+                    ),
+                  );
+                }
               }),
             ),
           ],

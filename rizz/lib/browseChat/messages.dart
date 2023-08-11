@@ -58,8 +58,9 @@ class _MessagesPageState extends State<MessagesPage> {
     if (_loading) {
       return Consts.loadingHeart;
     }
-    return Padding(
-      padding: Consts.vertPadding,
+    return Container(
+      padding: Consts.lowVertPadding,
+      color: Theme.of(context).colorScheme.background,
       child: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -72,6 +73,7 @@ class _MessagesPageState extends State<MessagesPage> {
           elevation: 0,
           automaticallyImplyLeading: false,
         ),
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: Padding(
           padding: Consts.lowPadding,
           child: StreamBuilder<QuerySnapshot>(
@@ -153,6 +155,7 @@ class MatchListTile extends StatelessWidget {
     return Container(
       padding: Consts.lowVertPadding,
       decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
         border: Border(
           top: BorderSide(
               color: Theme.of(context).colorScheme.onPrimaryContainer),
@@ -185,6 +188,7 @@ class MatchListTile extends StatelessWidget {
           ),
         ),
         title: Text(name),
+        tileColor: Theme.of(context).colorScheme.background,
         titleTextStyle: Theme.of(context).textTheme.titleMedium,
         subtitle: Text(
           newestMsg,
