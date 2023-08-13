@@ -14,7 +14,8 @@ To install RPI Rizz, you must have the following installed on your computer:
 By following the installation instructions, users will be all set up to run this app.
 
 > [!IMPORTANT]
-> Because this app uses Google Firebase for authentication and storage, users must email the developers to be added to the project. This is because the app uses a Google Firebase project that is linked to the developers' Google accounts. To be added to the project, please email the developers at rpibusybees@gmail.com > [!NOTE]
+> Because this app uses Google Firebase for authentication and storage, users must email the developers to be added to the project. This is because the app uses a Google Firebase project that is linked to the developers' Google accounts. To be added to the project, please email the developers at rpibusybees@gmail.com
+> [!NOTE]
 > Alternatively, users can create their own Google Firebase project and link it to the app. To do this, users must create a Google Firebase project and follow the installation guides for Flutter. For more information on how to do this, please visit the [Google Firebase] (https://firebase.google.com/docs/flutter/setup) website.
 
 ## Usage
