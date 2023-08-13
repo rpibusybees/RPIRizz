@@ -2,7 +2,7 @@
     <img src="https://cdn.discordapp.com/attachments/849802878427070524/1139668351052951692/RizzLogoFlaskWithNameAndTagline.png" width="50%" title="Text4U Logo">
 </p>
 
-# RPIRizz
+# RPIRizz ![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white) ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase) ![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
 
 RPI Rizz is a dating app ment for the RPI community. It focus's on the RPI community and is only available to RPI students. Through this app students can find other students with similar interests and hobbies. Similar to other dating apps, RPI Rizz allows students to swipe left or right on other other profiles, match with other students and message them in real time.
 
