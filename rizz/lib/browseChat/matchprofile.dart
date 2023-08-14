@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rizz/browseChat/browsing.dart';
 import '../userObjects.dart';
 
+// Creates the profile of your match you are in a Chatroom with
+// Shows name, age, photo carousel, about me, and lifestyle/interest bubbles
 class MatchProfile extends StatelessWidget {
   final UserData match;
 
@@ -14,7 +16,7 @@ class MatchProfile extends StatelessWidget {
   @override
  Widget build(BuildContext context) {
     return  Scaffold(
-        //padding: const EdgeInsets.only(left: 20, right: 20),
+        // Back arrow and Name+Age
          appBar: AppBar(
           leading: IconButton(
             icon: Icon(
@@ -22,23 +24,30 @@ class MatchProfile extends StatelessWidget {
               color: Theme.of(context).colorScheme.onPrimaryContainer,
             ), 
             onPressed: () {
-              Navigator.pop(context); // Navigate back when the button is pressed
+              Navigator.pop(context); 
             },
           ),
-          title: Text(
-            '${match.name}, ${match.getAge()}',
-            style: Theme.of(context).textTheme.displayLarge,
+          title: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                   '${match.name}, ${match.getAge()}',
+                    style: Theme.of(context).textTheme.displayLarge,
+                ),
+              );
+            },
           ),
           centerTitle: true,
          ),
+        // Scrollable ChatPhotoSwipe and InfoCol
         body: SingleChildScrollView(
           child: Container(
-            color: Theme.of(context).colorScheme.background, // Set the background color here
+            color: Theme.of(context).colorScheme.background, 
             child: Column(
               children: [
                 ChatPhotoSwipe(user: match),
                 InfoCol(user: match),
-                // Other content of the MatchProfile
               ],
             ),
           ),
@@ -47,11 +56,10 @@ class MatchProfile extends StatelessWidget {
   }
 }
 
+// Creates a carousel of images to swipe through 
 class ChatPhotoSwipe extends StatefulWidget {
   final UserData? user;
-
   const ChatPhotoSwipe({Key? key, required this.user}) : super(key: key);
-
   @override
   State<StatefulWidget> createState() => _ChatPhotoSwipeState();
 }
