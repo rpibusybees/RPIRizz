@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rizz/browseChat/matchprofile.dart';
 import '../userObjects.dart';
 import '../consts.dart';
 
@@ -24,6 +25,7 @@ class _ChatPageState extends State<ChatPage> {
   GlobalKey<FormState>? _formKey;
   ScrollController? _scrollController;
   bool? firstLoad;
+  UserData? matchUserData;
 
   @override
   void initState() {
@@ -33,6 +35,7 @@ class _ChatPageState extends State<ChatPage> {
     _formKey = GlobalKey<FormState>();
     _scrollController = ScrollController();
     firstLoad = true;
+    matchUserData = null;
     getUserData();
   }
 
@@ -63,6 +66,22 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  void getMatchData(BuildContext context) async {
+    String matchID = widget.match.users!.keys.firstWhere(
+      (element) => element != user!.uid,
+      orElse: () => '',
+    );
+
+    final docRef = db.collection('users').doc(matchID).withConverter(
+      fromFirestore: UserData.fromFirestore,
+      toFirestore: (UserData user, SetOptions? options) =>
+          user.toFirestore(),
+    );
+    
+    final matchSnap = await docRef.get();
+    matchUserData = matchSnap.data();
+  }
+
   void scrollDown() {
     if (_scrollController == null) return;
     _scrollController!.animateTo(
@@ -91,8 +110,27 @@ class _ChatPageState extends State<ChatPage> {
           style: Theme.of(context).textTheme.displayLarge,
         ),
         iconTheme: IconThemeData(
-            color: Theme.of(context).colorScheme.onPrimaryContainer),
+          color: Theme.of(context).colorScheme.onPrimaryContainer
+        ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info_rounded), 
+            onPressed: () {
+              if (matchUserData == null){
+                getMatchData(context);
+              }
+              if (matchUserData != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MatchProfile(match: matchUserData!),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
