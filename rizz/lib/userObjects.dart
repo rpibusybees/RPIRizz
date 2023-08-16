@@ -209,7 +209,7 @@ class ChatData {
     return '${difference.inMinutes} ${difference.inMinutes == 1 ? 'minute' : 'minutes'} ago';
   } else if (difference.inHours < 24) {
     return '${difference.inHours} ${difference.inHours == 1 ? 'hour' : 'hours'} ago';
-  } else if (difference.inDays < 30) {
+  } else if (difference.inDays < 8) {
     return '${difference.inDays} ${difference.inDays == 1 ? 'day' : 'days'} ago';
   } else {
     return '${sentTime.month}/${sentTime.day}/${sentTime.year} ${sentTime.hour}:${sentTime.minute}';

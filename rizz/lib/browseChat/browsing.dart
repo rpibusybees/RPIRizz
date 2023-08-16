@@ -343,7 +343,10 @@ class InfoCol extends StatelessWidget {
           ),
           Container(
             padding: Consts.sidePadding,
-            child: Text(user.aboutme!),
+            child: Text(
+              user.aboutme!,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
           ),
           Divider(
             thickness: 1,
